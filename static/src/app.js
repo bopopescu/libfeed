@@ -4,6 +4,7 @@ var router = require('react-router');
 
 var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
+var UserPage = require('./pages/userpage.js');
 
 var Router = router.Router;
 var Route = router.Route;
@@ -16,6 +17,8 @@ class App extends React.Component {
 				<Router history={browserHistory} >
 					<Route path="/" component={HomePage}/>
 					<Route path="/about" title="About" component={AboutPage} />
+					<Route path="/login" title="Login" component={LoginPage} />
+					<Route path="/users/:userId" component={UserPage} />
 				</Router>
 			</div>
 		)

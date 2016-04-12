@@ -11,6 +11,7 @@ class User(db.Model):
     name = db.Column(db.String(45))
     username = db.Column(db.String(45))
     password = db.Column(db.String(45))
+    age = db.Column(db.Integer)
 
 
 class Book(db.Model):

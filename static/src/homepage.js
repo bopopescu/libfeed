@@ -1,5 +1,3 @@
-// splash.js
-
 var React = require('react');
 var NavBar = require('./partials/navbar.js');
 

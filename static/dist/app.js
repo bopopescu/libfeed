@@ -23920,6 +23920,7 @@ var router = require('react-router');
 
 var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
+var UserPage = require('./pages/userpage.js');
 
 var Router = router.Router;
 var Route = router.Route;
@@ -23944,7 +23945,9 @@ var App = function (_React$Component) {
 					Router,
 					{ history: browserHistory },
 					React.createElement(Route, { path: '/', component: HomePage }),
-					React.createElement(Route, { path: '/about', title: 'About', component: AboutPage })
+					React.createElement(Route, { path: '/about', title: 'About', component: AboutPage }),
+					React.createElement(Route, { path: '/login', title: 'Login', component: LoginPage }),
+					React.createElement(Route, { path: '/users/:userId', component: UserPage })
 				)
 			);
 		}
@@ -23955,7 +23958,7 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":217,"./pages/aboutpage.js":218,"react":213,"react-dom":50,"react-router":78}],217:[function(require,module,exports){
+},{"./homepage.js":217,"./pages/aboutpage.js":218,"./pages/userpage.js":219,"react":213,"react-dom":50,"react-router":78}],217:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -23965,8 +23968,6 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-// splash.js
 
 var React = require('react');
 var NavBar = require('./partials/navbar.js');
@@ -24005,7 +24006,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/navbar.js":219,"react":213}],218:[function(require,module,exports){
+},{"./partials/navbar.js":220,"react":213}],218:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24053,7 +24054,7 @@ var About = function (_React$Component) {
 
 module.exports = About;
 
-},{"../partials/navbar.js":219,"react":213}],219:[function(require,module,exports){
+},{"../partials/navbar.js":220,"react":213}],219:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -24064,7 +24065,54 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-// navbar.js
+var React = require('react');
+var NavBar = require('../partials/navbar.js');
+
+var User = function (_React$Component) {
+	_inherits(User, _React$Component);
+
+	function User() {
+		_classCallCheck(this, User);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(User).apply(this, arguments));
+	}
+
+	_createClass(User, [{
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				{ className: 'user-page' },
+				React.createElement(NavBar, null),
+				React.createElement(
+					'div',
+					{ className: 'container-fluid' },
+					React.createElement(
+						'p',
+						null,
+						'User ',
+						this.props.params.userId
+					)
+				)
+			);
+		}
+	}]);
+
+	return User;
+}(React.Component);
+
+module.exports = User;
+
+},{"../partials/navbar.js":220,"react":213}],220:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
 var Link = require('react-router').Link;
