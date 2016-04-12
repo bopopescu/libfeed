@@ -8,6 +8,7 @@ class NewsFeed extends React.Component {
 				<NavBar />
 				<div className="container-fluid">
 					<p>News feed</p>
+                    <p>this.state.user.givenName</p>
 				</div>
 			</div>
 		)
