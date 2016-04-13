@@ -1,5 +1,12 @@
+from os.path import expanduser
 from flask import Flask, render_template
+from flask.ext.stormpath import StormpathManager
+
 application = Flask(__name__)
+application.config['SECRET_KEY'] = 'my-secret-key'
+application.config['STORMPATH_API_KEY_FILE'] = expanduser('~/.apiKey-7AKT19DZWY9492JYEKXNAQ7V0.properties')
+application.config['STORMPATH_APPLICATION'] = 'https://api.stormpath.com/v1/applications/7drBzhkK5DTxkqUgQE5T6I'
+stormpath_manager = StormpathManager(application)
 
 @application.errorhandler(404)
 def page_not_found(e):
