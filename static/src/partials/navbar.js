@@ -1,8 +1,5 @@
 var React = require('react');
 var Link = require('react-router').Link;
-var stormpath = require('react-stormpath');
-var NotAuthenticated = stormpath.NotAuthenticated;
-var Authenticated = stormpath.Authenticated;
 
 class NavBar extends React.Component {
 	render() {
@@ -21,10 +18,9 @@ class NavBar extends React.Component {
 					<div className="collapse navbar-collapse" id="navbar-collapse">
 						<ul className="nav navbar-nav navbar-right">
 							<li><Link to="/about">About</Link></li>
-							<li><NotAuthenticated><Link to="/login">Log In</Link></NotAuthenticated></li>
-							<li><NotAuthenticated><Link to="/signup">Sign Up</Link></NotAuthenticated></li>
-							<li><Authenticated><Link to="/newsfeed">Newsfeed</Link></Authenticated></li>
-							<li><Authenticated><Link to="/logout">Log Out</Link></Authenticated></li>
+							<li><a href="/register">Register</a></li>
+							<li><a href="/login">Login</a></li>
+							<li><a href="/logout">Logout</a></li>
 						</ul>
 					</div>
 				</div>
