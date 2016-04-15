@@ -1,5 +1,13 @@
+import logging
+
 from flask import Flask, render_template
 from flask.ext.stormpath import StormpathError, StormpathManager, User, login_required, login_user, logout_user, user
+
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
+logger.debug("Welcome")
 
 application = Flask(__name__)
 application.config['SECRET_KEY'] = 'my-secret-key'
