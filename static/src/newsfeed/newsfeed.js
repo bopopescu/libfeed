@@ -11,7 +11,6 @@ class NewsFeed extends React.Component {
 
 	componentDidMount() {
 		api.getUser((err, data) => {
-			console.log('here');
 			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
 			else this.setState({data: data.user});
 		});
@@ -19,12 +18,11 @@ class NewsFeed extends React.Component {
 
 	render() {
 		var data = this.state.data;
-		console.log(data);
 		return (
 			<div className="newsfeed">
 				<NavBar />
 				<div className="container-fluid">
-					<p>News feed</p>
+					<p>News feed: {data}</p>
 				</div>
 			</div>
 		)

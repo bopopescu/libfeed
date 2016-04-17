@@ -83764,7 +83764,6 @@ var NewsFeed = function (_React$Component) {
 			var _this2 = this;
 
 			api.getUser(function (err, data) {
-				console.log('here');
 				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
 			});
 		}
@@ -83772,7 +83771,6 @@ var NewsFeed = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
-			console.log(data);
 			return React.createElement(
 				'div',
 				{ className: 'newsfeed' },
@@ -83783,7 +83781,8 @@ var NewsFeed = function (_React$Component) {
 					React.createElement(
 						'p',
 						null,
-						'News feed'
+						'News feed: ',
+						data
 					)
 				)
 			);
@@ -83905,6 +83904,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require('react');
 var Link = require('react-router').Link;
+var api = require('../api.js');
 
 var NavBar = function (_React$Component) {
 	_inherits(NavBar, _React$Component);
@@ -83912,12 +83912,25 @@ var NavBar = function (_React$Component) {
 	function NavBar() {
 		_classCallCheck(this, NavBar);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(NavBar).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NavBar).call(this));
+
+		_this.state = { data: null };
+		return _this;
 	}
 
 	_createClass(NavBar, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getUser(function (err, data) {
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
+			var data = this.state.data;
 			return React.createElement(
 				'nav',
 				{ className: 'navbar navbar-default' },
@@ -83966,7 +83979,7 @@ var NavBar = function (_React$Component) {
 								React.createElement(
 									'a',
 									{ href: '/register' },
-									'Register'
+									data ? null : 'Register'
 								)
 							),
 							React.createElement(
@@ -83975,7 +83988,7 @@ var NavBar = function (_React$Component) {
 								React.createElement(
 									'a',
 									{ href: '/login' },
-									'Login'
+									data ? null : 'Login'
 								)
 							),
 							React.createElement(
@@ -83984,7 +83997,7 @@ var NavBar = function (_React$Component) {
 								React.createElement(
 									'a',
 									{ href: '/logout' },
-									'Logout'
+									data ? 'Logout' : null
 								)
 							)
 						)
@@ -83999,4 +84012,4 @@ var NavBar = function (_React$Component) {
 
 module.exports = NavBar;
 
-},{"react":419,"react-router":284}]},{},[498]);
+},{"../api.js":497,"react":419,"react-router":284}]},{},[498]);

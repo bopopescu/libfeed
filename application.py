@@ -1,6 +1,6 @@
 import logging
 
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask.ext.stormpath import StormpathError, StormpathManager, User, login_required, login_user, logout_user, user
 
 logging.basicConfig(
@@ -22,11 +22,16 @@ stormpath_manager = StormpathManager(application)
 def page_not_found(e):
     return render_template('404.html'), 404
 
+@application.route('/api/get_user')
+@login_required
+def get_user():
+    return jsonify({'user': user.given_name})
+
 @application.route('/', defaults={'path': ''})
 
 @application.route('/<path:path>')
 def index(path):
-    return render_template('index.html')
+    return render_template('index.html', user=user)
 
 if __name__ == '__main__':
     application.run(host='0.0.0.0')
