@@ -1,5 +1,4 @@
 var React = require('react');
-var NavBar = require('../partials/navbar.js');
 var api = require('../api.js');
 
 class NewsFeed extends React.Component {
@@ -20,7 +19,6 @@ class NewsFeed extends React.Component {
 		var data = this.state.data;
 		return (
 			<div className="newsfeed">
-				<NavBar />
 				<div className="container-fluid">
 					<p>News feed: {data}</p>
 				</div>

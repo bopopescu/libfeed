@@ -83684,7 +83684,7 @@ var App = function (_React$Component) {
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
 },{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/userpage.js":502,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
-'use strict';
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83695,7 +83695,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var NavBar = require('./partials/navbar.js');
 
 var Home = function (_React$Component) {
 	_inherits(Home, _React$Component);
@@ -83707,19 +83706,18 @@ var Home = function (_React$Component) {
 	}
 
 	_createClass(Home, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
-				{ className: 'home-page' },
-				React.createElement(NavBar, null),
+				"div",
+				{ className: "home-page" },
 				React.createElement(
-					'div',
-					{ className: 'container-fluid' },
+					"div",
+					{ className: "container-fluid" },
 					React.createElement(
-						'p',
+						"p",
 						null,
-						'Home'
+						"Home"
 					)
 				)
 			);
@@ -83731,7 +83729,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/navbar.js":503,"react":419}],500:[function(require,module,exports){
+},{"react":419}],500:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83743,7 +83741,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var NavBar = require('../partials/navbar.js');
 var api = require('../api.js');
 
 var NewsFeed = function (_React$Component) {
@@ -83774,7 +83771,6 @@ var NewsFeed = function (_React$Component) {
 			return React.createElement(
 				'div',
 				{ className: 'newsfeed' },
-				React.createElement(NavBar, null),
 				React.createElement(
 					'div',
 					{ className: 'container-fluid' },
@@ -83794,8 +83790,8 @@ var NewsFeed = function (_React$Component) {
 
 module.exports = NewsFeed;
 
-},{"../api.js":497,"../partials/navbar.js":503,"react":419}],501:[function(require,module,exports){
-'use strict';
+},{"../api.js":497,"react":419}],501:[function(require,module,exports){
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83806,7 +83802,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var NavBar = require('../partials/navbar.js');
 
 var About = function (_React$Component) {
 	_inherits(About, _React$Component);
@@ -83818,19 +83813,18 @@ var About = function (_React$Component) {
 	}
 
 	_createClass(About, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
-				{ className: 'about-page' },
-				React.createElement(NavBar, null),
+				"div",
+				{ className: "about-page" },
 				React.createElement(
-					'div',
-					{ className: 'container-fluid' },
+					"div",
+					{ className: "container-fluid" },
 					React.createElement(
-						'p',
+						"p",
 						null,
-						'About'
+						"About"
 					)
 				)
 			);
@@ -83842,8 +83836,8 @@ var About = function (_React$Component) {
 
 module.exports = About;
 
-},{"../partials/navbar.js":503,"react":419}],502:[function(require,module,exports){
-'use strict';
+},{"react":419}],502:[function(require,module,exports){
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83854,7 +83848,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var NavBar = require('../partials/navbar.js');
 
 var User = function (_React$Component) {
 	_inherits(User, _React$Component);
@@ -83866,19 +83859,18 @@ var User = function (_React$Component) {
 	}
 
 	_createClass(User, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
-				{ className: 'user-page' },
-				React.createElement(NavBar, null),
+				"div",
+				{ className: "user-page" },
 				React.createElement(
-					'div',
-					{ className: 'container-fluid' },
+					"div",
+					{ className: "container-fluid" },
 					React.createElement(
-						'p',
+						"p",
 						null,
-						'User ',
+						"User ",
 						this.props.params.userId
 					)
 				)
@@ -83891,125 +83883,4 @@ var User = function (_React$Component) {
 
 module.exports = User;
 
-},{"../partials/navbar.js":503,"react":419}],503:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = require('react');
-var Link = require('react-router').Link;
-var api = require('../api.js');
-
-var NavBar = function (_React$Component) {
-	_inherits(NavBar, _React$Component);
-
-	function NavBar() {
-		_classCallCheck(this, NavBar);
-
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NavBar).call(this));
-
-		_this.state = { data: null };
-		return _this;
-	}
-
-	_createClass(NavBar, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var _this2 = this;
-
-			api.getUser(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var data = this.state.data;
-			return React.createElement(
-				'nav',
-				{ className: 'navbar navbar-default' },
-				React.createElement(
-					'div',
-					{ className: 'container-fluid' },
-					React.createElement(
-						'div',
-						{ className: 'navbar-header' },
-						React.createElement(
-							'button',
-							{ type: 'button', className: 'navbar-toggle collapsed', 'data-toggle': 'collapse', 'data-target': '#navbar-collapse', 'aria-expanded': 'false' },
-							React.createElement(
-								'span',
-								{ className: 'sr-only' },
-								'Toggle navigation'
-							),
-							React.createElement('span', { className: 'icon-bar' }),
-							React.createElement('span', { className: 'icon-bar' }),
-							React.createElement('span', { className: 'icon-bar' })
-						),
-						React.createElement(
-							'a',
-							{ className: 'navbar-brand', href: '/' },
-							'LibFeed'
-						)
-					),
-					React.createElement(
-						'div',
-						{ className: 'collapse navbar-collapse', id: 'navbar-collapse' },
-						React.createElement(
-							'ul',
-							{ className: 'nav navbar-nav navbar-right' },
-							React.createElement(
-								'li',
-								null,
-								React.createElement(
-									Link,
-									{ to: '/about' },
-									'About'
-								)
-							),
-							React.createElement(
-								'li',
-								null,
-								React.createElement(
-									'a',
-									{ href: '/register' },
-									data ? null : 'Register'
-								)
-							),
-							React.createElement(
-								'li',
-								null,
-								React.createElement(
-									'a',
-									{ href: '/login' },
-									data ? null : 'Login'
-								)
-							),
-							React.createElement(
-								'li',
-								null,
-								React.createElement(
-									'a',
-									{ href: '/logout' },
-									data ? 'Logout' : null
-								)
-							)
-						)
-					)
-				)
-			);
-		}
-	}]);
-
-	return NavBar;
-}(React.Component);
-
-module.exports = NavBar;
-
-},{"../api.js":497,"react":419,"react-router":284}]},{},[498]);
+},{"react":419}]},{},[498]);
