@@ -1,8 +1,8 @@
 const request = require('request');
 const API = 'http://localhost:5000/api/';
 
-function getLoggedInUser(cb){
-	request(API+'get_logged_in_user', (error, response, body) => {
+function getCurrentUser(cb){
+	request(API+'current_user', (error, response, body) => {
 		cb(error, JSON.parse(body));
 	})
 }
@@ -15,6 +15,6 @@ function getUser(id, cb){
 }
 
 module.exports = {
-	getLoggedInUser: getLoggedInUser,
+	getCurrentUser: getCurrentUser,
 	getUser: getUser
 }

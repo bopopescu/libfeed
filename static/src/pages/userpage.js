@@ -20,7 +20,7 @@ class User extends React.Component {
 		return (
 			<div className="user-page">
 				<div className="container-fluid">
-					<p>User: {data.name}</p>
+					<p>User: {data}</p>
 				</div>
 			</div>
 		)

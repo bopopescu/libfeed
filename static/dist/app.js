@@ -83617,8 +83617,8 @@ function Node (value, prev, next, list) {
 var request = require('request');
 var API = 'http://localhost:5000/api/';
 
-function getLoggedInUser(cb) {
-	request(API + 'get_logged_in_user', function (error, response, body) {
+function getCurrentUser(cb) {
+	request(API + 'current_user', function (error, response, body) {
 		cb(error, JSON.parse(body));
 	});
 }
@@ -83631,7 +83631,7 @@ function getUser(id, cb) {
 }
 
 module.exports = {
-	getLoggedInUser: getLoggedInUser,
+	getCurrentUser: getCurrentUser,
 	getUser: getUser
 };
 
@@ -83768,7 +83768,7 @@ var NewsFeed = function (_React$Component) {
 		value: function componentDidMount() {
 			var _this2 = this;
 
-			api.getLoggedInUser(function (err, data) {
+			api.getCurrentUser(function (err, data) {
 				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
 			});
 		}
@@ -83893,7 +83893,7 @@ var User = function (_React$Component) {
 						'p',
 						null,
 						'User: ',
-						data.name
+						data
 					)
 				)
 			);
