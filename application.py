@@ -15,6 +15,8 @@ application.config['STORMPATH_API_KEY_FILE'] = 'apiKey-7AKT19DZWY9492JYEKXNAQ7V0
 application.config['STORMPATH_APPLICATION'] = 'LibFeed'
 application.config['STORMPATH_REDIRECT_URL'] = '/newsfeed'
 application.config['STORMPATH_ENABLE_MIDDLE_NAME'] = False
+application.config['STORMPATH_REGISTRATION_TEMPLATE'] = 'register.html'
+application.config['STORMPATH_LOGIN_TEMPLATE'] = 'login.html'
 
 stormpath_manager = StormpathManager(application)
 

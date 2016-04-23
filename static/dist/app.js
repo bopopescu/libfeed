@@ -83617,13 +83617,21 @@ function Node (value, prev, next, list) {
 var request = require('request');
 var API = 'http://localhost:5000/api/';
 
-function getUser(cb) {
-	request(API + 'get_user', function (error, response, body) {
+function getLoggedInUser(cb) {
+	request(API + 'get_logged_in_user', function (error, response, body) {
 		cb(error, JSON.parse(body));
 	});
 }
 
+function getUser(id, cb) {
+	request(API + 'user/' + id, function (error, response, body) {
+		body = JSON.parse(body);
+		cb(error, body);
+	});
+}
+
 module.exports = {
+	getLoggedInUser: getLoggedInUser,
 	getUser: getUser
 };
 
@@ -83760,7 +83768,7 @@ var NewsFeed = function (_React$Component) {
 		value: function componentDidMount() {
 			var _this2 = this;
 
-			api.getUser(function (err, data) {
+			api.getLoggedInUser(function (err, data) {
 				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
 			});
 		}
@@ -83837,7 +83845,7 @@ var About = function (_React$Component) {
 module.exports = About;
 
 },{"react":419}],502:[function(require,module,exports){
-"use strict";
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83848,6 +83856,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var api = require('../api.js');
 
 var User = function (_React$Component) {
 	_inherits(User, _React$Component);
@@ -83855,23 +83864,36 @@ var User = function (_React$Component) {
 	function User() {
 		_classCallCheck(this, User);
 
-		return _possibleConstructorReturn(this, Object.getPrototypeOf(User).apply(this, arguments));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(User).call(this));
+
+		_this.state = { data: null };
+		return _this;
 	}
 
 	_createClass(User, [{
-		key: "render",
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getUser(this.props.params.userId, function (err, data) {
+				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
+			});
+		}
+	}, {
+		key: 'render',
 		value: function render() {
+			var data = this.state.data;
 			return React.createElement(
-				"div",
-				{ className: "user-page" },
+				'div',
+				{ className: 'user-page' },
 				React.createElement(
-					"div",
-					{ className: "container-fluid" },
+					'div',
+					{ className: 'container-fluid' },
 					React.createElement(
-						"p",
+						'p',
 						null,
-						"User ",
-						this.props.params.userId
+						'User: ',
+						data.name
 					)
 				)
 			);
@@ -83883,4 +83905,4 @@ var User = function (_React$Component) {
 
 module.exports = User;
 
-},{"react":419}]},{},[498]);
+},{"../api.js":497,"react":419}]},{},[498]);

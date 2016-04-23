@@ -9,7 +9,7 @@ class NewsFeed extends React.Component {
 	}
 
 	componentDidMount() {
-		api.getUser((err, data) => {
+		api.getLoggedInUser((err, data) => {
 			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
 			else this.setState({data: data.user});
 		});

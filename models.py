@@ -1,8 +1,8 @@
-from sqlalchemy import ForeignKey
+from sqlalchemy import ForeignKey, orm
 from sqlalchemy.orm import relationship
+from flask.ext.sqlalchemy import SQLAlchemy
 
-from app import db
-
+db = SQLAlchemy()
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -13,6 +13,17 @@ class User(db.Model):
     password = db.Column(db.String(45))
     age = db.Column(db.Integer)
 
+    def is_active(self):
+        return True
+
+    def get_id(self):
+        return self.email
+
+    def is_authenticated(self):
+        return self.authenticated
+
+    def is_anonymous(self):
+        return False
 
 class Book(db.Model):
     __tablename__ = 'book'
@@ -33,6 +44,7 @@ class Review(db.Model):
     __tablename__ = 'review'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     user = orm.relationship('User', backref='reviews')
     description = db.Column(db.String(256))
     date = db.Column(db.Date)
@@ -42,6 +54,7 @@ class BorrowedBook(db.Model):
     __tablename__ = 'borrowed_book'
 
     id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, ForeignKey('user.id'))
     user = orm.relationship('User', backref='borrowed_books')
     review = orm.relationship('Review')
     date_checked_out = db.Column(db.Date)
