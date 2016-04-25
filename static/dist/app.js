@@ -83625,9 +83625,19 @@ function getCurrentUser(cb) {
 
 function getUser(id, cb) {
 	request(API + 'user/' + id, function (error, response, body) {
-		body = JSON.parse(body);
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
 		cb(error, body);
 	});
+}
+
+function isJson(str) {
+	try {
+		JSON.parse(str);
+	} catch (e) {
+		return false;
+	}
+	return true;
 }
 
 module.exports = {
@@ -83776,20 +83786,25 @@ var NewsFeed = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
-			return React.createElement(
-				'div',
-				{ className: 'newsfeed' },
-				React.createElement(
+			console.log(data);
+			if (data) {
+				return React.createElement(
 					'div',
-					{ className: 'container-fluid' },
+					{ className: 'newsfeed' },
 					React.createElement(
-						'p',
-						null,
-						'News feed: ',
-						data
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'p',
+							null,
+							'News feed: ',
+							data.name
+						)
 					)
-				)
-			);
+				);
+			} else {
+				return React.createElement('div', null);
+			}
 		}
 	}]);
 
@@ -83876,27 +83891,34 @@ var User = function (_React$Component) {
 			var _this2 = this;
 
 			api.getUser(this.props.params.userId, function (err, data) {
-				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
+				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
+					_this2.setState({ data: data.user });
+				}
 			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
-			return React.createElement(
-				'div',
-				{ className: 'user-page' },
-				React.createElement(
+			console.log(data);
+			if (data) {
+				return React.createElement(
 					'div',
-					{ className: 'container-fluid' },
+					{ className: 'user-page' },
 					React.createElement(
-						'p',
-						null,
-						'User: ',
-						data
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'p',
+							null,
+							'User name: ',
+							data.name
+						)
 					)
-				)
-			);
+				);
+			} else {
+				return React.createElement('div', null);
+			}
 		}
 	}]);
 

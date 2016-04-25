@@ -17,13 +17,18 @@ class NewsFeed extends React.Component {
 
 	render() {
 		var data = this.state.data;
-		return (
-			<div className="newsfeed">
-				<div className="container-fluid">
-					<p>News feed: {data}</p>
+		console.log(data);
+		if (data) {
+			return (
+				<div className="newsfeed">
+					<div className="container-fluid">
+						<p>News feed: {data.name}</p>
+					</div>
 				</div>
-			</div>
-		)
+			)
+		} else {
+			return (<div></div>)
+		}
 	}
 }
 

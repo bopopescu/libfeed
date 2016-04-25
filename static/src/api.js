@@ -9,9 +9,19 @@ function getCurrentUser(cb){
 
 function getUser(id, cb){
 	request(API+'user/'+id, (error, response, body) => {
-		body = JSON.parse(body);
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
 		cb(error, body);
 	})
+}
+
+function isJson(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
 }
 
 module.exports = {

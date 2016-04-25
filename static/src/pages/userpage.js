@@ -11,19 +11,26 @@ class User extends React.Component {
 	componentDidMount() {
 		api.getUser(this.props.params.userId, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
-			else this.setState({data: data.user});
+			else {
+				this.setState({data: data.user});
+			}
 		});
 	}
 
 	render() {
 		var data = this.state.data;
-		return (
-			<div className="user-page">
-				<div className="container-fluid">
-					<p>User: {data}</p>
+		console.log(data);
+		if (data) {
+			return (
+				<div className="user-page">
+					<div className="container-fluid">
+						<p>User name: {data.name}</p>
+					</div>
 				</div>
-			</div>
-		)
+			)
+		} else {
+			return (<div></div>)
+		}
 	}
 }
 

@@ -28,6 +28,8 @@
               <ul class="nav navbar-nav navbar-right">
                   <li><a href="/about">About</a></li>
                   {% if user.given_name %}
+                    <li><a href="/newsfeed">Newsfeed</a></li>
+                    <li><a href="/users/1">Profile</a></li>
                     <li><a href="/logout">Logout</a></li>
                   {% else %}
                     <li><a href="/register">Register</a></li>

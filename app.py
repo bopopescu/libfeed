@@ -29,7 +29,9 @@ def page_not_found(e):
 @app.route('/api/current_user', methods=["GET"])
 @login_required
 def current_user():
-    return jsonify({'user': user.given_name})
+    # return jsonify({'user': user.given_name})
+    user_test =  User(id=1, name="Pat")
+    return jsonify({'user': mapper.user_to_dict(user_test)})
 
 @app.route('/api/user/<id>', methods=["GET"])
 @login_required
@@ -37,8 +39,7 @@ def get_user(id):
     # user = User.query.filter_by(id=user_id)
     # return jsonify({'user': mapper.user_to_dict(User.query.filter_by(id=id).first())})
     user_test =  User(id=1, name="Pat")
-    return jsonify({'user': user_test.name})
-    # return jsonify({'user': user.given_name})
+    return jsonify({'user': mapper.user_to_dict(user_test)})
 
 @app.route('/', defaults={'path': ''})
 
