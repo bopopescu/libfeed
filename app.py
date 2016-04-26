@@ -1,7 +1,7 @@
-import logging
+import logging, mapper, os
 from flask import Flask, render_template, jsonify
 from flask.ext.stormpath import StormpathError, StormpathManager, User, login_required, login_user, logout_user, user
-import mapper
+from flask.ext.sqlalchemy import SQLAlchemy
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -20,6 +20,9 @@ app.config['STORMPATH_LOGIN_TEMPLATE'] = 'login.html'
 
 stormpath_manager = StormpathManager(app)
 
+SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+db = SQLAlchemy(app)
+
 from models import *
 
 @app.errorhandler(404)
@@ -36,10 +39,16 @@ def current_user():
 @app.route('/api/user/<id>', methods=["GET"])
 @login_required
 def get_user(id):
-    # user = User.query.filter_by(id=user_id)
     # return jsonify({'user': mapper.user_to_dict(User.query.filter_by(id=id).first())})
     user_test =  User(id=1, name="Pat")
     return jsonify({'user': mapper.user_to_dict(user_test)})
+
+@app.route('/api/book/<isbn>', methods=["GET"])
+@login_required
+def get_book(isbn):
+    # return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first())})
+    book_test =  Book(isbn=1, title="Test Book")
+    return jsonify({'book': mapper.book_to_dict(book_test)})
 
 @app.route('/', defaults={'path': ''})
 

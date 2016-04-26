@@ -1,8 +1,7 @@
 from sqlalchemy import ForeignKey, orm
 from sqlalchemy.orm import relationship
 from flask.ext.sqlalchemy import SQLAlchemy
-
-db = SQLAlchemy()
+from app import db
 
 class User(db.Model):
     __tablename__ = 'user'
@@ -12,6 +11,7 @@ class User(db.Model):
     username = db.Column(db.String(45))
     password = db.Column(db.String(45))
     age = db.Column(db.Integer)
+    img = db.Column(db.String(45))
 
 class Book(db.Model):
     __tablename__ = 'book'
@@ -19,7 +19,7 @@ class Book(db.Model):
     isbn = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(45))
     author = db.Column(db.String(45))
-
+    synopsis = db.Column(db.String(256))
 
 class Relationship(db.Model):
     __tablename__ = 'relationship'
