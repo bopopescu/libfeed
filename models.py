@@ -3,8 +3,8 @@ from sqlalchemy.orm import relationship
 from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 
-class User(db.Model):
-    __tablename__ = 'user'
+class Person(db.Model):
+    __tablename__ = 'person'
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(45))
@@ -16,16 +16,17 @@ class User(db.Model):
 class Book(db.Model):
     __tablename__ = 'book'
 
-    isbn = db.Column(db.Integer, primary_key=True)
+    isbn = db.Column(db.String(45), primary_key=True)
     title = db.Column(db.String(45))
     author = db.Column(db.String(45))
     synopsis = db.Column(db.String(256))
+    img = db.Column(db.String(45))
 
 class Relationship(db.Model):
     __tablename__ = 'relationship'
 
-    user1 = db.Column(db.Integer, primary_key=True)
-    user2 = db.Column(db.Integer, primary_key=True)
+    person1 = db.Column(db.Integer, primary_key=True)
+    person2 = db.Column(db.Integer, primary_key=True)
     date = db.Column(db.Date)
 
 class Review(db.Model):
@@ -34,9 +35,9 @@ class Review(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(256))
     date = db.Column(db.Date)
-    user_id = db.Column(db.Integer, ForeignKey('user.id'))
-    user = orm.relationship('User', backref='reviews')
-    book_isbn = db.Column(db.Integer, ForeignKey('book.isbn'))
+    person_id = db.Column(db.Integer, ForeignKey('person.id'))
+    person = orm.relationship('Person', backref='reviews')
+    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='reviews')
 
 
@@ -46,10 +47,10 @@ class LibraryCopy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(45))
     date_checked_out = db.Column(db.Date)
-    book_isbn = db.Column(db.Integer, ForeignKey('book.isbn'))
+    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='library_copies')
-    user_id = db.Column(db.Integer, ForeignKey('user.id'))
-    user = orm.relationship('User', backref='library_copies')
+    person_id = db.Column(db.Integer, ForeignKey('person.id'))
+    person = orm.relationship('Person', backref='library_copies')
     libary_id = db.Column(db.Integer, ForeignKey('library.id'))
     library = orm.relationship('Library', backref='borrowed_books')
 
