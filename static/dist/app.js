@@ -83639,6 +83639,14 @@ function getBook(isbn, cb) {
 	});
 }
 
+function getLibrary(id, cb) {
+	request(API + 'library/' + id, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	});
+}
+
 function isJson(str) {
 	try {
 		JSON.parse(str);
@@ -83651,7 +83659,8 @@ function isJson(str) {
 module.exports = {
 	getCurrentUser: getCurrentUser,
 	getUser: getUser,
-	getBook: getBook
+	getBook: getBook,
+	getLibrary: getLibrary
 };
 
 },{"request":430}],498:[function(require,module,exports){
@@ -83673,6 +83682,7 @@ var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
 var UserPage = require('./pages/userpage.js');
 var BookPage = require('./pages/bookpage.js');
+var LibraryPage = require('./pages/librarypage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
 
 var Router = router.Router;
@@ -83700,7 +83710,8 @@ var App = function (_React$Component) {
 					React.createElement(Route, { path: '/', component: HomePage }),
 					React.createElement(Route, { path: '/about', title: 'About', component: AboutPage }),
 					React.createElement(Route, { path: '/users/:userId', component: UserPage }),
-					React.createElement(Route, { path: '/books/:bookId', component: BookPage }),
+					React.createElement(Route, { path: '/books/:bookIsbn', component: BookPage }),
+					React.createElement(Route, { path: '/libraries/:libraryId', component: LibraryPage }),
 					React.createElement(Route, { path: '/newsfeed', component: NewsFeed })
 				)
 			);
@@ -83712,7 +83723,7 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/userpage.js":503,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
+},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/librarypage.js":503,"./pages/userpage.js":504,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83915,15 +83926,50 @@ var Book = function (_React$Component) {
 			if (data) {
 				return React.createElement(
 					'div',
-					{ className: 'user-page' },
+					{ className: 'book-page' },
 					React.createElement(
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
+							'h3',
+							null,
+							'Book'
+						),
+						React.createElement(
 							'p',
 							null,
-							'Book title: ',
+							'Title: ',
 							data.title
+						),
+						React.createElement(
+							'p',
+							null,
+							'Author: ',
+							data.author
+						),
+						React.createElement(
+							'p',
+							null,
+							data.synopsis
+						),
+						React.createElement('img', { src: data.img }),
+						React.createElement(
+							'div',
+							null,
+							React.createElement(
+								'h3',
+								null,
+								'Reviews'
+							),
+							data.reviews.map(function (review) {
+								return React.createElement(
+									'p',
+									null,
+									review.description,
+									' --- by ',
+									review.person_name
+								);
+							})
 						)
 					)
 				);
@@ -83939,6 +83985,117 @@ var Book = function (_React$Component) {
 module.exports = Book;
 
 },{"../api.js":497,"react":419}],503:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var api = require('../api.js');
+
+var Library = function (_React$Component) {
+	_inherits(Library, _React$Component);
+
+	function Library() {
+		_classCallCheck(this, Library);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Library).call(this));
+
+		_this.state = { data: null };
+		return _this;
+	}
+
+	_createClass(Library, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getLibrary(this.props.params.libraryId, function (err, data) {
+				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
+					_this2.setState({ data: data.library });
+				}
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var data = this.state.data;
+			console.log(data);
+			if (data) {
+				return React.createElement(
+					'div',
+					{ className: 'library-page' },
+					React.createElement(
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'h3',
+							null,
+							'Library'
+						),
+						React.createElement(
+							'p',
+							null,
+							'Name: ',
+							data.name
+						),
+						React.createElement(
+							'p',
+							null,
+							'Address: ',
+							data.address
+						),
+						React.createElement(
+							'p',
+							null,
+							'City: ',
+							data.city
+						),
+						React.createElement(
+							'p',
+							null,
+							'State: ',
+							data.state
+						),
+						React.createElement(
+							'div',
+							null,
+							React.createElement(
+								'h3',
+								null,
+								'Books'
+							),
+							data.library_copies.map(function (book) {
+								return React.createElement(
+									'p',
+									null,
+									book.id,
+									' ',
+									book.title,
+									' --- ',
+									book.status
+								);
+							})
+						)
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	}]);
+
+	return Library;
+}(React.Component);
+
+module.exports = Library;
+
+},{"../api.js":497,"react":419}],504:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83988,10 +84145,47 @@ var User = function (_React$Component) {
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
+							'h3',
+							null,
+							'User'
+						),
+						React.createElement(
 							'p',
 							null,
-							'User name: ',
+							'Name: ',
 							data.name
+						),
+						React.createElement(
+							'div',
+							null,
+							React.createElement(
+								'h3',
+								null,
+								'Borrowed Books'
+							),
+							data.borrowed_books.map(function (book) {
+								return React.createElement(
+									'p',
+									null,
+									book.title
+								);
+							})
+						),
+						React.createElement(
+							'div',
+							null,
+							React.createElement(
+								'h3',
+								null,
+								'Reviews'
+							),
+							data.reviews.map(function (review) {
+								return React.createElement(
+									'p',
+									null,
+									review.description
+								);
+							})
 						)
 					)
 				);

@@ -12,28 +12,30 @@ class Person(db.Model):
     password = db.Column(db.String(45))
     age = db.Column(db.Integer)
     img = db.Column(db.String(45))
+    # friends = orm.relationship('Person', secondary="relationship",
+    #                          backref="friends")
 
 class Book(db.Model):
     __tablename__ = 'book'
 
     isbn = db.Column(db.String(45), primary_key=True)
-    title = db.Column(db.String(45))
+    title = db.Column(db.String(256))
     author = db.Column(db.String(45))
-    synopsis = db.Column(db.String(256))
-    img = db.Column(db.String(45))
+    synopsis = db.Column(db.String(3000))
+    img = db.Column(db.String(256))
 
 class Relationship(db.Model):
     __tablename__ = 'relationship'
 
-    person1 = db.Column(db.Integer, primary_key=True)
-    person2 = db.Column(db.Integer, primary_key=True)
+    person1 = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
+    person2 = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
     date = db.Column(db.Date)
 
 class Review(db.Model):
     __tablename__ = 'review'
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(256))
+    description = db.Column(db.String(3000))
     date = db.Column(db.Date)
     person_id = db.Column(db.Integer, ForeignKey('person.id'))
     person = orm.relationship('Person', backref='reviews')
@@ -50,17 +52,17 @@ class LibraryCopy(db.Model):
     book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='library_copies')
     person_id = db.Column(db.Integer, ForeignKey('person.id'))
-    person = orm.relationship('Person', backref='library_copies')
-    libary_id = db.Column(db.Integer, ForeignKey('library.id'))
-    library = orm.relationship('Library', backref='borrowed_books')
+    person = orm.relationship('Person', backref='borrowed_books')
+    library_id = db.Column(db.Integer, ForeignKey('library.id'))
+    library = orm.relationship('Library', backref='library_copies')
 
 
 class Library(db.Model):
     __tablename__ = 'library'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(45))
-    address = db.Column(db.String(45))
+    name = db.Column(db.String(256))
+    address = db.Column(db.String(256))
     city = db.Column(db.String(45))
     state = db.Column(db.String(45))
     zip = db.Column(db.Integer)

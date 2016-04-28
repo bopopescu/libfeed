@@ -1,7 +1,7 @@
 var React = require('react');
 var api = require('../api.js');
 
-class User extends React.Component {
+class Library extends React.Component {
 
 	constructor() {
 		super();
@@ -9,10 +9,10 @@ class User extends React.Component {
 	}
 
 	componentDidMount() {
-		api.getUser(this.props.params.userId, (err, data) => {
+		api.getLibrary(this.props.params.libraryId, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.user});
+				this.setState({data: data.library});
 			}
 		});
 	}
@@ -22,20 +22,17 @@ class User extends React.Component {
 		console.log(data);
 		if (data) {
 			return (
-				<div className="user-page">
+				<div className="library-page">
 					<div className="container-fluid">
-						<h3>User</h3>
+						<h3>Library</h3>
 						<p>Name: {data.name}</p>
+						<p>Address: {data.address}</p>
+						<p>City: {data.city}</p>
+						<p>State: {data.state}</p>
 						<div>
-							<h3>Borrowed Books</h3>
-							{data.borrowed_books.map( book => {
-								return (<p>{book.title}</p>)
-							})}
-						</div>
-						<div>
-							<h3>Reviews</h3>
-							{data.reviews.map( review => {
-								return (<p>{review.description}</p>)
+							<h3>Books</h3>
+							{data.library_copies.map( book => {
+								return (<p>{book.id} {book.title} --- {book.status}</p>)
 							})}
 						</div>
 					</div>
@@ -48,4 +45,4 @@ class User extends React.Component {
 }
 
 
-module.exports = User;
+module.exports = Library;

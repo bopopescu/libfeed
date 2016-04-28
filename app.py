@@ -20,7 +20,7 @@ app.config['STORMPATH_LOGIN_TEMPLATE'] = 'login.html'
 
 stormpath_manager = StormpathManager(app)
 
-SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://admin:password@localhost/db'
 db = SQLAlchemy(app)
 
 from models import *
@@ -33,22 +33,23 @@ def page_not_found(e):
 @login_required
 def current_user():
     # return jsonify({'user': user.given_name})
-    user_test =  User(id=1, name="Pat")
+    user_test =  Person(id=1, name="Pat")
     return jsonify({'user': mapper.user_to_dict(user_test)})
 
 @app.route('/api/user/<id>', methods=["GET"])
 @login_required
 def get_user(id):
-    # return jsonify({'user': mapper.user_to_dict(User.query.filter_by(id=id).first())})
-    user_test =  User(id=1, name="Pat")
-    return jsonify({'user': mapper.user_to_dict(user_test)})
+    return jsonify({'user': mapper.user_to_dict(Person.query.filter_by(id=id).first())})
 
 @app.route('/api/book/<isbn>', methods=["GET"])
 @login_required
 def get_book(isbn):
-    # return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first())})
-    book_test =  Book(isbn=1, title="Test Book")
-    return jsonify({'book': mapper.book_to_dict(book_test)})
+    return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first())})
+
+@app.route('/api/library/<id>', methods=["GET"])
+@login_required
+def get_library(id):
+    return jsonify({'library': mapper.library_to_dict(Library.query.filter_by(id=id).first())})
 
 @app.route('/', defaults={'path': ''})
 

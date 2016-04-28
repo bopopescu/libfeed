@@ -22,9 +22,19 @@ class Book extends React.Component {
 		console.log(data);
 		if (data) {
 			return (
-				<div className="user-page">
+				<div className="book-page">
 					<div className="container-fluid">
-						<p>Book title: {data.title}</p>
+						<h3>Book</h3>
+						<p>Title: {data.title}</p>
+						<p>Author: {data.author}</p>
+						<p>{data.synopsis}</p>
+						<img src={data.img} />
+						<div>
+							<h3>Reviews</h3>
+							{data.reviews.map( review => {
+								return (<p>{review.description} --- by {review.person_name}</p>)
+							})}
+						</div>
 					</div>
 				</div>
 			)

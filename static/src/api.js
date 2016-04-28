@@ -23,6 +23,14 @@ function getBook(isbn, cb){
 	})
 }
 
+function getLibrary(id, cb){
+	request(API+'library/'+id, (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
 function isJson(str) {
     try {
         JSON.parse(str);
@@ -35,5 +43,6 @@ function isJson(str) {
 module.exports = {
 	getCurrentUser: getCurrentUser,
 	getUser: getUser,
-	getBook: getBook
+	getBook: getBook,
+	getLibrary: getLibrary
 }

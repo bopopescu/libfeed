@@ -6,6 +6,7 @@ var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
 var UserPage = require('./pages/userpage.js');
 var BookPage = require('./pages/bookpage.js');
+var LibraryPage = require('./pages/librarypage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
 
 var Router = router.Router;
@@ -20,7 +21,8 @@ class App extends React.Component {
 					<Route path="/" component={HomePage}/>
 					<Route path="/about" title="About" component={AboutPage} />
 					<Route path="/users/:userId" component={UserPage} />
-					<Route path="/books/:bookId" component={BookPage} />
+					<Route path="/books/:bookIsbn" component={BookPage} />
+					<Route path="/libraries/:libraryId" component={LibraryPage} />
 					<Route path="/newsfeed" component={NewsFeed} />
 				</Router>
 			</div>
