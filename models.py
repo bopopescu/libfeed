@@ -11,7 +11,7 @@ class Person(db.Model):
     username = db.Column(db.String(45))
     password = db.Column(db.String(45))
     age = db.Column(db.Integer)
-    img = db.Column(db.String(45))
+    img = db.Column(db.String(256))
     # friends = orm.relationship('Person', secondary="relationship",
     #                          backref="friends")
 
@@ -23,6 +23,7 @@ class Book(db.Model):
     author = db.Column(db.String(45))
     synopsis = db.Column(db.String(3000))
     img = db.Column(db.String(256))
+
 
 class Relationship(db.Model):
     __tablename__ = 'relationship'
@@ -36,6 +37,7 @@ class Review(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(3000))
+    rating = db.Column(db.Float)
     date = db.Column(db.Date)
     person_id = db.Column(db.Integer, ForeignKey('person.id'))
     person = orm.relationship('Person', backref='reviews')

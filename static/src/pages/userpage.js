@@ -22,21 +22,38 @@ class User extends React.Component {
 		console.log(data);
 		if (data) {
 			return (
-				<div className="user-page">
+				<div id="user-page">
 					<div className="container-fluid">
-						<h3>User</h3>
-						<p>Name: {data.name}</p>
-						<div>
-							<h3>Borrowed Books</h3>
-							{data.borrowed_books.map( book => {
-								return (<p>{book.title}</p>)
-							})}
+						<div className="row">
+							<div className="col-xs-6">
+								<h3>{data.name}</h3>
+								<img src={data.img} className="user-img"/>
+							</div>
+							<div className="col-xs-6">
+								<h3>Currently Reading</h3>
+								<ul>
+								{data.borrowed_books.map( book => {
+									return (<li>{book.title}</li>)
+								})}
+								</ul>
+							</div>
 						</div>
-						<div>
-							<h3>Reviews</h3>
-							{data.reviews.map( review => {
-								return (<p>{review.description}</p>)
-							})}
+						<br />
+						<div className="row">
+							<div className="col-xs-12">
+								<h3>Reviews</h3>
+								<ul>
+								{data.reviews.map( review => {
+									return (<div>
+												<hr />
+												<li>
+													<h4>{review.title} <span className="rating">{review.rating} stars</span></h4>
+													<p>"{review.description}"</p>
+												</li>
+											</div>)
+								})}
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>

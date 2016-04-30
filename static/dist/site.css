@@ -1,3 +1,74 @@
-.register {
-    width: 100%;
+/************* GLOBALS *************/
+h3 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: #696969;
 }
+
+h4 {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-transform: uppercase;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: #777;
+}
+
+p {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
+ul {
+    padding: 0;
+    list-style-type: none;
+}
+
+li {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
+#app .container-fluid {
+    max-width: 800px;
+}
+
+/************* NAVBAR *************/
+.navbar-default {
+    background-color: white;
+}
+
+.site-title {
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    text-transform: uppercase;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: .1em;
+    color: #696969;
+}
+
+/************* USER PAGE *************/
+.user-img {
+    max-width: 200px;
+}
+
+.rating {
+    text-transform: uppercase;
+    font-size: 10px;
+    opacity: .5;
+}
+
+/************* BOOK PAGE *************/
+
+/************* LIBRARY PAGE *************/

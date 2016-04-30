@@ -83926,50 +83926,93 @@ var Book = function (_React$Component) {
 			if (data) {
 				return React.createElement(
 					'div',
-					{ className: 'book-page' },
+					{ id: 'book-page' },
 					React.createElement(
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
-							'h3',
-							null,
-							'Book'
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
+									null,
+									data.title
+								),
+								React.createElement(
+									'h4',
+									null,
+									data.author
+								)
+							)
 						),
-						React.createElement(
-							'p',
-							null,
-							'Title: ',
-							data.title
-						),
-						React.createElement(
-							'p',
-							null,
-							'Author: ',
-							data.author
-						),
-						React.createElement(
-							'p',
-							null,
-							data.synopsis
-						),
-						React.createElement('img', { src: data.img }),
 						React.createElement(
 							'div',
-							null,
+							{ className: 'row' },
 							React.createElement(
-								'h3',
-								null,
-								'Reviews'
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement('img', { src: data.img, className: 'book-img' })
 							),
-							data.reviews.map(function (review) {
-								return React.createElement(
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
 									'p',
 									null,
-									review.description,
-									' --- by ',
-									review.person_name
-								);
-							})
+									data.synopsis
+								)
+							)
+						),
+						React.createElement('br', null),
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
+									null,
+									'Reviews'
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.reviews.map(function (review) {
+										return React.createElement(
+											'div',
+											null,
+											React.createElement('hr', null),
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'h4',
+													null,
+													review.person_name,
+													' ',
+													React.createElement(
+														'span',
+														{ className: 'rating' },
+														review.rating,
+														' stars'
+													)
+												),
+												React.createElement(
+													'p',
+													null,
+													'"',
+													review.description,
+													'"'
+												)
+											)
+										);
+									})
+								)
+							)
 						)
 					)
 				);
@@ -84140,52 +84183,91 @@ var User = function (_React$Component) {
 			if (data) {
 				return React.createElement(
 					'div',
-					{ className: 'user-page' },
+					{ id: 'user-page' },
 					React.createElement(
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
-							'h3',
-							null,
-							'User'
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'h3',
+									null,
+									data.name
+								),
+								React.createElement('img', { src: data.img, className: 'user-img' })
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'h3',
+									null,
+									'Currently Reading'
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.borrowed_books.map(function (book) {
+										return React.createElement(
+											'li',
+											null,
+											book.title
+										);
+									})
+								)
+							)
 						),
-						React.createElement(
-							'p',
-							null,
-							'Name: ',
-							data.name
-						),
+						React.createElement('br', null),
 						React.createElement(
 							'div',
-							null,
+							{ className: 'row' },
 							React.createElement(
-								'h3',
-								null,
-								'Borrowed Books'
-							),
-							data.borrowed_books.map(function (book) {
-								return React.createElement(
-									'p',
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
 									null,
-									book.title
-								);
-							})
-						),
-						React.createElement(
-							'div',
-							null,
-							React.createElement(
-								'h3',
-								null,
-								'Reviews'
-							),
-							data.reviews.map(function (review) {
-								return React.createElement(
-									'p',
+									'Reviews'
+								),
+								React.createElement(
+									'ul',
 									null,
-									review.description
-								);
-							})
+									data.reviews.map(function (review) {
+										return React.createElement(
+											'div',
+											null,
+											React.createElement('hr', null),
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'h4',
+													null,
+													review.title,
+													' ',
+													React.createElement(
+														'span',
+														{ className: 'rating' },
+														review.rating,
+														' stars'
+													)
+												),
+												React.createElement(
+													'p',
+													null,
+													'"',
+													review.description,
+													'"'
+												)
+											)
+										);
+									})
+								)
+							)
 						)
 					)
 				);
