@@ -1,4 +1,5 @@
 var React = require('react');
+var Link = require('react-router').Link;
 var api = require('../api.js');
 
 class User extends React.Component {
@@ -33,7 +34,7 @@ class User extends React.Component {
 								<h3>Currently Reading</h3>
 								<ul>
 								{data.borrowed_books.map( book => {
-									return (<li>{book.title}</li>)
+									return (<li><Link to={'/books/'+book.isbn}>{book.title}</Link></li>)
 								})}
 								</ul>
 							</div>
@@ -47,7 +48,7 @@ class User extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<h4>{review.title} <span className="rating">{review.rating} stars</span></h4>
+													<h4><Link to={'/books/'+review.isbn}>{review.title}</Link> <span className="rating">{review.rating} stars</span></h4>
 													<p>"{review.description}"</p>
 												</li>
 											</div>)

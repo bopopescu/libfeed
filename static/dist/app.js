@@ -83647,6 +83647,14 @@ function getLibrary(id, cb) {
 	});
 }
 
+function search(term, cb) {
+	request(API + 'search/' + term, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	});
+}
+
 function isJson(str) {
 	try {
 		JSON.parse(str);
@@ -83660,7 +83668,8 @@ module.exports = {
 	getCurrentUser: getCurrentUser,
 	getUser: getUser,
 	getBook: getBook,
-	getLibrary: getLibrary
+	getLibrary: getLibrary,
+	search: search
 };
 
 },{"request":430}],498:[function(require,module,exports){
@@ -83684,6 +83693,7 @@ var UserPage = require('./pages/userpage.js');
 var BookPage = require('./pages/bookpage.js');
 var LibraryPage = require('./pages/librarypage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
+var SearchResults = require('./pages/searchresults.js');
 
 var Router = router.Router;
 var Route = router.Route;
@@ -83712,6 +83722,7 @@ var App = function (_React$Component) {
 					React.createElement(Route, { path: '/users/:userId', component: UserPage }),
 					React.createElement(Route, { path: '/books/:bookIsbn', component: BookPage }),
 					React.createElement(Route, { path: '/libraries/:libraryId', component: LibraryPage }),
+					React.createElement(Route, { path: '/search/:searchTerm', component: SearchResults }),
 					React.createElement(Route, { path: '/newsfeed', component: NewsFeed })
 				)
 			);
@@ -83723,8 +83734,8 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/librarypage.js":503,"./pages/userpage.js":504,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
-"use strict";
+},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/librarypage.js":503,"./pages/searchresults.js":504,"./pages/userpage.js":505,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
+'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83735,6 +83746,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var SearchBar = require('./partials/searchbar.js');
 
 var Home = function (_React$Component) {
 	_inherits(Home, _React$Component);
@@ -83746,19 +83758,15 @@ var Home = function (_React$Component) {
 	}
 
 	_createClass(Home, [{
-		key: "render",
+		key: 'render',
 		value: function render() {
 			return React.createElement(
-				"div",
-				{ className: "home-page" },
+				'div',
+				{ className: 'home-page' },
 				React.createElement(
-					"div",
-					{ className: "container-fluid" },
-					React.createElement(
-						"p",
-						null,
-						"Home"
-					)
+					'div',
+					{ className: 'container-fluid' },
+					React.createElement(SearchBar, null)
 				)
 			);
 		}
@@ -83769,7 +83777,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"react":419}],500:[function(require,module,exports){
+},{"./partials/searchbar.js":506,"react":419}],500:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83893,6 +83901,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var Link = require('react-router').Link;
 var api = require('../api.js');
 
 var Book = function (_React$Component) {
@@ -83992,7 +84001,11 @@ var Book = function (_React$Component) {
 												React.createElement(
 													'h4',
 													null,
-													review.person_name,
+													React.createElement(
+														Link,
+														{ to: '/users/' + review.person_id },
+														review.person_name
+													),
 													' ',
 													React.createElement(
 														'span',
@@ -84027,7 +84040,7 @@ var Book = function (_React$Component) {
 
 module.exports = Book;
 
-},{"../api.js":497,"react":419}],503:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],503:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84149,7 +84162,142 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+// searchresults.js
+
 var React = require('react');
+var api = require('../api.js');
+var Link = require('react-router').Link;
+
+var SearchResults = function (_React$Component) {
+	_inherits(SearchResults, _React$Component);
+
+	function SearchResults() {
+		_classCallCheck(this, SearchResults);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchResults).call(this));
+
+		_this.state = { data: null };
+		return _this;
+	}
+
+	_createClass(SearchResults, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			this.setSearchData(this.props.params.searchTerm);
+		}
+	}, {
+		key: 'componentWillReceiveProps',
+		value: function componentWillReceiveProps(props) {
+			this.setState({ data: null });
+			this.setSearchData(props.params.searchTerm);
+		}
+	}, {
+		key: 'setSearchData',
+		value: function setSearchData(searchTerm) {
+			var _this2 = this;
+
+			api.search(searchTerm, function (err, data) {
+				if (err) console.error("[SearchPage:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data });
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var data = this.state.data;
+			if (data) {
+				return React.createElement(
+					'div',
+					{ className: 'search-results' },
+					React.createElement(
+						'div',
+						{ className: 'container' },
+						React.createElement(
+							'h3',
+							null,
+							'Search Results for “',
+							this.props.params.searchTerm,
+							'”'
+						),
+						React.createElement('hr', null),
+						React.createElement(
+							'h4',
+							null,
+							'Users'
+						),
+						React.createElement(
+							'div',
+							{ className: 'panel-body list-group' },
+							data.users.slice(0, 20).map(function (user) {
+								return React.createElement(
+									Link,
+									{ to: '/users/' + user.id, className: 'list-group-item' },
+									user.name
+								);
+							})
+						),
+						React.createElement('hr', null),
+						React.createElement(
+							'h4',
+							null,
+							'Books'
+						),
+						React.createElement(
+							'div',
+							{ className: 'panel-body list-group' },
+							data.books.slice(0, 20).map(function (book) {
+								return React.createElement(
+									Link,
+									{ to: '/books/' + book.isbn, className: 'list-group-item' },
+									book.title,
+									', ',
+									book.author
+								);
+							})
+						),
+						React.createElement('hr', null),
+						React.createElement(
+							'h4',
+							null,
+							'Libraries'
+						),
+						React.createElement(
+							'div',
+							{ className: 'panel-body list-group' },
+							data.libraries.slice(0, 20).map(function (library) {
+								return React.createElement(
+									Link,
+									{ to: '/libraries/' + library.id, className: 'list-group-item' },
+									library.name
+								);
+							})
+						),
+						React.createElement('hr', null)
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	}]);
+
+	return SearchResults;
+}(React.Component);
+
+module.exports = SearchResults;
+
+},{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var Link = require('react-router').Link;
 var api = require('../api.js');
 
 var User = function (_React$Component) {
@@ -84215,7 +84363,11 @@ var User = function (_React$Component) {
 										return React.createElement(
 											'li',
 											null,
-											book.title
+											React.createElement(
+												Link,
+												{ to: '/books/' + book.isbn },
+												book.title
+											)
 										);
 									})
 								)
@@ -84247,7 +84399,11 @@ var User = function (_React$Component) {
 												React.createElement(
 													'h4',
 													null,
-													review.title,
+													React.createElement(
+														Link,
+														{ to: '/books/' + review.isbn },
+														review.title
+													),
 													' ',
 													React.createElement(
 														'span',
@@ -84282,4 +84438,77 @@ var User = function (_React$Component) {
 
 module.exports = User;
 
-},{"../api.js":497,"react":419}]},{},[498]);
+},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var Link = require('react-router').Link;
+var api = require('../api.js');
+var searchTerm;
+
+var SearchBar = function (_React$Component) {
+    _inherits(SearchBar, _React$Component);
+
+    function SearchBar() {
+        _classCallCheck(this, SearchBar);
+
+        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this));
+
+        _this.state = { searchTerm: "" };
+        return _this;
+    }
+
+    _createClass(SearchBar, [{
+        key: 'handleChange',
+        value: function handleChange(event) {
+            this.setState({ searchTerm: event.target.value });
+        }
+    }, {
+        key: 'handleKeyDown',
+        value: function handleKeyDown(event) {
+            if (event.keyCode === 13) {
+                document.getElementById('searchButton').click();
+            }
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            return React.createElement(
+                'div',
+                { className: 'row' },
+                React.createElement(
+                    'div',
+                    { className: 'col-xs-3' },
+                    React.createElement(
+                        'form',
+                        { className: 'searchForm' },
+                        React.createElement('input', { type: 'text', placeholder: 'Search', onKeyDown: this.handleKeyDown.bind(this), onChange: this.handleChange.bind(this) })
+                    )
+                ),
+                React.createElement(
+                    'div',
+                    { className: 'col-xs-9' },
+                    React.createElement(
+                        Link,
+                        { id: 'searchButton', to: '/search/' + this.state.searchTerm, className: 'searchButton' },
+                        'Go'
+                    )
+                )
+            );
+        }
+    }]);
+
+    return SearchBar;
+}(React.Component);
+
+module.exports = SearchBar;
+
+},{"../api.js":497,"react":419,"react-router":284}]},{},[498]);

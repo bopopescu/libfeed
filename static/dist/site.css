@@ -40,6 +40,21 @@ li {
     -webkit-font-smoothing: antialiased;
 }
 
+a {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
+a:hover {
+    background-color: #F0F8FF;
+    color: #777;
+    text-decoration: none;
+}
+
 #app .container-fluid {
     max-width: 800px;
 }
@@ -72,3 +87,8 @@ li {
 /************* BOOK PAGE *************/
 
 /************* LIBRARY PAGE *************/
+
+/************* SEARCH *************/
+.search {
+    display: inline-block;
+}

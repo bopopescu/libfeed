@@ -2,6 +2,7 @@ import logging, mapper, os
 from flask import Flask, render_template, jsonify
 from flask.ext.stormpath import StormpathError, StormpathManager, User, login_required, login_user, logout_user, user
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import or_
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -50,6 +51,13 @@ def get_book(isbn):
 @login_required
 def get_library(id):
     return jsonify({'library': mapper.library_to_dict(Library.query.filter_by(id=id).first())})
+
+@app.route('/api/search/<search_term>', methods=["GET"])
+def search(search_term):
+    users = list(map(mapper.user_to_dict, Person.query.filter(Person.name==search_term).all()))
+    books = list(map(mapper.book_to_dict, Book.query.filter(or_(Book.title==search_term, Book.author==search_term.lower())).all()))
+    libraries = list(map(mapper.library_to_dict, Library.query.filter(Library.name==search_term).all()))
+    return jsonify({'users': users, 'books': books, 'libraries': libraries})
 
 @app.route('/', defaults={'path': ''})
 

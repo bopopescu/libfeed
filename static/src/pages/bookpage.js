@@ -1,4 +1,5 @@
 var React = require('react');
+var Link = require('react-router').Link;
 var api = require('../api.js');
 
 class Book extends React.Component {
@@ -47,7 +48,7 @@ class Book extends React.Component {
 										return (<div>
 													<hr />
 													<li>
-														<h4>{review.person_name} <span className="rating">{review.rating} stars</span></h4>
+														<h4><Link to={'/users/'+review.person_id}>{review.person_name}</Link> <span className="rating">{review.rating} stars</span></h4>
 														<p>"{review.description}"</p>
 													</li>
 												</div>)
