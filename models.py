@@ -51,6 +51,7 @@ class LibraryCopy(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(45))
     date_checked_out = db.Column(db.Date)
+    due_date = db.Column(db.Date)
     book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='library_copies')
     person_id = db.Column(db.Integer, ForeignKey('person.id'))
@@ -68,3 +69,4 @@ class Library(db.Model):
     city = db.Column(db.String(45))
     state = db.Column(db.String(45))
     zip = db.Column(db.Integer)
+    logo = db.Column(db.String(256))

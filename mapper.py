@@ -61,6 +61,7 @@ def library_copy_to_dict(library_copy):
         'id': library_copy.id,
         'status': library_copy.status,
         'date_checked_out': str(library_copy.date_checked_out),
+        'due_date': str(library_copy.due_date),
         'book': slim_book_to_dict(library_copy.book),
         'person': slim_user_to_dict(library_copy.person),
         'library': slim_library_to_dict(library_copy.library)
@@ -72,7 +73,8 @@ def slim_library_copy_to_dict(library_copy):
         'status': library_copy.status,
         'title': library_copy.book.title,
         'isbn': library_copy.book.isbn,
-        'date_checked_out': str(library_copy.date_checked_out)
+        'date_checked_out': str(library_copy.date_checked_out),
+        'due_date': str(library_copy.due_date)
     }
 
 def library_to_dict(library):
@@ -83,6 +85,7 @@ def library_to_dict(library):
         'city': library.city,
         'state': library.state,
         'zip': library.zip,
+        'logo': library.logo,
         'library_copies': list(map(slim_library_copy_to_dict, library.library_copies))
     }
 

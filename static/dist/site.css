@@ -87,6 +87,10 @@ a:hover {
 /************* BOOK PAGE *************/
 
 /************* LIBRARY PAGE *************/
+.lib-logo {
+    padding-left: 150px;
+    padding-bottom: 50px;
+}
 
 /************* SEARCH *************/
 .search {

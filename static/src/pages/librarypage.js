@@ -1,4 +1,5 @@
 var React = require('react');
+var Link = require('react-router').Link;
 var api = require('../api.js');
 
 class Library extends React.Component {
@@ -24,16 +25,23 @@ class Library extends React.Component {
 			return (
 				<div className="library-page">
 					<div className="container-fluid">
-						<h3>Library</h3>
-						<p>Name: {data.name}</p>
-						<p>Address: {data.address}</p>
-						<p>City: {data.city}</p>
-						<p>State: {data.state}</p>
-						<div>
-							<h3>Books</h3>
-							{data.library_copies.map( book => {
-								return (<p>{book.id} {book.title} --- {book.status}</p>)
-							})}
+						<div className="row">
+							<div className="col-xs-12 lib-logo">
+								<img src={data.logo} />
+							</div>
+						</div>
+						<div className="row">
+							<div className="row col-xs-6">
+								<h3>{data.name}</h3>
+								<p>{data.address}</p>
+								<p>{data.city}, {data.state} {data.zip}</p>
+							</div>
+							<div className="col-xs-6">
+								<h3>Books</h3>
+								{data.library_copies.map( book => {
+									return (<p><Link to={'/books/'+book.isbn}>{book.title}</Link> --- {book.status}</p>)
+								})}
+							</div>
 						</div>
 					</div>
 				</div>
