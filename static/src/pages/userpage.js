@@ -55,6 +55,18 @@ class User extends React.Component {
 								})}
 								</ul>
 							</div>
+							<div className="col-xs-12">
+								<h3>Friends</h3>
+								<ul>
+								{data.friends.map( friend => {
+									return (<div>
+												<li>
+													<p><Link to={'/users/'+friend.id}>{friend.name}</Link></p>
+												</li>
+											</div>)
+								})}
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>

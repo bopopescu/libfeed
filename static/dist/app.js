@@ -84433,6 +84433,38 @@ var User = function (_React$Component) {
 										);
 									})
 								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
+									null,
+									'Friends'
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.friends.map(function (friend) {
+										return React.createElement(
+											'div',
+											null,
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'p',
+													null,
+													React.createElement(
+														Link,
+														{ to: '/users/' + friend.id },
+														friend.name
+													)
+												)
+											)
+										);
+									})
+								)
 							)
 						)
 					)
