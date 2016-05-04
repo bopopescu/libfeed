@@ -4,7 +4,7 @@ def user_to_dict(user):
         'name': user.name,
         'age': user.age,
         'img': user.img,
-        # 'friends': list(map(slim_user_to_dict, user.friends)),
+        'friends': list(map(slim_user_to_dict, user.friends)),
         'borrowed_books': list(map(slim_library_copy_to_dict, user.borrowed_books)),
         'reviews': list(map(slim_review_to_dict, user.reviews))
     }

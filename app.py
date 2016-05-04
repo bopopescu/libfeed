@@ -34,8 +34,14 @@ def page_not_found(e):
 @login_required
 def current_user():
     # return jsonify({'user': user.given_name})
-    user_test =  Person(id=1, name="Pat")
-    return jsonify({'user': mapper.user_to_dict(user_test)})
+    user_test =  Person.query.filter_by(id=2).first()
+    borrowed_books = []
+    reviews = []
+    for f in user_test.friends:
+        friend = Person.query.filter_by(id=f.id).first()
+        borrowed_books.append(list(map(mapper.library_copy_to_dict, friend.borrowed_books)))
+        reviews.append(list(map(mapper.review_to_dict, friend.reviews)))
+    return jsonify({'borrowed_books': borrowed_books, 'reviews': reviews})
 
 @app.route('/api/user/<id>', methods=["GET"])
 @login_required

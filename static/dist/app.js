@@ -83809,15 +83809,15 @@ var NewsFeed = function (_React$Component) {
 			var _this2 = this;
 
 			api.getCurrentUser(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.user });
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data });
 			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
-			console.log(data);
 			if (data) {
+				console.log(data);
 				return React.createElement(
 					'div',
 					{ className: 'newsfeed' },
@@ -83827,8 +83827,29 @@ var NewsFeed = function (_React$Component) {
 						React.createElement(
 							'p',
 							null,
-							'News feed: ',
-							data.name
+							'News Feed'
+						),
+						React.createElement(
+							'ul',
+							null,
+							data.borrowed_books.map(function (book) {
+								return React.createElement(
+									'li',
+									null,
+									book.title
+								);
+							})
+						),
+						React.createElement(
+							'ul',
+							null,
+							data.reviews.map(function (review) {
+								return React.createElement(
+									'li',
+									null,
+									review.id
+								);
+							})
 						)
 					)
 				);

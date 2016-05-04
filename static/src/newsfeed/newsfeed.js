@@ -11,18 +11,28 @@ class NewsFeed extends React.Component {
 	componentDidMount() {
 		api.getCurrentUser((err, data) => {
 			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
-			else this.setState({data: data.user});
+			else this.setState({data: data});
 		});
 	}
 
 	render() {
 		var data = this.state.data;
-		console.log(data);
 		if (data) {
+			console.log(data);
 			return (
 				<div className="newsfeed">
 					<div className="container-fluid">
-						<p>News feed: {data.name}</p>
+						<p>News Feed</p>
+						<ul>
+						{data.borrowed_books.map( book => {
+							return (<li>{book.title}</li>)
+						})}
+						</ul>
+						<ul>
+						{data.reviews.map( review => {
+							return (<li>{review.id}</li>)
+						})}
+						</ul>
 					</div>
 				</div>
 			)
