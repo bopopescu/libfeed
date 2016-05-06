@@ -83790,6 +83790,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 
 var React = require('react');
 var api = require('../api.js');
+var Link = require('react-router').Link;
 
 var NewsFeed = function (_React$Component) {
 	_inherits(NewsFeed, _React$Component);
@@ -83817,7 +83818,6 @@ var NewsFeed = function (_React$Component) {
 		value: function render() {
 			var data = this.state.data;
 			if (data) {
-				console.log(data);
 				return React.createElement(
 					'div',
 					{ className: 'newsfeed' },
@@ -83825,31 +83825,67 @@ var NewsFeed = function (_React$Component) {
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
-							'p',
+							'h3',
 							null,
 							'News Feed'
 						),
 						React.createElement(
-							'ul',
-							null,
-							data.borrowed_books.map(function (book) {
-								return React.createElement(
-									'li',
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'ul',
 									null,
-									book.title
-								);
-							})
-						),
-						React.createElement(
-							'ul',
-							null,
-							data.reviews.map(function (review) {
-								return React.createElement(
-									'li',
+									data.borrowed_books.map(function (book) {
+										return React.createElement(
+											'li',
+											null,
+											React.createElement(
+												Link,
+												{ to: '/users/' + book.person.id },
+												book.person.name
+											),
+											' checked out ',
+											React.createElement(
+												Link,
+												{ to: '/books/' + book.book.isbn },
+												book.book.title
+											),
+											' on ',
+											book.date_checked_out
+										);
+									})
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'ul',
 									null,
-									review.id
-								);
-							})
+									data.reviews.map(function (review) {
+										return React.createElement(
+											'li',
+											null,
+											React.createElement(
+												Link,
+												{ to: '/users/' + review.person.id },
+												review.person.name
+											),
+											' wrote a review for ',
+											React.createElement(
+												Link,
+												{ to: '/books/' + review.book.isbn },
+												review.book.title
+											),
+											' on ',
+											review.date
+										);
+									})
+								)
+							)
 						)
 					)
 				);
@@ -83864,7 +83900,7 @@ var NewsFeed = function (_React$Component) {
 
 module.exports = NewsFeed;
 
-},{"../api.js":497,"react":419}],501:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],501:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84145,28 +84181,6 @@ var Library = function (_React$Component) {
 									' ',
 									data.zip
 								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'col-xs-6' },
-								React.createElement(
-									'h3',
-									null,
-									'Books'
-								),
-								data.library_copies.map(function (book) {
-									return React.createElement(
-										'p',
-										null,
-										React.createElement(
-											Link,
-											{ to: '/books/' + book.isbn },
-											book.title
-										),
-										' --- ',
-										book.status
-									);
-								})
 							)
 						)
 					)
@@ -84461,12 +84475,12 @@ var User = function (_React$Component) {
 								React.createElement(
 									'h3',
 									null,
-									'Friends'
+									'Followers'
 								),
 								React.createElement(
 									'ul',
 									null,
-									data.friends.map(function (friend) {
+									data.followers.map(function (follower) {
 										return React.createElement(
 											'div',
 											null,
@@ -84478,8 +84492,8 @@ var User = function (_React$Component) {
 													null,
 													React.createElement(
 														Link,
-														{ to: '/users/' + friend.id },
-														friend.name
+														{ to: '/users/' + follower.id },
+														follower.name
 													)
 												)
 											)

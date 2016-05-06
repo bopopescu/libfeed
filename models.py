@@ -12,11 +12,14 @@ class Person(db.Model):
     password = db.Column(db.String(45))
     age = db.Column(db.Integer)
     img = db.Column(db.String(256))
-    friends = orm.relationship('Person',
+    followers = orm.relationship('Person',
                                secondary="friendship",
-                               primaryjoin=("Person.id==friendship.c.person1_id"),
-                               secondaryjoin=("Person.id==friendship.c.person2_id"))
-
+                               primaryjoin=("Person.id==friendship.c.followee_id"),
+                               secondaryjoin=("Person.id==friendship.c.follower_id"))
+    followees = orm.relationship('Person',
+                               secondary="friendship",
+                               primaryjoin=("Person.id==friendship.c.follower_id"),
+                               secondaryjoin=("Person.id==friendship.c.followee_id"))
 class Book(db.Model):
     __tablename__ = 'book'
 
@@ -30,8 +33,8 @@ class Book(db.Model):
 class Friendship(db.Model):
     __tablename__ = 'friendship'
 
-    person1_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
-    person2_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
+    followee_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
+    follower_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
     date = db.Column(db.Date)
 
 class Review(db.Model):

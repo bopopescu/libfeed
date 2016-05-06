@@ -1,5 +1,6 @@
 var React = require('react');
 var api = require('../api.js');
+var Link = require('react-router').Link;
 
 class NewsFeed extends React.Component {
 
@@ -18,21 +19,26 @@ class NewsFeed extends React.Component {
 	render() {
 		var data = this.state.data;
 		if (data) {
-			console.log(data);
 			return (
 				<div className="newsfeed">
 					<div className="container-fluid">
-						<p>News Feed</p>
-						<ul>
-						{data.borrowed_books.map( book => {
-							return (<li>{book.title}</li>)
-						})}
-						</ul>
-						<ul>
-						{data.reviews.map( review => {
-							return (<li>{review.id}</li>)
-						})}
-						</ul>
+						<h3>News Feed</h3>
+						<div className="row">
+							<div className="col-xs-6">
+								<ul>
+								{data.borrowed_books.map( book => {
+									return (<li><Link to={'/users/'+book.person.id}>{book.person.name}</Link> checked out <Link to={'/books/'+book.book.isbn}>{book.book.title}</Link> on {book.date_checked_out}</li>)
+								})}
+								</ul>
+							</div>
+							<div className="col-xs-6">
+								<ul>
+								{data.reviews.map( review => {
+									return (<li><Link to={'/users/'+review.person.id}>{review.person.name}</Link> wrote a review for <Link to={'/books/'+review.book.isbn}>{review.book.title}</Link> on {review.date}</li>)
+								})}
+								</ul>
+							</div>
+						</div>
 					</div>
 				</div>
 			)

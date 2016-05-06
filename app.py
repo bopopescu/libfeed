@@ -1,4 +1,5 @@
 import logging, mapper, os
+from datetime import datetime
 from flask import Flask, render_template, jsonify
 from flask.ext.stormpath import StormpathError, StormpathManager, User, login_required, login_user, logout_user, user
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -34,16 +35,22 @@ def page_not_found(e):
 @login_required
 def current_user():
     # return jsonify({'user': user.given_name})
-    user_test =  Person.query.filter_by(id=1).first()
+    user_test =  Person.query.filter_by(id=2).first()
     borrowed_books = []
     reviews = []
     logger.debug(user_test.name)
-    logger.debug(user_test.friends)
-    for f in user_test.friends:
-        friend = Person.query.filter_by(id=f.id).first()
-        logger.debug(friend.name)
-        borrowed_books.append(list(map(mapper.library_copy_to_dict, f.borrowed_books)))
-        reviews.append(list(map(mapper.review_to_dict, f.reviews)))
+    logger.debug(user_test.followees)
+    for f in user_test.followees:
+        followee = Person.query.filter_by(id=f.id).first()
+        logger.debug(followee.name)
+        if followee.borrowed_books:
+            cur_borrowed_books = list(map(mapper.library_copy_to_dict, followee.borrowed_books))
+            borrowed_books += filter(lambda k: (datetime.now()-datetime.strptime(k['date_checked_out'], "%Y-%m-%d")).days < 365, cur_borrowed_books)
+        if followee.reviews:
+            cur_reviews = list(map(mapper.review_to_dict, followee.reviews))
+            reviews += filter(lambda k: (datetime.now()-datetime.strptime(k['date'], "%Y-%m-%d")).days < 365, cur_reviews)
+    borrowed_books = sorted(borrowed_books, key=lambda k: datetime.strptime(k['date_checked_out'], "%Y-%m-%d"))
+    reviews = sorted(reviews, key=lambda k: datetime.strptime(k['date'], "%Y-%m-%d"))
     return jsonify({'borrowed_books': borrowed_books, 'reviews': reviews})
 
 @app.route('/api/user/<id>', methods=["GET"])

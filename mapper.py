@@ -4,7 +4,8 @@ def user_to_dict(user):
         'name': user.name,
         'age': user.age,
         'img': user.img,
-        'friends': list(map(slim_user_to_dict, user.friends)),
+        'followees': list(map(slim_user_to_dict, user.followees)),
+        'followers': list(map(slim_user_to_dict, user.followers)),
         'borrowed_books': list(map(slim_library_copy_to_dict, user.borrowed_books)),
         'reviews': list(map(slim_review_to_dict, user.reviews))
     }
@@ -49,8 +50,6 @@ def slim_review_to_dict(review):
         'id': review.id,
         'description': review.description,
         'rating': review.rating,
-        'person_id': review.person.id,
-        'person_name': review.person.name,
         'title': review.book.title,
         'isbn': review.book.isbn,
         'date': str(review.date)

@@ -56,12 +56,12 @@ class User extends React.Component {
 								</ul>
 							</div>
 							<div className="col-xs-12">
-								<h3>Friends</h3>
+								<h3>Followers</h3>
 								<ul>
-								{data.friends.map( friend => {
+								{data.followers.map( follower => {
 									return (<div>
 												<li>
-													<p><Link to={'/users/'+friend.id}>{friend.name}</Link></p>
+													<p><Link to={'/users/'+follower.id}>{follower.name}</Link></p>
 												</li>
 											</div>)
 								})}

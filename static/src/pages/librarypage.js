@@ -36,12 +36,6 @@ class Library extends React.Component {
 								<p>{data.address}</p>
 								<p>{data.city}, {data.state} {data.zip}</p>
 							</div>
-							<div className="col-xs-6">
-								<h3>Books</h3>
-								{data.library_copies.map( book => {
-									return (<p><Link to={'/books/'+book.isbn}>{book.title}</Link> --- {book.status}</p>)
-								})}
-							</div>
 						</div>
 					</div>
 				</div>
