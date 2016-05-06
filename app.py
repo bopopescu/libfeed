@@ -34,15 +34,11 @@ def page_not_found(e):
 @app.route('/api/current_user', methods=["GET"])
 @login_required
 def current_user():
-    # return jsonify({'user': user.given_name})
-    user_test =  Person.query.filter_by(id=2).first()
+    cur_user =  Person.query.filter_by(name=(user.given_name + " " + user.surname)).first()
     borrowed_books = []
     reviews = []
-    logger.debug(user_test.name)
-    logger.debug(user_test.followees)
-    for f in user_test.followees:
+    for f in cur_user.followees:
         followee = Person.query.filter_by(id=f.id).first()
-        logger.debug(followee.name)
         if followee.borrowed_books:
             cur_borrowed_books = list(map(mapper.library_copy_to_dict, followee.borrowed_books))
             borrowed_books += filter(lambda k: (datetime.now()-datetime.strptime(k['date_checked_out'], "%Y-%m-%d")).days < 365, cur_borrowed_books)
@@ -79,7 +75,12 @@ def search(search_term):
 
 @app.route('/<path:path>')
 def index(path):
-    return render_template('index.html', user=user)
+    logger.debug(user)
+    if hasattr(user, 'given_name'):
+        cur_user =  Person.query.filter_by(name=(user.given_name + " " + user.surname)).first()
+    else:
+        cur_user=''
+    return render_template('index.html', user=cur_user)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')

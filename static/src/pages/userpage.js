@@ -61,6 +61,7 @@ class User extends React.Component {
 								{data.followers.map( follower => {
 									return (<div>
 												<li>
+													<img src={follower.img} className="thumbnail"/>
 													<p><Link to={'/users/'+follower.id}>{follower.name}</Link></p>
 												</li>
 											</div>)

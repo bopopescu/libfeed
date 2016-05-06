@@ -83842,6 +83842,7 @@ var NewsFeed = function (_React$Component) {
 										return React.createElement(
 											'li',
 											null,
+											React.createElement('img', { src: book.person.img, className: 'thumbnail' }),
 											React.createElement(
 												Link,
 												{ to: '/users/' + book.person.id },
@@ -83869,6 +83870,7 @@ var NewsFeed = function (_React$Component) {
 										return React.createElement(
 											'li',
 											null,
+											React.createElement('img', { src: review.person.img, className: 'thumbnail' }),
 											React.createElement(
 												Link,
 												{ to: '/users/' + review.person.id },
@@ -84487,6 +84489,7 @@ var User = function (_React$Component) {
 											React.createElement(
 												'li',
 												null,
+												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
 												React.createElement(
 													'p',
 													null,

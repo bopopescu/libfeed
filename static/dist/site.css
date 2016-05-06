@@ -84,6 +84,17 @@ a:hover {
     opacity: .5;
 }
 
+.thumbnail {
+    max-width: 50px;
+    margin-bottom: 0px;
+    padding: 0px;
+    border-radius: 50px;
+}
+
+.test {
+     display:inline-block;
+}
+
 /************* BOOK PAGE *************/
 
 /************* LIBRARY PAGE *************/

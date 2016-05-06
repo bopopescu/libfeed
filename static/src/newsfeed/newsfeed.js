@@ -27,14 +27,14 @@ class NewsFeed extends React.Component {
 							<div className="col-xs-6">
 								<ul>
 								{data.borrowed_books.map( book => {
-									return (<li><Link to={'/users/'+book.person.id}>{book.person.name}</Link> checked out <Link to={'/books/'+book.book.isbn}>{book.book.title}</Link> on {book.date_checked_out}</li>)
+									return (<li><img src={book.person.img} className='thumbnail' /><Link to={'/users/'+book.person.id}>{book.person.name}</Link> checked out <Link to={'/books/'+book.book.isbn}>{book.book.title}</Link> on {book.date_checked_out}</li>)
 								})}
 								</ul>
 							</div>
 							<div className="col-xs-6">
 								<ul>
 								{data.reviews.map( review => {
-									return (<li><Link to={'/users/'+review.person.id}>{review.person.name}</Link> wrote a review for <Link to={'/books/'+review.book.isbn}>{review.book.title}</Link> on {review.date}</li>)
+									return (<li><img src={review.person.img} className='thumbnail' /><Link to={'/users/'+review.person.id}>{review.person.name}</Link> wrote a review for <Link to={'/books/'+review.book.isbn}>{review.book.title}</Link> on {review.date}</li>)
 								})}
 								</ul>
 							</div>
