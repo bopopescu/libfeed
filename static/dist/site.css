@@ -1,20 +1,41 @@
 /************* GLOBALS *************/
 h3 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
     text-transform: uppercase;
-    font-size: 16px;
-    font-weight: 500;
-    letter-spacing: .1em;
-    color: #696969;
 }
 
 h4 {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    text-transform: uppercase;
-    font-size: 14px;
-    font-weight: 500;
-    letter-spacing: .1em;
+    font-family: 'Gotham SSm',sans-serif;
     color: #777;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
+h5 {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 20px;
+    font-weight: 300;
+    line-height: 1.9em;
+    letter-spacing: .1em;
+    -webkit-font-smoothing: antialiased;
+}
+
+h6 {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+    text-transform: uppercase;
 }
 
 p {
@@ -50,9 +71,8 @@ a {
 }
 
 a:hover {
-    background-color: #F0F8FF;
-    color: #777;
     text-decoration: none;
+    color: #1eb6a7;
 }
 
 #app .container-fluid {
@@ -62,20 +82,47 @@ a:hover {
 /************* NAVBAR *************/
 .navbar-default {
     background-color: white;
+    border-color: white;
+}
+
+.navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
+    margin-left: 10px;
+    margin-top: 20px;
+}
+
+.navbar-default .navbar-nav>li>a {
+    margin-top: 20px;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    font-size: 12px;
+}
+
+.navbar-default .navbar-nav>li>a:hover {
+    color: #1eb6a7;
 }
 
 .site-title {
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    text-transform: uppercase;
+    letter-spacing: .2em;
     font-size: 16px;
-    font-weight: 500;
-    letter-spacing: .1em;
-    color: #696969;
 }
 
-/************* USER PAGE *************/
+.logo {
+    max-width: 70px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    float: left;
+
+}
+
+/************* STUDENT PAGE *************/
 .student-img {
     max-width: 200px;
+    border-radius: 100px;
+}
+
+.student-page-name {
+    padding-left: 40px;
+    padding-bottom: 5px;
 }
 
 .rating {
@@ -85,7 +132,7 @@ a:hover {
 }
 
 .thumbnail {
-    max-width: 50px;
+    max-width: 30px;
     margin-bottom: 0px;
     padding: 0px;
     margin-right: 10px;
@@ -97,16 +144,49 @@ a:hover {
     padding-bottom: 25px;
 }
 
-.news-item {
-    padding-bottom: 10px;
+#student-page a:hover {
+    opacity: .5;
 }
 
-.list {
+/************* BOOK PAGE *************/
+.book-title {
+    font-style: italic;
+    color: #1eb6a7;
+}
+
+.student-name {
+    color: #1eb6a7;
+}
+
+.news-list-item a:hover {
+    opacity: .5;
+}
+
+.news-list-item {
+    height: 50px;
+}
+
+.news-text {
     height: 75px;
 }
+
+
 /************* BOOK PAGE *************/
 
 /************* SEARCH *************/
-.search {
-    display: inline-block;
+
+.searchButton {
+    margin-top: 5px;
+    text-transform: uppercase;
+}
+
+button, input, select, textarea {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    padding-left: 5px;
+    width: 300px;
+    -webkit-font-smoothing: antialiased;
 }

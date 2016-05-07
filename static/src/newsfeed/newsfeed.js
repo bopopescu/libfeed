@@ -22,25 +22,22 @@ class NewsFeed extends React.Component {
 			return (
 				<div className="newsfeed">
 					<div className="container-fluid">
-						<h3 className="header">News Feed</h3>
 						<div className="row">
 							<div className="col-xs-6">
 								<ul>
 								{data.current_borrows.map( book => {
-									return (<div className="list"><li><img src={book.student.img} className='thumbnail' />
-											<Link to={'/students/'+book.student.id}>{book.student.first_name} {book.student.last_name}</Link> checked out
-											<Link to={'/books/'+book.book.isbn}>{book.book.title}</Link> on {book.date_checked_out}</li>
-											<br /></div>)
+									return (<div className="news-list-item"><li><img src={book.student.img} className='thumbnail' />
+											<Link to={'/students/'+book.student.id} className="student-name">{book.student.first_name} {book.student.last_name}</Link> checked out
+											<Link to={'/books/'+book.book.isbn} className="book-title"> {book.book.title}</Link>.</li><br /></div>)
 								})}
 								</ul>
 							</div>
 							<div className="col-xs-6">
 								<ul>
 								{data.reviews.map( review => {
-									return (<div className="list"><li><img src={review.student.img} className='thumbnail' />
-											<Link to={'/students/'+review.student.id}>{review.student.first_name} {review.student.last_name}</Link> wrote a review for
-											<Link to={'/books/'+review.book.isbn}>{review.book.title}</Link> on {review.date}</li>
-											<br /></div>)
+									return (<div className="news-list-item"><li><img src={review.student.img} className='thumbnail' />
+											<Link to={'/students/'+review.student.id} className="student-name">{review.student.first_name} {review.student.last_name}</Link> wrote a review for
+											<Link to={'/books/'+review.book.isbn} className="book-title"> {review.book.title}</Link>.</li><br /></div>)
 								})}
 								</ul>
 							</div>

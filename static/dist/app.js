@@ -83755,7 +83755,16 @@ var Home = function (_React$Component) {
 				React.createElement(
 					'div',
 					{ className: 'container-fluid' },
-					React.createElement(SearchBar, null)
+					React.createElement(
+						'div',
+						{ className: 'search-area' },
+						React.createElement(
+							'h4',
+							null,
+							'Search for books, authors, or students.'
+						),
+						React.createElement(SearchBar, null)
+					)
 				)
 			);
 		}
@@ -83814,11 +83823,6 @@ var NewsFeed = function (_React$Component) {
 						'div',
 						{ className: 'container-fluid' },
 						React.createElement(
-							'h3',
-							{ className: 'header' },
-							'News Feed'
-						),
-						React.createElement(
 							'div',
 							{ className: 'row' },
 							React.createElement(
@@ -83830,14 +83834,14 @@ var NewsFeed = function (_React$Component) {
 									data.current_borrows.map(function (book) {
 										return React.createElement(
 											'div',
-											{ className: 'list' },
+											{ className: 'news-list-item' },
 											React.createElement(
 												'li',
 												null,
 												React.createElement('img', { src: book.student.img, className: 'thumbnail' }),
 												React.createElement(
 													Link,
-													{ to: '/students/' + book.student.id },
+													{ to: '/students/' + book.student.id, className: 'student-name' },
 													book.student.first_name,
 													' ',
 													book.student.last_name
@@ -83845,11 +83849,11 @@ var NewsFeed = function (_React$Component) {
 												' checked out',
 												React.createElement(
 													Link,
-													{ to: '/books/' + book.book.isbn },
+													{ to: '/books/' + book.book.isbn, className: 'book-title' },
+													' ',
 													book.book.title
 												),
-												' on ',
-												book.date_checked_out
+												'.'
 											),
 											React.createElement('br', null)
 										);
@@ -83865,14 +83869,14 @@ var NewsFeed = function (_React$Component) {
 									data.reviews.map(function (review) {
 										return React.createElement(
 											'div',
-											{ className: 'list' },
+											{ className: 'news-list-item' },
 											React.createElement(
 												'li',
 												null,
 												React.createElement('img', { src: review.student.img, className: 'thumbnail' }),
 												React.createElement(
 													Link,
-													{ to: '/students/' + review.student.id },
+													{ to: '/students/' + review.student.id, className: 'student-name' },
 													review.student.first_name,
 													' ',
 													review.student.last_name
@@ -83880,11 +83884,11 @@ var NewsFeed = function (_React$Component) {
 												' wrote a review for',
 												React.createElement(
 													Link,
-													{ to: '/books/' + review.book.isbn },
+													{ to: '/books/' + review.book.isbn, className: 'book-title' },
+													' ',
 													review.book.title
 												),
-												' on ',
-												review.date
+												'.'
 											),
 											React.createElement('br', null)
 										);
@@ -83937,9 +83941,18 @@ var About = function (_React$Component) {
 					"div",
 					{ className: "container-fluid" },
 					React.createElement(
-						"p",
+						"h5",
 						null,
-						"About"
+						"About LibFeed"
+					),
+					React.createElement(
+						"div",
+						{ "class": "about-description" },
+						React.createElement(
+							"p",
+							null,
+							"LibFeed helps students at Ann Richards to find books to read. Students can browse what books are available in their library, see what books their friends have read, and read reviews by other students at their school."
+						)
 					)
 				)
 			);
@@ -84261,7 +84274,6 @@ var Student = function (_React$Component) {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
-			console.log(data);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84276,8 +84288,8 @@ var Student = function (_React$Component) {
 								'div',
 								{ className: 'col-xs-6' },
 								React.createElement(
-									'h3',
-									null,
+									'h4',
+									{ className: 'student-page-name' },
 									data.first_name,
 									' ',
 									data.last_name
@@ -84288,7 +84300,7 @@ var Student = function (_React$Component) {
 								'div',
 								{ className: 'col-xs-6' },
 								React.createElement(
-									'h3',
+									'h6',
 									null,
 									'Currently Reading'
 								),
@@ -84298,17 +84310,20 @@ var Student = function (_React$Component) {
 									data.current_borrows.map(function (book) {
 										return React.createElement(
 											'li',
-											null,
+											{ className: 'current-read' },
 											React.createElement(
 												Link,
-												{ to: '/books/' + book.isbn },
+												{ to: '/books/' + book.isbn, className: 'book-title' },
 												book.title
-											)
+											),
+											' by ',
+											book.author
 										);
 									})
 								)
 							)
 						),
+						React.createElement('br', null),
 						React.createElement('br', null),
 						React.createElement(
 							'div',
@@ -84337,12 +84352,15 @@ var Student = function (_React$Component) {
 													null,
 													React.createElement(
 														Link,
-														{ to: '/books/' + review.isbn },
+														{ to: '/books/' + review.isbn, className: 'book-title' },
 														review.title
 													),
 													React.createElement(
 														'span',
 														{ className: 'rating' },
+														',    ',
+														review.author,
+														'    ',
 														review.rating,
 														' stars'
 													)
@@ -84456,7 +84474,7 @@ var SearchBar = function (_React$Component) {
                 { className: 'row' },
                 React.createElement(
                     'div',
-                    { className: 'col-xs-3' },
+                    { className: 'col-xs-4' },
                     React.createElement(
                         'form',
                         { className: 'searchForm' },
@@ -84465,10 +84483,10 @@ var SearchBar = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: 'col-xs-9' },
+                    { className: 'col-xs-8 searchButton' },
                     React.createElement(
                         Link,
-                        { id: 'searchButton', to: '/search/' + this.state.searchTerm, className: 'searchButton' },
+                        { to: '/search/' + this.state.searchTerm, className: 'searchButton' },
                         'Go'
                     )
                 )

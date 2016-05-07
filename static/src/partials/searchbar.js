@@ -22,13 +22,13 @@ class SearchBar extends React.Component {
 	render() {
 		return (
             <div className="row">
-            <div className="col-xs-3">
+            <div className="col-xs-4">
     			<form className="searchForm">
     				<input type="text" placeholder="Search" onKeyDown={this.handleKeyDown.bind(this)} onChange={this.handleChange.bind(this)} />
     			</form>
             </div>
-            <div className="col-xs-9">
-                <Link id="searchButton" to={'/search/'+this.state.searchTerm} className="searchButton">Go</Link>
+            <div className="col-xs-8 searchButton">
+                <Link to={'/search/'+this.state.searchTerm} className="searchButton">Go</Link>
             </div>
             </div>
 		)

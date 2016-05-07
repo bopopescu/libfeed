@@ -53,6 +53,7 @@ def slim_review_to_dict(review):
         'description': review.description,
         'rating': review.rating,
         'title': review.book.title,
+        'author': review.book.author,
         'isbn': review.book.isbn,
         'date': str(review.date)
     }
@@ -72,6 +73,7 @@ def slim_copy_to_dict(copy):
         'id': copy.id,
         'status': copy.status,
         'title': copy.book.title,
+        'author': copy.book.author,
         'isbn': copy.book.isbn,
         'date_checked_out': str(copy.date_checked_out),
         'due_date': str(copy.due_date)

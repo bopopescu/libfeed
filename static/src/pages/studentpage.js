@@ -26,18 +26,19 @@ class Student extends React.Component {
 					<div className="container-fluid">
 						<div className="row">
 							<div className="col-xs-6">
-								<h3>{data.first_name} {data.last_name}</h3>
+								<h4 className="student-page-name">{data.first_name} {data.last_name}</h4>
 								<img src={data.img} className="student-img"/>
 							</div>
 							<div className="col-xs-6">
-								<h3>Currently Reading</h3>
+								<h6>Currently Reading</h6>
 								<ul>
 								{data.current_borrows.map( book => {
-									return (<li><Link to={'/books/'+book.isbn}>{book.title}</Link></li>)
+									return (<li className="current-read"><Link to={'/books/'+book.isbn} className="book-title">{book.title}</Link> by {book.author}</li>)
 								})}
 								</ul>
 							</div>
 						</div>
+						<br />
 						<br />
 						<div className="row">
 							<div className="col-xs-12">
@@ -47,7 +48,7 @@ class Student extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<h4><Link to={'/books/'+review.isbn}>{review.title}</Link><span className="rating">{review.rating} stars</span></h4>
+													<h4><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">,&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></h4>
 													<p>"{review.description}"</p>
 												</li>
 											</div>)
