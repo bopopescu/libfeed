@@ -2,7 +2,7 @@ var React = require('react');
 var Link = require('react-router').Link;
 var api = require('../api.js');
 
-class User extends React.Component {
+class Student extends React.Component {
 
 	constructor() {
 		super();
@@ -10,30 +10,29 @@ class User extends React.Component {
 	}
 
 	componentDidMount() {
-		api.getUser(this.props.params.userId, (err, data) => {
+		api.getStudent(this.props.params.studentId, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.user});
+				this.setState({data: data.student});
 			}
 		});
 	}
 
 	render() {
 		var data = this.state.data;
-		console.log(data);
 		if (data) {
 			return (
-				<div id="user-page">
+				<div id="student-page">
 					<div className="container-fluid">
 						<div className="row">
 							<div className="col-xs-6">
-								<h3>{data.name}</h3>
-								<img src={data.img} className="user-img"/>
+								<h3>{data.first_name} {data.last_name}</h3>
+								<img src={data.img} className="student-img"/>
 							</div>
 							<div className="col-xs-6">
 								<h3>Currently Reading</h3>
 								<ul>
-								{data.borrowed_books.map( book => {
+								{data.current_borrows.map( book => {
 									return (<li><Link to={'/books/'+book.isbn}>{book.title}</Link></li>)
 								})}
 								</ul>
@@ -48,7 +47,7 @@ class User extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<h4><Link to={'/books/'+review.isbn}>{review.title}</Link> <span className="rating">{review.rating} stars</span></h4>
+													<h4><Link to={'/books/'+review.isbn}>{review.title}</Link><span className="rating">{review.rating} stars</span></h4>
 													<p>"{review.description}"</p>
 												</li>
 											</div>)
@@ -59,10 +58,10 @@ class User extends React.Component {
 								<h3>Followers</h3>
 								<ul>
 								{data.followers.map( follower => {
-									return (<div>
+									return (<div className="list">
 												<li>
 													<img src={follower.img} className="thumbnail"/>
-													<p><Link to={'/users/'+follower.id}>{follower.name}</Link></p>
+													<p><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
 												</li>
 											</div>)
 								})}
@@ -79,4 +78,4 @@ class User extends React.Component {
 }
 
 
-module.exports = User;
+module.exports = Student;

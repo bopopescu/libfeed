@@ -56,7 +56,7 @@ a:hover {
 }
 
 #app .container-fluid {
-    max-width: 800px;
+    max-width: 1000px;
 }
 
 /************* NAVBAR *************/
@@ -74,7 +74,7 @@ a:hover {
 }
 
 /************* USER PAGE *************/
-.user-img {
+.student-img {
     max-width: 200px;
 }
 
@@ -88,20 +88,23 @@ a:hover {
     max-width: 50px;
     margin-bottom: 0px;
     padding: 0px;
+    margin-right: 10px;
     border-radius: 50px;
+    float: left;
 }
 
-.test {
-     display:inline-block;
+.header {
+    padding-bottom: 25px;
 }
 
+.news-item {
+    padding-bottom: 10px;
+}
+
+.list {
+    height: 75px;
+}
 /************* BOOK PAGE *************/
-
-/************* LIBRARY PAGE *************/
-.lib-logo {
-    padding-left: 150px;
-    padding-bottom: 50px;
-}
 
 /************* SEARCH *************/
 .search {

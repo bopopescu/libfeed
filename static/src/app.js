@@ -4,9 +4,8 @@ var router = require('react-router');
 
 var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
-var UserPage = require('./pages/userpage.js');
+var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
-var LibraryPage = require('./pages/librarypage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
 var SearchResults = require('./pages/searchresults.js');
 
@@ -21,9 +20,8 @@ class App extends React.Component {
 				<Router history={browserHistory} >
 					<Route path="/" component={HomePage}/>
 					<Route path="/about" title="About" component={AboutPage} />
-					<Route path="/users/:userId" component={UserPage} />
+					<Route path="/students/:studentId" component={StudentPage} />
 					<Route path="/books/:bookIsbn" component={BookPage} />
-					<Route path="/libraries/:libraryId" component={LibraryPage} />
 					<Route path="/search/:searchTerm" component={SearchResults} />
 					<Route path="/newsfeed" component={NewsFeed} />
 				</Router>

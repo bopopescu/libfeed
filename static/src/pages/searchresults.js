@@ -38,7 +38,7 @@ class SearchResults extends React.Component {
 						<h4>Users</h4>
 						<div className="panel-body list-group">
 							{data.users.slice(0, 20).map( user => {
-								return (<Link to={'/users/'+user.id} className="list-group-item">{user.name}</Link>)
+								return (<Link to={'/students/'+user.id} className="list-group-item">{student.name}</Link>)
 							})}
 						</div>
 						<hr />
@@ -46,13 +46,6 @@ class SearchResults extends React.Component {
 						<div className="panel-body list-group">
 							{data.books.slice(0, 20).map( book => {
 								return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}, {book.author}</Link>)
-							})}
-						</div>
-						<hr />
-						<h4>Libraries</h4>
-						<div className="panel-body list-group">
-							{data.libraries.slice(0, 20).map( library => {
-								return (<Link to={'/libraries/'+library.id} className="list-group-item">{library.name}</Link>)
 							})}
 						</div>
 						<hr />

@@ -3,23 +3,22 @@ from sqlalchemy.orm import relationship
 from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 
-class Person(db.Model):
-    __tablename__ = 'person'
+class Student(db.Model):
+    __tablename__ = 'student'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(45))
-    username = db.Column(db.String(45))
-    password = db.Column(db.String(45))
-    age = db.Column(db.Integer)
+    first_name = db.Column(db.String(45))
+    last_name = db.Column(db.String(45))
+    grade = db.Column(db.Integer)
     img = db.Column(db.String(256))
-    followers = orm.relationship('Person',
-                               secondary="friendship",
-                               primaryjoin=("Person.id==friendship.c.followee_id"),
-                               secondaryjoin=("Person.id==friendship.c.follower_id"))
-    followees = orm.relationship('Person',
-                               secondary="friendship",
-                               primaryjoin=("Person.id==friendship.c.follower_id"),
-                               secondaryjoin=("Person.id==friendship.c.followee_id"))
+    followers = orm.relationship('Student',
+                               secondary="followee_follower",
+                               primaryjoin=("Student.id==followee_follower.c.followee_id"),
+                               secondaryjoin=("Student.id==followee_follower.c.follower_id"))
+    followees = orm.relationship('Student',
+                               secondary="followee_follower",
+                               primaryjoin=("Student.id==followee_follower.c.follower_id"),
+                               secondaryjoin=("Student.id==followee_follower.c.followee_id"))
 class Book(db.Model):
     __tablename__ = 'book'
 
@@ -30,11 +29,11 @@ class Book(db.Model):
     img = db.Column(db.String(256))
 
 
-class Friendship(db.Model):
-    __tablename__ = 'friendship'
+class FolloweeFollower(db.Model):
+    __tablename__ = 'followee_follower'
 
-    followee_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
-    follower_id = db.Column(db.Integer, db.ForeignKey('person.id'), primary_key=True)
+    followee_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
+    follower_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     date = db.Column(db.Date)
 
 class Review(db.Model):
@@ -44,34 +43,31 @@ class Review(db.Model):
     description = db.Column(db.String(3000))
     rating = db.Column(db.Float)
     date = db.Column(db.Date)
-    person_id = db.Column(db.Integer, ForeignKey('person.id'))
-    person = orm.relationship('Person', backref='reviews')
+    student_id = db.Column(db.Integer, ForeignKey('student.id'))
+    student = orm.relationship('Student', backref='reviews')
     book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='reviews')
 
 
-class LibraryCopy(db.Model):
-    __tablename__ = 'library_copy'
+class Copy(db.Model):
+    __tablename__ = 'copy'
 
     id = db.Column(db.Integer, primary_key=True)
     status = db.Column(db.String(45))
     date_checked_out = db.Column(db.Date)
     due_date = db.Column(db.Date)
     book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
-    book = orm.relationship('Book', backref='library_copies')
-    person_id = db.Column(db.Integer, ForeignKey('person.id'))
-    person = orm.relationship('Person', backref='borrowed_books')
-    library_id = db.Column(db.Integer, ForeignKey('library.id'))
-    library = orm.relationship('Library', backref='library_copies')
+    book = orm.relationship('Book', backref='current_borrows')
+    student_id = db.Column(db.Integer, ForeignKey('student.id'))
+    student = orm.relationship('Student', backref='current_borrows')
 
 
-class Library(db.Model):
-    __tablename__ = 'library'
+class History(db.Model):
+    __tablename__ = 'history'
 
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(256))
-    address = db.Column(db.String(256))
-    city = db.Column(db.String(45))
-    state = db.Column(db.String(45))
-    zip = db.Column(db.Integer)
-    logo = db.Column(db.String(256))
+    date_turned_in = db.Column(db.Date)
+    student_id = db.Column(db.Integer, ForeignKey('student.id'))
+    person = orm.relationship('Student', backref='history')
+    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
+    book = orm.relationship('Book', backref='history')

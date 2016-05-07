@@ -1,20 +1,22 @@
-def user_to_dict(user):
+def student_to_dict(student):
     return {
-        'id': user.id,
-        'name': user.name,
-        'age': user.age,
-        'img': user.img,
-        'followees': list(map(slim_user_to_dict, user.followees)),
-        'followers': list(map(slim_user_to_dict, user.followers)),
-        'borrowed_books': list(map(slim_library_copy_to_dict, user.borrowed_books)),
-        'reviews': list(map(slim_review_to_dict, user.reviews))
+        'id': student.id,
+        'first_name': student.first_name,
+        'last_name': student.last_name,
+        'grade': student.grade,
+        'img': student.img,
+        'followees': list(map(slim_student_to_dict, student.followees)),
+        'followers': list(map(slim_student_to_dict, student.followers)),
+        'current_borrows': list(map(slim_copy_to_dict, student.current_borrows)),
+        'reviews': list(map(slim_review_to_dict, student.reviews))
     }
 
-def slim_user_to_dict(user):
+def slim_student_to_dict(student):
     return {
-        'id': user.id,
-        'name': user.name,
-        'img': user.img
+        'id': student.id,
+        'first_name': student.first_name,
+        'last_name': student.last_name,
+        'img': student.img
     }
 
 def book_to_dict(book):
@@ -41,7 +43,7 @@ def review_to_dict(review):
         'description': review.description,
         'rating': review.rating,
         'date': str(review.date),
-        'person': slim_user_to_dict(review.person),
+        'student': slim_student_to_dict(review.student),
         'book': slim_book_to_dict(review.book)
     }
 
@@ -55,45 +57,22 @@ def slim_review_to_dict(review):
         'date': str(review.date)
     }
 
-def library_copy_to_dict(library_copy):
+def copy_to_dict(copy):
     return {
-        'id': library_copy.id,
-        'status': library_copy.status,
-        'date_checked_out': str(library_copy.date_checked_out),
-        'due_date': str(library_copy.due_date),
-        'book': slim_book_to_dict(library_copy.book),
-        'person': slim_user_to_dict(library_copy.person),
-        'library': slim_library_to_dict(library_copy.library)
+        'id': copy.id,
+        'status': copy.status,
+        'date_checked_out': str(copy.date_checked_out),
+        'due_date': str(copy.due_date),
+        'book': slim_book_to_dict(copy.book),
+        'student': slim_student_to_dict(copy.student)
     }
 
-def slim_library_copy_to_dict(library_copy):
+def slim_copy_to_dict(copy):
     return {
-        'id': library_copy.id,
-        'status': library_copy.status,
-        'title': library_copy.book.title,
-        'isbn': library_copy.book.isbn,
-        'date_checked_out': str(library_copy.date_checked_out),
-        'due_date': str(library_copy.due_date)
-    }
-
-def library_to_dict(library):
-    return {
-        'id': library.id,
-        'name': library.name,
-        'address': library.address,
-        'city': library.city,
-        'state': library.state,
-        'zip': library.zip,
-        'logo': library.logo,
-        'library_copies': list(map(slim_library_copy_to_dict, library.library_copies))
-    }
-
-def slim_library_to_dict(library):
-    return {
-        'id': library.id,
-        'name': library.name,
-        'address': library.address,
-        'city': library.city,
-        'state': library.state,
-        'zip': library.zip
+        'id': copy.id,
+        'status': copy.status,
+        'title': copy.book.title,
+        'isbn': copy.book.isbn,
+        'date_checked_out': str(copy.date_checked_out),
+        'due_date': str(copy.due_date)
     }
