@@ -1,7 +1,42 @@
-<form method="post">
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LibFeed</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='dist/site.css') }}">
+  <script src="https://code.jquery.com/jquery-2.2.2.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+  <nav class="navbar navbar-default">
+      <div class="container-fluid">
+          <div class="navbar-header">
+              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-collapse" aria-expanded="false">
+                  <span class="sr-only">Toggle navigation</span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+                  <span class="icon-bar"></span>
+              </button>
+              <img class="logo" src="https://pbs.twimg.com/profile_images/703869570/ARSlogoforWeb_400x400.jpg">
+              <a class="navbar-brand site-title" href="/">LibFeed</a>
+          </div>
+          <div class="collapse navbar-collapse" id="navbar-collapse">
+              <ul class="nav navbar-nav navbar-right">
+                  <li><a href="/about">About</a></li>
+                  <li><a href="/register">Register</a></li>
+                  <li><a href="/login">Login</a></li>
+              </ul>
+          </div>
+      </div>
+  </nav>
+<form class="register" method="post">
   {{ form.hidden_tag() }}
 
-  {# This bit of code displays a list of error messages if anything bad happens. #}
   {% with messages = get_flashed_messages() %}
     {% if messages %}
       <ul>
@@ -11,38 +46,18 @@
       </ul>
     {% endif %}
   {% endwith %}
-
-  {# This block of code renders the desired input boxes for registering users.  #}
-  {% if config['STORMPATH_ENABLE_USERNAME'] %}
-    {% if config['STORMPATH_REQUIRE_USERNAME'] %}
-      {{ form.username(placeholder='Username', required='true') }}
-    {% else %}
-      {{ form.username(placeholder='Username') }}
-    {% endif %}
-  {% endif %}
-  {% if config['STORMPATH_ENABLE_GIVEN_NAME'] %}
-    {% if config['STORMPATH_REQUIRE_GIVEN_NAME'] %}
-      {{ form.given_name(placeholder='First Name', required='true') }}
-    {% else %}
-      {{ form.given_name(placeholder='First Name') }}
-    {% endif %}
-  {% endif %}
-  {% if config['STORMPATH_ENABLE_MIDDLE_NAME'] %}
-    {% if config['STORMPATH_REQUIRE_MIDDLE_NAME'] %}
-      {{ form.middle_name(placeholder='Middle Name', required='true') }}
-    {% else %}
-      {{ form.middle_name(placeholder='Middle Name') }}
-    {% endif %}
-  {% endif %}
-  {% if config['STORMPATH_ENABLE_SURNAME'] %}
-    {% if config['STORMPATH_REQUIRE_SURNAME'] %}
-      {{ form.surname(placeholder='Last Name', required='true') }}
-    {% else %}
-      {{ form.surname(placeholder='Last Name') }}
-    {% endif %}
-  {% endif %}
+  {{ form.given_name(placeholder='First Name', required='true') }}
+  <br>
+  <br>
+  {{ form.surname(placeholder='Last Name', required='true') }}
+  <br>
+  <br>
   {{ form.email(placeholder='Email', required='true', type='email') }}
+  <br>
+  <br>
   {{ form.password(placeholder='Password', required='true', type='password') }}
+  <br>
+  <br>
 
-  <button type="submit">Create Account</button>
+  <button class="form-button" type="submit">Create Account</button>
 </form>

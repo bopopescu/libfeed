@@ -190,3 +190,20 @@ button, input, select, textarea {
     width: 300px;
     -webkit-font-smoothing: antialiased;
 }
+
+
+/************* LOGIN PAGE *************/
+
+.login {
+    text-align: center;
+}
+
+.form-button {
+    width: 200px;
+}
+
+/************* REGISTER PAGE *************/
+
+.register {
+    text-align: center;
+}
