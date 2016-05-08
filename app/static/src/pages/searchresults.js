@@ -30,6 +30,7 @@ class SearchResults extends React.Component {
 	render() {
 		var data = this.state.data;
 		if (data){
+			console.log(data);
 			return (
 				<div className="search-results">
 					<div className="container">
@@ -37,8 +38,8 @@ class SearchResults extends React.Component {
 						<hr />
 						<h4>Users</h4>
 						<div className="panel-body list-group">
-							{data.users.slice(0, 20).map( user => {
-								return (<Link to={'/students/'+user.id} className="list-group-item">{student.name}</Link>)
+							{data.students.slice(0, 20).map( student => {
+								return (<Link to={'/students/'+student.id} className="list-group-item">{student.first_name} {student.last_name}</Link>)
 							})}
 						</div>
 						<hr />

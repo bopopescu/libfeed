@@ -28,7 +28,7 @@ class SearchBar extends React.Component {
     			</form>
             </div>
             <div className="col-xs-8 searchButton">
-                <Link to={'/search/'+this.state.searchTerm} className="searchButton">Go</Link>
+                <Link id="searchButton" to={'/search/'+this.state.searchTerm} className="searchButton">Go</Link>
             </div>
             </div>
 		)

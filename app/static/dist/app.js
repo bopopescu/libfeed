@@ -84169,6 +84169,7 @@ var SearchResults = function (_React$Component) {
 		value: function render() {
 			var data = this.state.data;
 			if (data) {
+				console.log(data);
 				return React.createElement(
 					'div',
 					{ className: 'search-results' },
@@ -84191,11 +84192,13 @@ var SearchResults = function (_React$Component) {
 						React.createElement(
 							'div',
 							{ className: 'panel-body list-group' },
-							data.users.slice(0, 20).map(function (user) {
+							data.students.slice(0, 20).map(function (student) {
 								return React.createElement(
 									Link,
-									{ to: '/students/' + user.id, className: 'list-group-item' },
-									student.name
+									{ to: '/students/' + student.id, className: 'list-group-item' },
+									student.first_name,
+									' ',
+									student.last_name
 								);
 							})
 						),
@@ -84486,7 +84489,7 @@ var SearchBar = function (_React$Component) {
                     { className: 'col-xs-8 searchButton' },
                     React.createElement(
                         Link,
-                        { to: '/search/' + this.state.searchTerm, className: 'searchButton' },
+                        { id: 'searchButton', to: '/search/' + this.state.searchTerm, className: 'searchButton' },
                         'Go'
                     )
                 )

@@ -1,6 +1,5 @@
 from sqlalchemy import ForeignKey, orm
 from sqlalchemy.orm import relationship
-from flask.ext.sqlalchemy import SQLAlchemy
 from app import db
 
 class Student(db.Model):
@@ -19,6 +18,17 @@ class Student(db.Model):
                                secondary="followee_follower",
                                primaryjoin=("Student.id==followee_follower.c.follower_id"),
                                secondaryjoin=("Student.id==followee_follower.c.followee_id"))
+
+class Teacher(db.Model):
+    __tablename__ = 'teacher'
+
+    id = db.Column(db.Integer, primary_key=True)
+    first_name = db.Column(db.String(45))
+    last_name = db.Column(db.String(45))
+    grade = db.Column(db.Integer)
+    img = db.Column(db.String(256))
+    
+
 class Book(db.Model):
     __tablename__ = 'book'
 
@@ -35,6 +45,7 @@ class FolloweeFollower(db.Model):
     followee_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     follower_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     date = db.Column(db.Date)
+
 
 class Review(db.Model):
     __tablename__ = 'review'
