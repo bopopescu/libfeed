@@ -2,7 +2,7 @@ var React = require('react');
 var Link = require('react-router').Link;
 var api = require('../api.js');
 
-class Student extends React.Component {
+class User extends React.Component {
 
 	constructor() {
 		super();
@@ -10,51 +10,48 @@ class Student extends React.Component {
 	}
 
 	componentDidMount() {
-		api.getStudent(this.props.params.studentId, (err, data) => {
-			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
-			else {
-				this.setState({data: data.student, follow_status: data.follow_status});
-			}
+		api.getCurUserPage((err, data) => {
+			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
+			else this.setState({data: data.student, current_borrows: data.student.current_borrows});
 		});
 	}
 
-	follow(id) {
-		api.follow(id);
-	    this.setState({
-	      follow_status: true
+	handleClick(id) {
+		api.returnBook(id);
+	  	var current_borrows = this.state.current_borrows.filter(function(cur_borrow){
+	      return cur_borrow.id !== id;
 	    });
-	}
-
-	unfollow(id) {
-		api.unfollow(id);
 	    this.setState({
-	      follow_status: false
+	      current_borrows: current_borrows
 	    });
 	}
 
 	render() {
 		var data = this.state.data;
-		var follow_status = this.state.follow_status;
+		var current_borrows = this.state.current_borrows;
 		if (data) {
 			return (
-				<div id="student-page">
+				<div id="user-page">
 					<div className="container-fluid">
 						<div className="row">
 							<div className="col-xs-6">
-								<div className="student-page-name">
-									<h4>{data.first_name} {data.last_name}</h4>
-									<button type="button" className="btn btn-primary return" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
-								</div>
-								<br /><br />
+								<h4 className="student-page-name">{data.first_name} {data.last_name}</h4>
 								<img src={data.img} className="student-img"/>
 							</div>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
-								<ul>
-								{data.current_borrows.map( book => {
-									return (<li className="current-read"><Link to={'/books/'+book.isbn} className="book-title">{book.title}</Link> by {book.author}</li>)
-								})}
-								</ul>
+								<table className="table current-reads">
+  									<tbody>
+										<tr>
+										{current_borrows.map( borrow => {
+											return ([<td className="current-read">
+													<Link to={'/books/'+borrow.isbn} className="book-title">{borrow.title}</Link> by {borrow.author}</td>,
+													<td><p>Due {borrow.due_date}</p></td>,
+													<td><button type="button" className="btn btn-primary return" onClick={this.handleClick.bind(this, borrow.id)}>Return</button></td>])
+										})}
+										</tr>
+									</tbody>
+								</table>
 							</div>
 						</div>
 						<br />
@@ -98,4 +95,4 @@ class Student extends React.Component {
 }
 
 
-module.exports = Student;
+module.exports = User;

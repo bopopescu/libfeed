@@ -13,22 +13,36 @@ class Book extends React.Component {
 		api.getBook(this.props.params.bookIsbn, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.book});
+				this.setState({data: data.book, checked_out: data.checked_out, available: data.available});
 			}
+		});
+	}
+
+	checkOut(isbn) {
+		api.checkOut(isbn);
+		this.setState({
+		  checked_out: true,
+		  available: this.state.available-1
 		});
 	}
 
 	render() {
 		var data = this.state.data;
+		var checked_out = this.state.checked_out;
+		var available = this.state.available;
 		console.log(data);
+		console.log(checked_out);
+		console.log(available);
 		if (data) {
 			return (
 				<div id="book-page">
 					<div className="container-fluid">
 						<div className="row">
 							<div className="col-xs-12">
-								<h3>{data.title}</h3>
-								<h4>{data.author}</h4>
+								<h3 className="book-title">{data.title}</h3>
+								<p className="author">{data.author}</p>
+								<p>{available>0 ? "Available" : "Not Available"}</p>
+								<button type="button" className="btn btn-primary checkout" onClick={!checked_out && available>0 ? this.checkOut.bind(this, data.isbn) : ''}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
 							</div>
 						</div>
 						<div className="row">

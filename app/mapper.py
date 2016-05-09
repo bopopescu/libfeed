@@ -1,3 +1,5 @@
+import datetime
+
 def student_to_dict(student):
     return {
         'id': student.id,
@@ -63,7 +65,7 @@ def copy_to_dict(copy):
         'id': copy.id,
         'status': copy.status,
         'date_checked_out': str(copy.date_checked_out),
-        'due_date': str(copy.due_date),
+        'due_date': copy.due_date.strftime("%-m/%d/%y"),
         'book': slim_book_to_dict(copy.book),
         'student': slim_student_to_dict(copy.student)
     }
@@ -76,5 +78,5 @@ def slim_copy_to_dict(copy):
         'author': copy.book.author,
         'isbn': copy.book.isbn,
         'date_checked_out': str(copy.date_checked_out),
-        'due_date': str(copy.due_date)
+        'due_date': copy.due_date.strftime("%-m/%d/%y")
     }

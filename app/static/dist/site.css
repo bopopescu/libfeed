@@ -79,6 +79,15 @@ a:hover {
     max-width: 1000px;
 }
 
+td {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #777;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
 /************* NAVBAR *************/
 .navbar-default {
     background-color: white;
@@ -120,9 +129,15 @@ a:hover {
     border-radius: 100px;
 }
 
-.student-page-name {
-    padding-left: 40px;
-    padding-bottom: 5px;
+.student-page-name h4 {
+    float: left;
+}
+
+.student-page-name .btn {
+    margin-top: 18px;
+    margin-left: 15px;
+    font-size: 10px;
+    width: 50px;
 }
 
 .rating {
@@ -148,10 +163,23 @@ a:hover {
     opacity: .5;
 }
 
+.student-page-name .btn{
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+
 /************* BOOK PAGE *************/
 .book-title {
     font-style: italic;
     color: #1eb6a7;
+    float: left;
+}
+
+.author {
+    float: left;
+    margin-top: 27px;
+    margin-left: 10px;
 }
 
 .student-name {
@@ -170,8 +198,52 @@ a:hover {
     height: 75px;
 }
 
+.checkout {
+    width: 75px;
+    margin-left: 10px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+    margin-top: 25px;
+    margin-left: 45px;
+}
 
-/************* BOOK PAGE *************/
+.checkout:hover {
+    opacity: .5;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.checkout:active {
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+
+/************* USER PAGE *************/
+
+.return {
+    width: 65px;
+    margin-left: 10px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.return:hover {
+    opacity: .5;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.return:active {
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.current-reads td, a, p, .btn{
+    font-size: 13px;
+}
 
 /************* SEARCH *************/
 

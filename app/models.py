@@ -1,9 +1,11 @@
 from sqlalchemy import ForeignKey, orm
 from sqlalchemy.orm import relationship
-from app import db
+import flask.ext.whooshalchemy as whooshalchemy
+from app import db, app
 
 class Student(db.Model):
     __tablename__ = 'student'
+    __searchable__ = ['first_name', 'last_name']
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(45))
@@ -21,16 +23,18 @@ class Student(db.Model):
 
 class Teacher(db.Model):
     __tablename__ = 'teacher'
+    __searchable__ = ['first_name', 'last_name']
 
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(45))
     last_name = db.Column(db.String(45))
     grade = db.Column(db.Integer)
     img = db.Column(db.String(256))
-    
+
 
 class Book(db.Model):
     __tablename__ = 'book'
+    __searchable__ = ['title', 'author']
 
     isbn = db.Column(db.String(45), primary_key=True)
     title = db.Column(db.String(256))
@@ -82,3 +86,7 @@ class History(db.Model):
     person = orm.relationship('Student', backref='history')
     book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='history')
+
+whooshalchemy.whoosh_index(app, Student)
+whooshalchemy.whoosh_index(app, Teacher)
+whooshalchemy.whoosh_index(app, Book)

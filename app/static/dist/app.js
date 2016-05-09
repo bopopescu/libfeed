@@ -83617,8 +83617,14 @@ function Node (value, prev, next, list) {
 var request = require('request');
 var API = 'http://localhost:5000/api/';
 
-function getCurrentUser(cb) {
-	request(API + 'current_user', function (error, response, body) {
+function getCurUserNewsfeed(cb) {
+	request(API + 'cur_user_newsfeed', function (error, response, body) {
+		cb(error, JSON.parse(body));
+	});
+}
+
+function getCurUserPage(cb) {
+	request(API + 'cur_user_page', function (error, response, body) {
 		cb(error, JSON.parse(body));
 	});
 }
@@ -83631,6 +83637,32 @@ function getStudent(id, cb) {
 	});
 }
 
+function follow(followee_id, cb) {
+	var options = {
+		url: API + 'follow',
+		method: 'POST',
+		json: {
+			"followee": followee_id
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
+function unfollow(followee_id, cb) {
+	var options = {
+		url: API + 'unfollow',
+		method: 'POST',
+		json: {
+			"followee": followee_id
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
 function getBook(isbn, cb) {
 	request(API + 'book/' + isbn, function (error, response, body) {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
@@ -83639,11 +83671,37 @@ function getBook(isbn, cb) {
 	});
 }
 
+function checkOut(isbn, cb) {
+	var options = {
+		url: API + 'check_out',
+		method: 'POST',
+		json: {
+			"isbn": isbn
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
 function search(term, cb) {
 	request(API + 'search/' + term, function (error, response, body) {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
+	});
+}
+
+function returnBook(copy_id) {
+	var options = {
+		url: API + 'return_book',
+		method: 'POST',
+		json: {
+			"id": copy_id
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 	});
 }
 
@@ -83657,10 +83715,15 @@ function isJson(str) {
 }
 
 module.exports = {
-	getCurrentUser: getCurrentUser,
+	getCurUserNewsfeed: getCurUserNewsfeed,
+	getCurUserPage: getCurUserPage,
 	getStudent: getStudent,
 	getBook: getBook,
-	search: search
+	search: search,
+	returnBook: returnBook,
+	follow: follow,
+	unfollow: unfollow,
+	checkOut: checkOut
 };
 
 },{"request":430}],498:[function(require,module,exports){
@@ -83683,6 +83746,7 @@ var AboutPage = require('./pages/aboutpage.js');
 var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
+var UserPage = require('./pages/userpage.js');
 var SearchResults = require('./pages/searchresults.js');
 
 var Router = router.Router;
@@ -83712,7 +83776,8 @@ var App = function (_React$Component) {
 					React.createElement(Route, { path: '/students/:studentId', component: StudentPage }),
 					React.createElement(Route, { path: '/books/:bookIsbn', component: BookPage }),
 					React.createElement(Route, { path: '/search/:searchTerm', component: SearchResults }),
-					React.createElement(Route, { path: '/newsfeed', component: NewsFeed })
+					React.createElement(Route, { path: '/newsfeed', component: NewsFeed }),
+					React.createElement(Route, { path: '/user', component: UserPage })
 				)
 			);
 		}
@@ -83723,7 +83788,7 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/searchresults.js":503,"./pages/studentpage.js":504,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
+},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/bookpage.js":502,"./pages/searchresults.js":503,"./pages/studentpage.js":504,"./pages/userpage.js":505,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83775,7 +83840,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/searchbar.js":505,"react":419}],500:[function(require,module,exports){
+},{"./partials/searchbar.js":506,"react":419}],500:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83807,7 +83872,7 @@ var NewsFeed = function (_React$Component) {
 		value: function componentDidMount() {
 			var _this2 = this;
 
-			api.getCurrentUser(function (err, data) {
+			api.getCurUserNewsfeed(function (err, data) {
 				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data });
 			});
 		}
@@ -83998,15 +84063,28 @@ var Book = function (_React$Component) {
 
 			api.getBook(this.props.params.bookIsbn, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.book });
+					_this2.setState({ data: data.book, checked_out: data.checked_out, available: data.available });
 				}
+			});
+		}
+	}, {
+		key: 'checkOut',
+		value: function checkOut(isbn) {
+			api.checkOut(isbn);
+			this.setState({
+				checked_out: true,
+				available: this.state.available - 1
 			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
+			var checked_out = this.state.checked_out;
+			var available = this.state.available;
 			console.log(data);
+			console.log(checked_out);
+			console.log(available);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84022,13 +84100,23 @@ var Book = function (_React$Component) {
 								{ className: 'col-xs-12' },
 								React.createElement(
 									'h3',
-									null,
+									{ className: 'book-title' },
 									data.title
 								),
 								React.createElement(
-									'h4',
-									null,
+									'p',
+									{ className: 'author' },
 									data.author
+								),
+								React.createElement(
+									'p',
+									null,
+									available > 0 ? "Available" : "Not Available"
+								),
+								React.createElement(
+									'button',
+									{ type: 'button', className: 'btn btn-primary checkout', onClick: !checked_out && available > 0 ? this.checkOut.bind(this, data.isbn) : '' },
+									!checked_out ? "Check Out" : 'Checked Out'
 								)
 							)
 						),
@@ -84269,14 +84357,31 @@ var Student = function (_React$Component) {
 
 			api.getStudent(this.props.params.studentId, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.student });
+					_this2.setState({ data: data.student, follow_status: data.follow_status });
 				}
+			});
+		}
+	}, {
+		key: 'follow',
+		value: function follow(id) {
+			api.follow(id);
+			this.setState({
+				follow_status: true
+			});
+		}
+	}, {
+		key: 'unfollow',
+		value: function unfollow(id) {
+			api.unfollow(id);
+			this.setState({
+				follow_status: false
 			});
 		}
 	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
+			var follow_status = this.state.follow_status;
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84291,12 +84396,23 @@ var Student = function (_React$Component) {
 								'div',
 								{ className: 'col-xs-6' },
 								React.createElement(
-									'h4',
+									'div',
 									{ className: 'student-page-name' },
-									data.first_name,
-									' ',
-									data.last_name
+									React.createElement(
+										'h4',
+										null,
+										data.first_name,
+										' ',
+										data.last_name
+									),
+									React.createElement(
+										'button',
+										{ type: 'button', className: 'btn btn-primary return', onClick: follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) },
+										follow_status ? 'Unfollow' : 'Follow'
+									)
 								),
+								React.createElement('br', null),
+								React.createElement('br', null),
 								React.createElement('img', { src: data.img, className: 'student-img' })
 							),
 							React.createElement(
@@ -84430,6 +84546,237 @@ var Student = function (_React$Component) {
 module.exports = Student;
 
 },{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var Link = require('react-router').Link;
+var api = require('../api.js');
+
+var User = function (_React$Component) {
+	_inherits(User, _React$Component);
+
+	function User() {
+		_classCallCheck(this, User);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(User).call(this));
+
+		_this.state = { data: null };
+		return _this;
+	}
+
+	_createClass(User, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getCurUserPage(function (err, data) {
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, current_borrows: data.student.current_borrows });
+			});
+		}
+	}, {
+		key: 'handleClick',
+		value: function handleClick(id) {
+			api.returnBook(id);
+			var current_borrows = this.state.current_borrows.filter(function (cur_borrow) {
+				return cur_borrow.id !== id;
+			});
+			this.setState({
+				current_borrows: current_borrows
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var _this3 = this;
+
+			var data = this.state.data;
+			var current_borrows = this.state.current_borrows;
+			if (data) {
+				return React.createElement(
+					'div',
+					{ id: 'user-page' },
+					React.createElement(
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'h4',
+									{ className: 'student-page-name' },
+									data.first_name,
+									' ',
+									data.last_name
+								),
+								React.createElement('img', { src: data.img, className: 'student-img' })
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'h6',
+									null,
+									'Currently Reading'
+								),
+								React.createElement(
+									'table',
+									{ className: 'table current-reads' },
+									React.createElement(
+										'tbody',
+										null,
+										React.createElement(
+											'tr',
+											null,
+											current_borrows.map(function (borrow) {
+												return [React.createElement(
+													'td',
+													{ className: 'current-read' },
+													React.createElement(
+														Link,
+														{ to: '/books/' + borrow.isbn, className: 'book-title' },
+														borrow.title
+													),
+													' by ',
+													borrow.author
+												), React.createElement(
+													'td',
+													null,
+													React.createElement(
+														'p',
+														null,
+														'Due ',
+														borrow.due_date
+													)
+												), React.createElement(
+													'td',
+													null,
+													React.createElement(
+														'button',
+														{ type: 'button', className: 'btn btn-primary return', onClick: _this3.handleClick.bind(_this3, borrow.id) },
+														'Return'
+													)
+												)];
+											})
+										)
+									)
+								)
+							)
+						),
+						React.createElement('br', null),
+						React.createElement('br', null),
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
+									null,
+									'Reviews'
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.reviews.map(function (review) {
+										return React.createElement(
+											'div',
+											null,
+											React.createElement('hr', null),
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'h4',
+													null,
+													React.createElement(
+														Link,
+														{ to: '/books/' + review.isbn, className: 'book-title' },
+														review.title
+													),
+													React.createElement(
+														'span',
+														{ className: 'rating' },
+														',    ',
+														review.author,
+														'    ',
+														review.rating,
+														' stars'
+													)
+												),
+												React.createElement(
+													'p',
+													null,
+													'"',
+													review.description,
+													'"'
+												)
+											)
+										);
+									})
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h3',
+									null,
+									'Followers'
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.followers.map(function (follower) {
+										return React.createElement(
+											'div',
+											{ className: 'list' },
+											React.createElement(
+												'li',
+												null,
+												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
+												React.createElement(
+													'p',
+													null,
+													React.createElement(
+														Link,
+														{ to: '/students/' + follower.id },
+														follower.first_name,
+														' ',
+														follower.last_name
+													)
+												)
+											)
+										);
+									})
+								)
+							)
+						)
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	}]);
+
+	return User;
+}(React.Component);
+
+module.exports = User;
+
+},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
