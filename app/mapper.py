@@ -57,7 +57,9 @@ def slim_review_to_dict(review):
         'title': review.book.title,
         'author': review.book.author,
         'isbn': review.book.isbn,
-        'date': str(review.date)
+        'date': str(review.date),
+        'student_id': review.student.id,
+        'student_name': review.student.first_name + ' ' + review.student.last_name
     }
 
 def copy_to_dict(copy):

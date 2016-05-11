@@ -43,7 +43,7 @@ class Student extends React.Component {
 							<div className="col-xs-6">
 								<div className="student-page-name">
 									<h4>{data.first_name} {data.last_name}</h4>
-									<button type="button" className="btn btn-primary return" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
+									<button type="button" className="btn btn-primary follow-btn" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
 								</div>
 								<br /><br />
 								<img src={data.img} className="student-img"/>

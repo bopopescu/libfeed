@@ -34,22 +34,20 @@ class User extends React.Component {
 				<div id="user-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6">
-								<h4 className="student-page-name">{data.first_name} {data.last_name}</h4>
-								<img src={data.img} className="student-img"/>
+							<div className="col-xs-6 user-profile">
+								<h4 className="user-name">{data.first_name} {data.last_name}</h4>
+								<img src={data.img} className="user-img"/>
 							</div>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
-								<table className="table current-reads">
+								<table className="table user-cur-reads">
   									<tbody>
-										<tr>
 										{current_borrows.map( borrow => {
-											return ([<td className="current-read">
-													<Link to={'/books/'+borrow.isbn} className="book-title">{borrow.title}</Link> by {borrow.author}</td>,
-													<td><p>Due {borrow.due_date}</p></td>,
-													<td><button type="button" className="btn btn-primary return" onClick={this.handleClick.bind(this, borrow.id)}>Return</button></td>])
+											return ([<tr><td className="user-cur-read">
+													<Link to={'/books/'+borrow.isbn} className="user-book-title">{borrow.title}</Link> by {borrow.author}</td>
+													<td><p>Due {borrow.due_date}</p></td>
+													<td><button type="button" className="btn btn-primary return-btn" onClick={this.handleClick.bind(this, borrow.id)}>Return</button></td></tr>])
 										})}
-										</tr>
 									</tbody>
 								</table>
 							</div>
@@ -64,7 +62,7 @@ class User extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<h4><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">,&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></h4>
+													<h4><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></h4>
 													<p>"{review.description}"</p>
 												</li>
 											</div>)

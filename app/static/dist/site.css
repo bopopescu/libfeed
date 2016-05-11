@@ -163,14 +163,20 @@ td {
     opacity: .5;
 }
 
-.student-page-name .btn{
+.student-page-name .btn {
     background-color: #1eb6a7;
     border-color: white;
 }
 
+.follow-btn {
+    width: 65px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
 
 /************* BOOK PAGE *************/
-.book-title {
+.book-title-main {
     font-style: italic;
     color: #1eb6a7;
     float: left;
@@ -198,14 +204,20 @@ td {
     height: 75px;
 }
 
-.checkout {
-    width: 75px;
-    margin-left: 10px;
+.available {
+    float: left;
+}
+
+.book-status {
+    margin-top: 25px;
+}
+
+.checkout-btn {
+    width: 100px;
     padding: 2px;
     background-color: #1eb6a7;
     border-color: white;
-    margin-top: 25px;
-    margin-left: 45px;
+    margin-left: 20px;
 }
 
 .checkout:hover {
@@ -219,10 +231,26 @@ td {
     border-color: white;
 }
 
+.review-btn {
+    margin-left: 20px;
+    width: 100px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.review-btn:hover {
+    background-color: #1eb6a7;
+    border-color: white;
+    opacity: .5;
+}
+
+.reviewForm {
+    margin-bottom: 20px;
+}
 
 /************* USER PAGE *************/
 
-.return {
+.return-btn {
     width: 65px;
     margin-left: 10px;
     padding: 2px;
@@ -230,19 +258,33 @@ td {
     border-color: white;
 }
 
-.return:hover {
+.return-btn:hover {
     opacity: .5;
     background-color: #1eb6a7;
     border-color: white;
 }
 
-.return:active {
+.return-btn:active {
     background-color: #1eb6a7;
     border-color: white;
 }
 
-.current-reads td, a, p, .btn{
+.user-cur-reads td, a, p, .btn{
     font-size: 13px;
+}
+
+.user-profile {
+    text-align: center;
+}
+
+.user-img {
+    max-width: 200px;
+    border-radius: 100px;
+}
+
+.user-book-title {
+    font-style: italic;
+    color: #1eb6a7;
 }
 
 /************* SEARCH *************/
@@ -278,4 +320,11 @@ button, input, select, textarea {
 
 .register {
     text-align: center;
+}
+
+/************* NEWS FEED *************/
+
+.book-title {
+    font-style: italic;
+    color: #1eb6a7;
 }

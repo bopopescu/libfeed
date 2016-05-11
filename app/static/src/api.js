@@ -68,6 +68,21 @@ function checkOut(isbn, cb) {
 	})
 }
 
+function writeReview(isbn, description, rating, cb) {
+	var options = {
+		url: API+'write_review',
+		method: 'POST',
+		json: {
+			"isbn": isbn,
+			"description": description,
+			"rating": rating
+		}
+	};
+	request(options, (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	})
+}
+
 function search(term, cb){
 	request(API+'search/'+term, (error, response, body) => {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
@@ -107,5 +122,6 @@ module.exports = {
 	returnBook: returnBook,
 	follow: follow,
 	unfollow: unfollow,
-	checkOut: checkOut
+	checkOut: checkOut,
+	writeReview: writeReview
 }

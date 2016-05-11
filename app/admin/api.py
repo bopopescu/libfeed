@@ -6,7 +6,7 @@ from sqlalchemy import or_, and_, update
 
 from app import db, mapper, logger
 
-from app.models import Student, Book, Copy, FolloweeFollower
+from app.models import Student, Book, Copy, FolloweeFollower, Review
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -67,7 +67,7 @@ def get_book(isbn):
     for c in copies:
         if c.status == 'available':
             available += 1
-    return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first()), 'checked_out': checked_out, 'available': available})
+    return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first()), 'checked_out': checked_out, 'available': available, 'user': {'id': s.id, 'first_name': s.first_name, 'last_name': s.last_name}})
 
 @api.route('/check_out', methods=["POST"])
 @login_required
@@ -92,7 +92,7 @@ def write_review():
     rating = data['rating']
     s = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
     b = Book.query.filter_by(isbn=isbn)
-    r = Review(id=6, description=description, rating=rating, date=datetime.datetime.today(), student_id=s, book_isbn=isbn)
+    r = Review(description=description, rating=rating, date=datetime.datetime.today(), student_id=s, book_isbn=isbn)
     db.session.add(r)
     db.session.commit()
     return 'OK'

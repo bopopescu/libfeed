@@ -83684,6 +83684,21 @@ function checkOut(isbn, cb) {
 	});
 }
 
+function writeReview(isbn, description, rating, cb) {
+	var options = {
+		url: API + 'write_review',
+		method: 'POST',
+		json: {
+			"isbn": isbn,
+			"description": description,
+			"rating": rating
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
 function search(term, cb) {
 	request(API + 'search/' + term, function (error, response, body) {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
@@ -83723,7 +83738,8 @@ module.exports = {
 	returnBook: returnBook,
 	follow: follow,
 	unfollow: unfollow,
-	checkOut: checkOut
+	checkOut: checkOut,
+	writeReview: writeReview
 };
 
 },{"request":430}],498:[function(require,module,exports){
@@ -84063,7 +84079,7 @@ var Book = function (_React$Component) {
 
 			api.getBook(this.props.params.bookIsbn, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.book, checked_out: data.checked_out, available: data.available });
+					_this2.setState({ data: data.book, checked_out: data.checked_out, available: data.available, reviews: data.book.reviews, user: data.user });
 				}
 			});
 		}
@@ -84077,14 +84093,34 @@ var Book = function (_React$Component) {
 			});
 		}
 	}, {
+		key: 'writeReview',
+		value: function writeReview(isbn, description, rating) {
+			api.writeReview(isbn, description, rating);
+			var today = new Date();
+			var dd = today.getDate();
+			var mm = today.getMonth() + 1;
+			var yy = today.getFullYear();
+			today = mm + '/' + dd + '/' + yy;
+			var reviews = this.state.reviews.push({ 'description': description, 'rating': rating, 'date': today, 'student_name': this.state.user.first_name + ' ' + this.state.user.last_name, 'student_id': this.state.user.id });
+			this.setState({
+				reviews: this.state.reviews
+			});
+			React.findDOMNode(this.refs.reviewinput).value = ""; // Unset the value
+		}
+	}, {
+		key: 'handleChange',
+		value: function handleChange(event) {
+			this.setState({ description: event.target.value });
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var data = this.state.data;
 			var checked_out = this.state.checked_out;
 			var available = this.state.available;
-			console.log(data);
-			console.log(checked_out);
-			console.log(available);
+			var reviews = this.state.reviews;
+			var description = "";
+			var rating = "";
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84097,25 +84133,29 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-6' },
 								React.createElement(
 									'h3',
-									{ className: 'book-title' },
+									{ className: 'book-title-main' },
 									data.title
 								),
 								React.createElement(
 									'p',
 									{ className: 'author' },
 									data.author
-								),
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6 book-status' },
 								React.createElement(
 									'p',
-									null,
+									{ className: 'available' },
 									available > 0 ? "Available" : "Not Available"
 								),
 								React.createElement(
 									'button',
-									{ type: 'button', className: 'btn btn-primary checkout', onClick: !checked_out && available > 0 ? this.checkOut.bind(this, data.isbn) : '' },
+									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out && available > 0 ? this.checkOut.bind(this, data.isbn) : '' },
 									!checked_out ? "Check Out" : 'Checked Out'
 								)
 							)
@@ -84162,12 +84202,12 @@ var Book = function (_React$Component) {
 												'li',
 												null,
 												React.createElement(
-													'h4',
+													'p',
 													null,
 													React.createElement(
 														Link,
-														{ to: '/users/' + review.person_id },
-														review.person_name
+														{ to: '/students/' + review.student_id },
+														review.student_name
 													),
 													' ',
 													React.createElement(
@@ -84187,6 +84227,17 @@ var Book = function (_React$Component) {
 											)
 										);
 									})
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'form',
+									{ className: 'reviewForm' },
+									React.createElement('input', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleChange.bind(this) }),
+									React.createElement(
+										'button',
+										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, 5.0) },
+										'Post Review'
+									)
 								)
 							)
 						)
@@ -84407,7 +84458,7 @@ var Student = function (_React$Component) {
 									),
 									React.createElement(
 										'button',
-										{ type: 'button', className: 'btn btn-primary return', onClick: follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) },
+										{ type: 'button', className: 'btn btn-primary follow-btn', onClick: follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) },
 										follow_status ? 'Unfollow' : 'Follow'
 									)
 								),
@@ -84611,15 +84662,15 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-6 user-profile' },
 								React.createElement(
 									'h4',
-									{ className: 'student-page-name' },
+									{ className: 'user-name' },
 									data.first_name,
 									' ',
 									data.last_name
 								),
-								React.createElement('img', { src: data.img, className: 'student-img' })
+								React.createElement('img', { src: data.img, className: 'user-img' })
 							),
 							React.createElement(
 								'div',
@@ -84631,25 +84682,26 @@ var User = function (_React$Component) {
 								),
 								React.createElement(
 									'table',
-									{ className: 'table current-reads' },
+									{ className: 'table user-cur-reads' },
 									React.createElement(
 										'tbody',
 										null,
-										React.createElement(
-											'tr',
-											null,
-											current_borrows.map(function (borrow) {
-												return [React.createElement(
+										current_borrows.map(function (borrow) {
+											return [React.createElement(
+												'tr',
+												null,
+												React.createElement(
 													'td',
-													{ className: 'current-read' },
+													{ className: 'user-cur-read' },
 													React.createElement(
 														Link,
-														{ to: '/books/' + borrow.isbn, className: 'book-title' },
+														{ to: '/books/' + borrow.isbn, className: 'user-book-title' },
 														borrow.title
 													),
 													' by ',
 													borrow.author
-												), React.createElement(
+												),
+												React.createElement(
 													'td',
 													null,
 													React.createElement(
@@ -84658,17 +84710,18 @@ var User = function (_React$Component) {
 														'Due ',
 														borrow.due_date
 													)
-												), React.createElement(
+												),
+												React.createElement(
 													'td',
 													null,
 													React.createElement(
 														'button',
-														{ type: 'button', className: 'btn btn-primary return', onClick: _this3.handleClick.bind(_this3, borrow.id) },
+														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow.id) },
 														'Return'
 													)
-												)];
-											})
-										)
+												)
+											)];
+										})
 									)
 								)
 							)
@@ -84708,7 +84761,7 @@ var User = function (_React$Component) {
 													React.createElement(
 														'span',
 														{ className: 'rating' },
-														',    ',
+														'    ',
 														review.author,
 														'    ',
 														review.rating,
