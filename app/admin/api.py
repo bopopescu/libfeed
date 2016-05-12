@@ -20,12 +20,30 @@ def cur_user_newsfeed():
         followee = Student.query.filter_by(id=f.id).first()
         if followee.current_borrows:
             cur_current_borrows = list(map(mapper.copy_to_dict, followee.current_borrows))
-            current_borrows += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date_checked_out'], "%Y-%m-%d")).days < 365, cur_current_borrows)
+            current_borrows += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y")).days < 365, cur_current_borrows)
+            for c in current_borrows:
+                days_passed = (datetime.datetime.now()-datetime.datetime.strptime(c['date_checked_out'], "%m/%d/%y")).days
+                if days_passed == 0:
+                    days_passed = 'today'
+                elif days_passed == 1:
+                    days_passed = str(days_passed) + ' day ago'
+                else:
+                    days_passed = str(days_passed) + ' days ago'
+                c['days_passed'] = days_passed
         if followee.reviews:
             cur_reviews = list(map(mapper.review_to_dict, followee.reviews))
-            reviews += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date'], "%Y-%m-%d")).days < 365, cur_reviews)
-    current_borrows = sorted(current_borrows, key=lambda k: datetime.datetime.strptime(k['date_checked_out'], "%Y-%m-%d"))
-    reviews = sorted(reviews, key=lambda k: datetime.datetime.strptime(k['date'], "%Y-%m-%d"))
+            reviews += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date'], "%m/%d/%y")).days < 365, cur_reviews)
+            for r in reviews:
+                days_passed = (datetime.datetime.now()-datetime.datetime.strptime(r['date'], "%m/%d/%y")).days
+                if days_passed == 0:
+                    days_passed = 'today'
+                elif days_passed == 1:
+                    days_passed = str(days_passed) + ' day ago'
+                else:
+                    days_passed = str(days_passed) + ' days ago'
+                r['days_passed'] = days_passed
+    current_borrows = sorted(current_borrows, key=lambda k: datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y"), reverse=True)
+    reviews = sorted(reviews, key=lambda k: datetime.datetime.strptime(k['date'], "%m/%d/%y"), reverse=True)
     return jsonify({'current_borrows': current_borrows, 'reviews': reviews})
 
 @api.route('/cur_user_page', methods=["GET"])
@@ -74,7 +92,8 @@ def get_book(isbn):
 def check_out():
     data = request.get_json()
     isbn = data['isbn']
-    copy = Copy.query.filter_by(book_isbn=isbn, status='available').first()
+    copy = Copy.query.filter_by(book_isbn=isbn).first()
+    logger.debug(user.surname)
     s = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
     copy.student_id = s
     copy.date_checked_out = datetime.datetime.today()

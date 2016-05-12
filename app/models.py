@@ -41,6 +41,8 @@ class Book(db.Model):
     author = db.Column(db.String(45))
     synopsis = db.Column(db.String(3000))
     img = db.Column(db.String(256))
+    genre = db.Column(db.String(45))
+    publication_date = db.Column(db.Date)
 
 
 class FolloweeFollower(db.Model):

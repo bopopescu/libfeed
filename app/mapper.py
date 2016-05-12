@@ -44,7 +44,7 @@ def review_to_dict(review):
         'id': review.id,
         'description': review.description,
         'rating': review.rating,
-        'date': str(review.date),
+        'date': review.date.strftime("%-m/%d/%y"),
         'student': slim_student_to_dict(review.student),
         'book': slim_book_to_dict(review.book)
     }
@@ -57,7 +57,7 @@ def slim_review_to_dict(review):
         'title': review.book.title,
         'author': review.book.author,
         'isbn': review.book.isbn,
-        'date': str(review.date),
+        'date': review.date.strftime("%-m/%d/%y"),
         'student_id': review.student.id,
         'student_name': review.student.first_name + ' ' + review.student.last_name
     }
@@ -66,7 +66,7 @@ def copy_to_dict(copy):
     return {
         'id': copy.id,
         'status': copy.status,
-        'date_checked_out': str(copy.date_checked_out),
+        'date_checked_out': copy.date_checked_out.strftime("%-m/%d/%y"),
         'due_date': copy.due_date.strftime("%-m/%d/%y"),
         'book': slim_book_to_dict(copy.book),
         'student': slim_student_to_dict(copy.student)
@@ -79,6 +79,6 @@ def slim_copy_to_dict(copy):
         'title': copy.book.title,
         'author': copy.book.author,
         'isbn': copy.book.isbn,
-        'date_checked_out': str(copy.date_checked_out),
+        'date_checked_out': copy.date_checked_out.strftime("%-m/%d/%y"),
         'due_date': copy.due_date.strftime("%-m/%d/%y")
     }

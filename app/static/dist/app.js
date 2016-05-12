@@ -83934,6 +83934,8 @@ var NewsFeed = function (_React$Component) {
 													' ',
 													book.book.title
 												),
+												' ',
+												book.days_passed,
 												'.'
 											),
 											React.createElement('br', null)
@@ -83969,6 +83971,8 @@ var NewsFeed = function (_React$Component) {
 													' ',
 													review.book.title
 												),
+												' ',
+												review.days_passed,
 												'.'
 											),
 											React.createElement('br', null)
@@ -84079,7 +84083,7 @@ var Book = function (_React$Component) {
 
 			api.getBook(this.props.params.bookIsbn, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.book, checked_out: data.checked_out, available: data.available, reviews: data.book.reviews, user: data.user });
+					_this2.setState({ data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user });
 				}
 			});
 		}
@@ -84088,8 +84092,7 @@ var Book = function (_React$Component) {
 		value: function checkOut(isbn) {
 			api.checkOut(isbn);
 			this.setState({
-				checked_out: true,
-				available: this.state.available - 1
+				checked_out: true
 			});
 		}
 	}, {
@@ -84117,7 +84120,6 @@ var Book = function (_React$Component) {
 		value: function render() {
 			var data = this.state.data;
 			var checked_out = this.state.checked_out;
-			var available = this.state.available;
 			var reviews = this.state.reviews;
 			var description = "";
 			var rating = "";
@@ -84149,13 +84151,8 @@ var Book = function (_React$Component) {
 								'div',
 								{ className: 'col-xs-6 book-status' },
 								React.createElement(
-									'p',
-									{ className: 'available' },
-									available > 0 ? "Available" : "Not Available"
-								),
-								React.createElement(
 									'button',
-									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out && available > 0 ? this.checkOut.bind(this, data.isbn) : '' },
+									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out > 0 ? this.checkOut.bind(this, data.isbn) : '' },
 									!checked_out ? "Check Out" : 'Checked Out'
 								)
 							)
@@ -84518,7 +84515,7 @@ var Student = function (_React$Component) {
 												'li',
 												null,
 												React.createElement(
-													'h4',
+													'p',
 													null,
 													React.createElement(
 														Link,
@@ -84751,7 +84748,7 @@ var User = function (_React$Component) {
 												'li',
 												null,
 												React.createElement(
-													'h4',
+													'p',
 													null,
 													React.createElement(
 														Link,
@@ -84777,7 +84774,8 @@ var User = function (_React$Component) {
 												)
 											)
 										);
-									})
+									}),
+									React.createElement('hr', null)
 								)
 							),
 							React.createElement(

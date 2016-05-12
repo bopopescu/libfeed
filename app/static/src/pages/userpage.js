@@ -62,11 +62,12 @@ class User extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<h4><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></h4>
+													<p><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></p>
 													<p>"{review.description}"</p>
 												</li>
 											</div>)
 								})}
+								<hr />
 								</ul>
 							</div>
 							<div className="col-xs-12">

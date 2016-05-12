@@ -13,7 +13,7 @@ class Book extends React.Component {
 		api.getBook(this.props.params.bookIsbn, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.book, checked_out: data.checked_out, available: data.available, reviews: data.book.reviews, user: data.user});
+				this.setState({data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user});
 			}
 		});
 	}
@@ -21,8 +21,7 @@ class Book extends React.Component {
 	checkOut(isbn) {
 		api.checkOut(isbn);
 		this.setState({
-		  checked_out: true,
-		  available: this.state.available-1
+		  checked_out: true
 		});
 	}
 
@@ -47,7 +46,6 @@ class Book extends React.Component {
 	render() {
 		var data = this.state.data;
 		var checked_out = this.state.checked_out;
-		var available = this.state.available;
 		var reviews = this.state.reviews;
 		var description = "";
 		var rating = "";
@@ -61,8 +59,7 @@ class Book extends React.Component {
 								<p className="author">{data.author}</p>
 							</div>
 							<div className="col-xs-6 book-status">
-								<p className="available">{available>0 ? "Available" : "Not Available"}</p>
-								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out && available>0 ? this.checkOut.bind(this, data.isbn) : ''}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
+								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out > 0 ? this.checkOut.bind(this, data.isbn) : ''}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
 							</div>
 						</div>
 						<div className="row">
