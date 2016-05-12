@@ -25,7 +25,7 @@ class NewsFeed extends React.Component {
 						<div className="row">
 							<div className="col-xs-6">
 								<ul>
-								{data.current_borrows.map( book => {
+								{data.borrows.map( book => {
 									return (<div className="news-list-item"><li><img src={book.student.img} className='thumbnail' />
 											<Link to={'/students/'+book.student.id} className="student-name">{book.student.first_name} {book.student.last_name}</Link> checked out
 											<Link to={'/books/'+book.book.isbn} className="book-title"> {book.book.title}</Link> {book.days_passed}.</li><br /></div>)

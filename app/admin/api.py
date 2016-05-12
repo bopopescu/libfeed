@@ -19,7 +19,7 @@ def cur_user_newsfeed():
     for f in cur_user.followees:
         followee = Student.query.filter_by(id=f.id).first()
         if followee.borrows:
-            cur_borrows = list(map(mapper.copy_to_dict, followee.borrows))
+            cur_borrows = list(map(mapper.borrow_to_dict, followee.borrows))
             borrows += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y")).days < 365, cur_borrows)
             for c in borrows:
                 days_passed = (datetime.datetime.now()-datetime.datetime.strptime(c['date_checked_out'], "%m/%d/%y")).days

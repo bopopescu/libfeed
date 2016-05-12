@@ -83912,7 +83912,7 @@ var NewsFeed = function (_React$Component) {
 								React.createElement(
 									'ul',
 									null,
-									data.current_borrows.map(function (book) {
+									data.borrows.map(function (book) {
 										return React.createElement(
 											'div',
 											{ className: 'news-list-item' },
@@ -84135,16 +84135,20 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-6 book-header' },
 								React.createElement(
-									'h3',
-									{ className: 'book-title-main' },
-									data.title
-								),
-								React.createElement(
-									'p',
-									{ className: 'author' },
-									data.author
+									'div',
+									{ className: 'book-info' },
+									React.createElement(
+										'h3',
+										{ className: 'book-title-main' },
+										data.title
+									),
+									React.createElement(
+										'p',
+										{ className: 'author' },
+										data.author
+									)
 								)
 							),
 							React.createElement(
@@ -84162,7 +84166,7 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-6 book-header' },
 								React.createElement('img', { src: data.img, className: 'book-img' })
 							),
 							React.createElement(
@@ -84170,7 +84174,7 @@ var Book = function (_React$Component) {
 								{ className: 'col-xs-6' },
 								React.createElement(
 									'p',
-									null,
+									{ className: 'synopsis' },
 									data.synopsis
 								)
 							)
@@ -84200,26 +84204,30 @@ var Book = function (_React$Component) {
 												null,
 												React.createElement(
 													'p',
-													null,
+													{ className: 'student-name' },
 													React.createElement(
 														Link,
 														{ to: '/students/' + review.student_id },
 														review.student_name
 													),
-													' ',
+													'    ',
 													React.createElement(
 														'span',
-														{ className: 'rating' },
+														{ className: 'user-detail' },
 														review.rating,
 														' stars'
+													),
+													React.createElement(
+														'span',
+														{ className: 'user-detail' },
+														'    ',
+														review.date
 													)
 												),
 												React.createElement(
 													'p',
-													null,
-													'"',
-													review.description,
-													'"'
+													{ className: 'review-descrip' },
+													review.description
 												)
 											)
 										);
@@ -84442,13 +84450,13 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-6 user-profile' },
 								React.createElement(
 									'div',
 									{ className: 'student-page-name' },
 									React.createElement(
 										'h4',
-										null,
+										{ className: 'user-name' },
 										data.first_name,
 										' ',
 										data.last_name
@@ -84459,8 +84467,12 @@ var Student = function (_React$Component) {
 										follow_status ? 'Unfollow' : 'Follow'
 									)
 								),
-								React.createElement('br', null),
-								React.createElement('br', null),
+								React.createElement(
+									'p',
+									{ className: 'user-detail' },
+									data.grade,
+									'th Grade'
+								),
 								React.createElement('img', { src: data.img, className: 'student-img' })
 							),
 							React.createElement(
@@ -84471,20 +84483,25 @@ var Student = function (_React$Component) {
 									null,
 									'Currently Reading'
 								),
+								React.createElement('hr', null),
 								React.createElement(
 									'ul',
 									null,
-									data.current_borrows.map(function (book) {
+									data.borrows.map(function (book) {
 										return React.createElement(
 											'li',
-											{ className: 'current-read' },
+											{ className: 'user-current-read' },
 											React.createElement(
 												Link,
-												{ to: '/books/' + book.isbn, className: 'book-title' },
+												{ to: '/books/' + book.isbn, className: 'user-book-title' },
 												book.title
 											),
-											' by ',
-											book.author
+											React.createElement(
+												'span',
+												{ className: 'user-detail' },
+												'    ',
+												book.author
+											)
 										);
 									})
 								)
@@ -84497,7 +84514,7 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-6' },
 								React.createElement(
 									'h3',
 									null,
@@ -84519,12 +84536,12 @@ var Student = function (_React$Component) {
 													null,
 													React.createElement(
 														Link,
-														{ to: '/books/' + review.isbn, className: 'book-title' },
+														{ to: '/books/' + review.isbn, className: 'user-book-title' },
 														review.title
 													),
 													React.createElement(
 														'span',
-														{ className: 'rating' },
+														{ className: 'user-detail' },
 														',    ',
 														review.author,
 														'    ',
@@ -84534,16 +84551,49 @@ var Student = function (_React$Component) {
 												),
 												React.createElement(
 													'p',
-													null,
-													'"',
-													review.description,
-													'"'
+													{ className: 'review-descrip' },
+													review.description
 												)
 											)
 										);
 									})
 								)
 							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6 student-past-reads' },
+								React.createElement(
+									'h6',
+									null,
+									'Past Reads'
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'ul',
+									null,
+									data.returns.map(function (book) {
+										return React.createElement(
+											'li',
+											{ className: 'user-past-read' },
+											React.createElement(
+												Link,
+												{ to: '/books/' + book.isbn, className: 'user-book-title' },
+												book.title
+											),
+											React.createElement(
+												'span',
+												{ className: 'user-detail' },
+												'    ',
+												book.author
+											)
+										);
+									})
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
 								{ className: 'col-xs-12' },
@@ -84565,7 +84615,7 @@ var Student = function (_React$Component) {
 												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
 												React.createElement(
 													'p',
-													null,
+													{ className: 'followers' },
 													React.createElement(
 														Link,
 														{ to: '/students/' + follower.id },
@@ -84626,18 +84676,27 @@ var User = function (_React$Component) {
 			var _this2 = this;
 
 			api.getCurUserPage(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, borrows: data.student.borrows });
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, borrows: data.student.borrows, returns: data.student.returns });
 			});
 		}
 	}, {
 		key: 'handleClick',
-		value: function handleClick(isbn) {
-			api.returnBook(isbn);
+		value: function handleClick(borrow) {
+			api.returnBook(borrow.isbn);
 			var borrows = this.state.borrows.filter(function (cur_borrow) {
-				return cur_borrow.id !== id;
+				return cur_borrow.isbn !== borrow.isbn;
 			});
+			var today = new Date();
+			today = (today.getMonth() + 1).toString() + '/' + today.getDate().toString() + '/' + today.getYear().toString().substring(1);
+			var r = { 'author': borrow.author, 'date_returned': today, 'isbn': borrow.isbn, 'title': borrow.title };
+			var returns = this.state.returns;
+			returns.push(r);
+			console.log('here');
+			console.log(this.state.returns);
+			console.log(returns);
 			this.setState({
-				borrows: borrows
+				borrows: borrows,
+				returns: returns
 			});
 		}
 	}, {
@@ -84647,7 +84706,9 @@ var User = function (_React$Component) {
 
 			var data = this.state.data;
 			var borrows = this.state.borrows;
+			var returns = this.state.returns;
 			if (data) {
+				console.log(returns);
 				return React.createElement(
 					'div',
 					{ id: 'user-page' },
@@ -84666,6 +84727,12 @@ var User = function (_React$Component) {
 									data.first_name,
 									' ',
 									data.last_name
+								),
+								React.createElement(
+									'p',
+									{ className: 'user-detail' },
+									data.grade,
+									'th Grade'
 								),
 								React.createElement('img', { src: data.img, className: 'user-img' })
 							),
@@ -84695,15 +84762,19 @@ var User = function (_React$Component) {
 														{ to: '/books/' + borrow.isbn, className: 'user-book-title' },
 														borrow.title
 													),
-													' by ',
-													borrow.author
+													React.createElement(
+														'span',
+														{ className: 'user-detail' },
+														'    ',
+														borrow.author
+													)
 												),
 												React.createElement(
 													'td',
 													null,
 													React.createElement(
-														'p',
-														null,
+														'span',
+														{ className: 'user-due-date' },
 														'Due ',
 														borrow.due_date
 													)
@@ -84713,7 +84784,7 @@ var User = function (_React$Component) {
 													null,
 													React.createElement(
 														'button',
-														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow.isbn) },
+														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow) },
 														'Return'
 													)
 												)
@@ -84730,7 +84801,7 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-6' },
 								React.createElement(
 									'h3',
 									null,
@@ -84752,25 +84823,24 @@ var User = function (_React$Component) {
 													null,
 													React.createElement(
 														Link,
-														{ to: '/books/' + review.isbn, className: 'book-title' },
+														{ to: '/books/' + review.isbn, className: 'user-book-title' },
 														review.title
 													),
 													React.createElement(
 														'span',
-														{ className: 'rating' },
+														{ className: 'user-detail' },
 														'    ',
 														review.author,
 														'    ',
 														review.rating,
-														' stars'
+														' stars    ',
+														review.date
 													)
 												),
 												React.createElement(
 													'p',
-													null,
-													'"',
-													review.description,
-													'"'
+													{ className: 'review-descrip' },
+													review.description
 												)
 											)
 										);
@@ -84778,6 +84848,58 @@ var User = function (_React$Component) {
 									React.createElement('hr', null)
 								)
 							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6 user-past' },
+								React.createElement(
+									'h6',
+									null,
+									'Past Reads'
+								),
+								React.createElement(
+									'table',
+									{ className: 'table user-past-reads' },
+									React.createElement(
+										'tbody',
+										null,
+										returns.map(function (r) {
+											return [React.createElement(
+												'tr',
+												null,
+												React.createElement(
+													'td',
+													{ className: 'user-past-read' },
+													React.createElement(
+														Link,
+														{ to: '/books/' + r.isbn, className: 'user-book-title' },
+														r.title
+													),
+													React.createElement(
+														'span',
+														{ className: 'user-detail' },
+														'    ',
+														r.author
+													)
+												),
+												React.createElement(
+													'td',
+													null,
+													React.createElement(
+														'span',
+														{ className: 'user-return-date' },
+														'Returned ',
+														r.date_returned
+													)
+												)
+											)];
+										})
+									)
+								)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
 								{ className: 'col-xs-12' },
@@ -84799,7 +84921,7 @@ var User = function (_React$Component) {
 												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
 												React.createElement(
 													'p',
-													null,
+													{ className: 'followers' },
 													React.createElement(
 														Link,
 														{ to: '/students/' + follower.id },

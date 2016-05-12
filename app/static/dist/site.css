@@ -88,6 +88,11 @@ td {
     -webkit-font-smoothing: antialiased;
 }
 
+hr {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 /************* NAVBAR *************/
 .navbar-default {
     background-color: white;
@@ -129,8 +134,16 @@ td {
     border-radius: 100px;
 }
 
-.student-page-name h4 {
+.student-page-name {
+    display: inline-block;
+}
+
+.student-page-name h4{
     float: left;
+}
+
+.student-past-reads {
+    margin-top: 14px;
 }
 
 .student-page-name .btn {
@@ -180,16 +193,41 @@ td {
     font-style: italic;
     color: #1eb6a7;
     float: left;
+    font-size: 14px;
 }
 
 .author {
-    float: left;
-    margin-top: 27px;
+    margin-top: 21px;
     margin-left: 10px;
+    font-size: 13px;
+    float: right;
+}
+
+.synopsis {
+    font-size: 13px;
+}
+
+.book-header {
+    text-align: center;
+}
+
+.book-info {
+    display: inline-block;
+}
+
+.student-name a{
+    color: #1eb6a7;
+    font-size: 13px
 }
 
 .student-name {
     color: #1eb6a7;
+    font-size: 13px
+}
+
+
+.review-form {
+    padding-bottom: 50px;
 }
 
 .news-list-item a:hover {
@@ -217,6 +255,7 @@ td {
     padding: 2px;
     background-color: #1eb6a7;
     border-color: white;
+    font-size: 13px;
 }
 
 .checkout:hover {
@@ -247,6 +286,9 @@ td {
     margin-bottom: 20px;
 }
 
+.book-img {
+    max-height: 300px;
+}
 /************* USER PAGE *************/
 
 .return-btn {
@@ -268,8 +310,16 @@ td {
     border-color: white;
 }
 
-.user-cur-reads td, a, p, .btn{
-    font-size: 13px;
+.user-cur-reads td .btn{
+    font-size: 11px;
+}
+
+.user-past-reads td {
+    font-size: 11px;
+}
+
+.user-past {
+    margin-top: 14px;
 }
 
 .user-profile {
@@ -284,8 +334,46 @@ td {
 .user-book-title {
     font-style: italic;
     color: #1eb6a7;
+    font-size: 13px;
 }
 
+.user-detail {
+    text-transform: uppercase;
+    font-size: 10px;
+    opacity: .5;
+}
+
+.user-due-date {
+    text-transform: uppercase;
+    font-size: 11px;
+    opacity: .5;
+    color: red;
+    line-height: 2.2em;
+    font-weight: bold;
+}
+
+.user-return-date {
+    text-transform: uppercase;
+    font-size: 11px;
+    opacity: .5;
+    line-height: 2.2em;
+}
+
+.review-descrip {
+    font-size: 12px;
+}
+
+.followers a {
+    font-size: 12px;
+}
+
+.follow-row {
+    padding-bottom: 50px;
+}
+
+.user-name {
+    margin-bottom: 0;
+}
 /************* SEARCH *************/
 
 .searchButton {
@@ -326,6 +414,7 @@ button, input, select, textarea {
 .book-title {
     font-style: italic;
     color: #1eb6a7;
+    font-size: 13px;
 }
 
 .newsfeed li {

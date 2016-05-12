@@ -54,20 +54,22 @@ class Book extends React.Component {
 				<div id="book-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6">
-								<h3 className="book-title-main">{data.title}</h3>
-								<p className="author">{data.author}</p>
+							<div className="col-xs-6 book-header">
+								<div className="book-info">
+									<h3 className="book-title-main">{data.title}</h3>
+									<p className="author">{data.author}</p>
+								</div>
 							</div>
 							<div className="col-xs-6 book-status">
 								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out > 0 ? this.checkOut.bind(this, data.isbn) : ''}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
 							</div>
 						</div>
 						<div className="row">
-							<div className="col-xs-6">
+							<div className="col-xs-6 book-header">
 								<img src={data.img} className="book-img"/>
 							</div>
 							<div className="col-xs-6">
-								<p>{data.synopsis}</p>
+								<p className="synopsis">{data.synopsis}</p>
 							</div>
 						</div>
 						<br />
@@ -79,8 +81,11 @@ class Book extends React.Component {
 										return (<div>
 													<hr />
 													<li>
-														<p><Link to={'/students/'+review.student_id}>{review.student_name}</Link> <span className="rating">{review.rating} stars</span></p>
-														<p>"{review.description}"</p>
+														<p className="student-name"><Link to={'/students/'+review.student_id}>{review.student_name}</Link>&nbsp;&nbsp;&nbsp;&nbsp;
+														<span className="user-detail">{review.rating} stars</span>
+														<span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{review.date}</span>
+														</p>
+														<p className="review-descrip">{review.description}</p>
 													</li>
 												</div>)
 									})}

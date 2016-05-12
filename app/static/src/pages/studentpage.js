@@ -40,19 +40,20 @@ class Student extends React.Component {
 				<div id="student-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6">
+							<div className="col-xs-6 user-profile">
 								<div className="student-page-name">
-									<h4>{data.first_name} {data.last_name}</h4>
+									<h4 className="user-name">{data.first_name} {data.last_name}</h4>
 									<button type="button" className="btn btn-primary follow-btn" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
 								</div>
-								<br /><br />
+								<p className="user-detail">{data.grade}th Grade</p>
 								<img src={data.img} className="student-img"/>
 							</div>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
+								<hr />
 								<ul>
-								{data.current_borrows.map( book => {
-									return (<li className="current-read"><Link to={'/books/'+book.isbn} className="book-title">{book.title}</Link> by {book.author}</li>)
+								{data.borrows.map( book => {
+									return (<li className="user-current-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{book.author}</span></li>)
 								})}
 								</ul>
 							</div>
@@ -60,20 +61,33 @@ class Student extends React.Component {
 						<br />
 						<br />
 						<div className="row">
-							<div className="col-xs-12">
+							<div className="col-xs-6">
 								<h3>Reviews</h3>
 								<ul>
 								{data.reviews.map( review => {
 									return (<div>
 												<hr />
 												<li>
-													<p><Link to={'/books/'+review.isbn} className="book-title">{review.title}</Link><span className="rating">,&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars</span></p>
-													<p>"{review.description}"</p>
+													<p><Link to={'/books/'+review.isbn} className="user-book-title">{review.title}</Link>
+													<span className="user-detail">,&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;
+													{review.rating} stars</span></p>
+													<p className="review-descrip">{review.description}</p>
 												</li>
 											</div>)
 								})}
 								</ul>
 							</div>
+							<div className="col-xs-6 student-past-reads">
+								<h6>Past Reads</h6>
+								<hr />
+								<ul>
+								{data.returns.map( book => {
+									return (<li className="user-past-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{book.author}</span></li>)
+								})}
+								</ul>
+							</div>
+						</div>
+						<div className="row follow-row">
 							<div className="col-xs-12">
 								<h3>Followers</h3>
 								<ul>
@@ -81,7 +95,7 @@ class Student extends React.Component {
 									return (<div className="list">
 												<li>
 													<img src={follower.img} className="thumbnail"/>
-													<p><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
+													<p className="followers"><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
 												</li>
 											</div>)
 								})}

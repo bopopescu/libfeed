@@ -96,5 +96,7 @@ def slim_return_to_dict(return_b):
     return {
         'isbn': return_b.isbn,
         'student_id': return_b.student_id,
-        'date_returned': return_b.date_returned.strftime("%-m/%d/%y")
+        'date_returned': return_b.date_returned.strftime("%-m/%d/%y"),
+        'title': return_b.book.title,
+        'author': return_b.book.author
     }
