@@ -83707,12 +83707,12 @@ function search(term, cb) {
 	});
 }
 
-function returnBook(copy_id) {
+function returnBook(isbn) {
 	var options = {
 		url: API + 'return_book',
 		method: 'POST',
 		json: {
-			"id": copy_id
+			"isbn": isbn
 		}
 	};
 	request(options, function (error, response, body) {
@@ -84626,18 +84626,18 @@ var User = function (_React$Component) {
 			var _this2 = this;
 
 			api.getCurUserPage(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, current_borrows: data.student.current_borrows });
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, borrows: data.student.borrows });
 			});
 		}
 	}, {
 		key: 'handleClick',
-		value: function handleClick(id) {
-			api.returnBook(id);
-			var current_borrows = this.state.current_borrows.filter(function (cur_borrow) {
+		value: function handleClick(isbn) {
+			api.returnBook(isbn);
+			var borrows = this.state.borrows.filter(function (cur_borrow) {
 				return cur_borrow.id !== id;
 			});
 			this.setState({
-				current_borrows: current_borrows
+				borrows: borrows
 			});
 		}
 	}, {
@@ -84646,7 +84646,7 @@ var User = function (_React$Component) {
 			var _this3 = this;
 
 			var data = this.state.data;
-			var current_borrows = this.state.current_borrows;
+			var borrows = this.state.borrows;
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84683,7 +84683,7 @@ var User = function (_React$Component) {
 									React.createElement(
 										'tbody',
 										null,
-										current_borrows.map(function (borrow) {
+										borrows.map(function (borrow) {
 											return [React.createElement(
 												'tr',
 												null,
@@ -84713,7 +84713,7 @@ var User = function (_React$Component) {
 													null,
 													React.createElement(
 														'button',
-														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow.id) },
+														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow.isbn) },
 														'Return'
 													)
 												)

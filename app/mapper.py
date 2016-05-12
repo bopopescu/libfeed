@@ -9,7 +9,8 @@ def student_to_dict(student):
         'img': student.img,
         'followees': list(map(slim_student_to_dict, student.followees)),
         'followers': list(map(slim_student_to_dict, student.followers)),
-        'current_borrows': list(map(slim_copy_to_dict, student.current_borrows)),
+        'borrows': list(map(slim_borrow_to_dict, student.borrows)),
+        'returns': list(map(slim_return_to_dict, student.returns)),
         'reviews': list(map(slim_review_to_dict, student.reviews))
     }
 
@@ -62,23 +63,38 @@ def slim_review_to_dict(review):
         'student_name': review.student.first_name + ' ' + review.student.last_name
     }
 
-def copy_to_dict(copy):
+def borrow_to_dict(borrow):
     return {
-        'id': copy.id,
-        'status': copy.status,
-        'date_checked_out': copy.date_checked_out.strftime("%-m/%d/%y"),
-        'due_date': copy.due_date.strftime("%-m/%d/%y"),
-        'book': slim_book_to_dict(copy.book),
-        'student': slim_student_to_dict(copy.student)
+        'isbn': borrow.isbn,
+        'book': slim_book_to_dict(borrow.book),
+        'student_id': borrow.student_id,
+        'student': slim_student_to_dict(borrow.student),
+        'date_checked_out': borrow.date_checked_out.strftime("%-m/%d/%y"),
+        'due_date': borrow.due_date.strftime("%-m/%d/%y")
     }
 
-def slim_copy_to_dict(copy):
+def slim_borrow_to_dict(borrow):
     return {
-        'id': copy.id,
-        'status': copy.status,
-        'title': copy.book.title,
-        'author': copy.book.author,
-        'isbn': copy.book.isbn,
-        'date_checked_out': copy.date_checked_out.strftime("%-m/%d/%y"),
-        'due_date': copy.due_date.strftime("%-m/%d/%y")
+        'isbn': borrow.isbn,
+        'student_id': borrow.student_id,
+        'date_checked_out': borrow.date_checked_out.strftime("%-m/%d/%y"),
+        'due_date': borrow.due_date.strftime("%-m/%d/%y"),
+        'title': borrow.book.title,
+        'author': borrow.book.author
+    }
+
+def return_to_dict(return_b):
+    return {
+        'isbn': return_b.isbn,
+        'book': slim_book_to_dict(return_b.book),
+        'student_id': return_b.student_id,
+        'student': slim_student_to_dict(return_b.student),
+        'date_returned': return_b.date_returned.strftime("%-m/%d/%y")
+    }
+
+def slim_return_to_dict(return_b):
+    return {
+        'isbn': return_b.isbn,
+        'student_id': return_b.student_id,
+        'date_returned': return_b.date_returned.strftime("%-m/%d/%y")
     }

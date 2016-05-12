@@ -91,12 +91,12 @@ function search(term, cb){
 	})
 }
 
-function returnBook(copy_id){
+function returnBook(isbn){
 	var options = {
 		url: API+'return_book',
 		method: 'POST',
 		json: {
-			"id": copy_id
+			"isbn": isbn
 		}
 	};
 	request(options, (error, response, body) => {

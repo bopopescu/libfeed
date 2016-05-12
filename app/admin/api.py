@@ -6,7 +6,7 @@ from sqlalchemy import or_, and_, update
 
 from app import db, mapper, logger
 
-from app.models import Student, Book, Copy, FolloweeFollower, Review
+from app.models import Student, Book, Borrow, FolloweeFollower, Review, Return
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -14,14 +14,14 @@ api = Blueprint('api', __name__, url_prefix='/api')
 @login_required
 def cur_user_newsfeed():
     cur_user =  Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first()
-    current_borrows = []
+    borrows = []
     reviews = []
     for f in cur_user.followees:
         followee = Student.query.filter_by(id=f.id).first()
-        if followee.current_borrows:
-            cur_current_borrows = list(map(mapper.copy_to_dict, followee.current_borrows))
-            current_borrows += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y")).days < 365, cur_current_borrows)
-            for c in current_borrows:
+        if followee.borrows:
+            cur_borrows = list(map(mapper.copy_to_dict, followee.borrows))
+            borrows += filter(lambda k: (datetime.datetime.now()-datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y")).days < 365, cur_borrows)
+            for c in borrows:
                 days_passed = (datetime.datetime.now()-datetime.datetime.strptime(c['date_checked_out'], "%m/%d/%y")).days
                 if days_passed == 0:
                     days_passed = 'today'
@@ -42,9 +42,9 @@ def cur_user_newsfeed():
                 else:
                     days_passed = str(days_passed) + ' days ago'
                 r['days_passed'] = days_passed
-    current_borrows = sorted(current_borrows, key=lambda k: datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y"), reverse=True)
+    borrows = sorted(borrows, key=lambda k: datetime.datetime.strptime(k['date_checked_out'], "%m/%d/%y"), reverse=True)
     reviews = sorted(reviews, key=lambda k: datetime.datetime.strptime(k['date'], "%m/%d/%y"), reverse=True)
-    return jsonify({'current_borrows': current_borrows, 'reviews': reviews})
+    return jsonify({'borrows': borrows, 'reviews': reviews})
 
 @api.route('/cur_user_page', methods=["GET"])
 @login_required
@@ -55,10 +55,12 @@ def cur_user_page():
 @login_required
 def return_book():
     data = request.get_json()
-    id = data['id']
-    copy = Copy.query.filter_by(id=id).first()
-    copy.student_id = None
-    copy.status = 'available'
+    isbn = data['isbn']
+    student_id = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
+    borrow = Borrow.query.filter(and_(Borrow.isbn==isbn, Borrow.student_id==student_id)).first()
+    db.session.delete(borrow)
+    return_b = Return(student_id=student_id, isbn=isbn, date_returned=datetime.datetime.now())
+    db.session.add(return_b)
     db.session.commit()
     return 'OK'
 
@@ -77,28 +79,19 @@ def get_student(id):
 def get_book(isbn):
     s = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first()
     checked_out = False
-    available = 0
-    for b in s.current_borrows:
-        if b.book_isbn == isbn:
+    for b in s.borrows:
+        if b.isbn == isbn:
             checked_out = True
-    copies = Copy.query.filter_by(book_isbn=isbn).all()
-    for c in copies:
-        if c.status == 'available':
-            available += 1
-    return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first()), 'checked_out': checked_out, 'available': available, 'user': {'id': s.id, 'first_name': s.first_name, 'last_name': s.last_name}})
+    return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first()), 'checked_out': checked_out, 'user': {'id': s.id, 'first_name': s.first_name, 'last_name': s.last_name}})
 
 @api.route('/check_out', methods=["POST"])
 @login_required
 def check_out():
     data = request.get_json()
     isbn = data['isbn']
-    copy = Copy.query.filter_by(book_isbn=isbn).first()
-    logger.debug(user.surname)
-    s = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
-    copy.student_id = s
-    copy.date_checked_out = datetime.datetime.today()
-    copy.due_date = datetime.datetime.today() + datetime.timedelta(days=14)
-    copy.status = 'checked_out'
+    student_id = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
+    borrow = Borrow(isbn=isbn, student_id=student_id, date_checked_out=datetime.datetime.today(), due_date=(datetime.datetime.today() + datetime.timedelta(days=14)))
+    db.session.add(borrow)
     db.session.commit()
     return 'OK'
 
@@ -111,7 +104,7 @@ def write_review():
     rating = data['rating']
     s = Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first().id
     b = Book.query.filter_by(isbn=isbn)
-    r = Review(description=description, rating=rating, date=datetime.datetime.today(), student_id=s, book_isbn=isbn)
+    r = Review(description=description, rating=rating, date=datetime.datetime.today(), student_id=s, isbn=isbn)
     db.session.add(r)
     db.session.commit()
     return 'OK'

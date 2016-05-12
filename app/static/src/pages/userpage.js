@@ -12,23 +12,23 @@ class User extends React.Component {
 	componentDidMount() {
 		api.getCurUserPage((err, data) => {
 			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
-			else this.setState({data: data.student, current_borrows: data.student.current_borrows});
+			else this.setState({data: data.student, borrows: data.student.borrows});
 		});
 	}
 
-	handleClick(id) {
-		api.returnBook(id);
-	  	var current_borrows = this.state.current_borrows.filter(function(cur_borrow){
+	handleClick(isbn) {
+		api.returnBook(isbn);
+	  	var borrows = this.state.borrows.filter(function(cur_borrow){
 	      return cur_borrow.id !== id;
 	    });
 	    this.setState({
-	      current_borrows: current_borrows
+	      borrows: borrows
 	    });
 	}
 
 	render() {
 		var data = this.state.data;
-		var current_borrows = this.state.current_borrows;
+		var borrows = this.state.borrows;
 		if (data) {
 			return (
 				<div id="user-page">
@@ -42,11 +42,11 @@ class User extends React.Component {
 								<h6>Currently Reading</h6>
 								<table className="table user-cur-reads">
   									<tbody>
-										{current_borrows.map( borrow => {
+										{borrows.map( borrow => {
 											return ([<tr><td className="user-cur-read">
 													<Link to={'/books/'+borrow.isbn} className="user-book-title">{borrow.title}</Link> by {borrow.author}</td>
 													<td><p>Due {borrow.due_date}</p></td>
-													<td><button type="button" className="btn btn-primary return-btn" onClick={this.handleClick.bind(this, borrow.id)}>Return</button></td></tr>])
+													<td><button type="button" className="btn btn-primary return-btn" onClick={this.handleClick.bind(this, borrow.isbn)}>Return</button></td></tr>])
 										})}
 									</tbody>
 								</table>

@@ -3,6 +3,7 @@ from sqlalchemy.orm import relationship
 import flask.ext.whooshalchemy as whooshalchemy
 from app import db, app
 
+
 class Student(db.Model):
     __tablename__ = 'student'
     __searchable__ = ['first_name', 'last_name']
@@ -20,16 +21,6 @@ class Student(db.Model):
                                secondary="followee_follower",
                                primaryjoin=("Student.id==followee_follower.c.follower_id"),
                                secondaryjoin=("Student.id==followee_follower.c.followee_id"))
-
-class Teacher(db.Model):
-    __tablename__ = 'teacher'
-    __searchable__ = ['first_name', 'last_name']
-
-    id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(45))
-    last_name = db.Column(db.String(45))
-    grade = db.Column(db.Integer)
-    img = db.Column(db.String(256))
 
 
 class Book(db.Model):
@@ -53,6 +44,17 @@ class FolloweeFollower(db.Model):
     date = db.Column(db.Date)
 
 
+class Borrow(db.Model):
+    __tablename__ = 'borrow'
+
+    isbn = db.Column(db.String(45), db.ForeignKey('book.isbn'), primary_key=True)
+    book = orm.relationship('Book')
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
+    student = orm.relationship('Student', backref='borrows')
+    date_checked_out = db.Column(db.Date)
+    due_date = db.Column(db.Date)
+
+
 class Review(db.Model):
     __tablename__ = 'review'
 
@@ -62,33 +64,19 @@ class Review(db.Model):
     date = db.Column(db.Date)
     student_id = db.Column(db.Integer, ForeignKey('student.id'))
     student = orm.relationship('Student', backref='reviews')
-    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
+    isbn = db.Column(db.String, ForeignKey('book.isbn'))
     book = orm.relationship('Book', backref='reviews')
 
 
-class Copy(db.Model):
-    __tablename__ = 'copy'
+class Return(db.Model):
+    __tablename__ = 'return'
 
-    id = db.Column(db.Integer, primary_key=True)
-    status = db.Column(db.String(45))
-    date_checked_out = db.Column(db.Date)
-    due_date = db.Column(db.Date)
-    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
-    book = orm.relationship('Book', backref='current_borrows')
-    student_id = db.Column(db.Integer, ForeignKey('student.id'))
-    student = orm.relationship('Student', backref='current_borrows')
+    isbn = db.Column(db.String(45), db.ForeignKey('book.isbn'), primary_key=True)
+    book = orm.relationship('Book')
+    student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
+    student = orm.relationship('Student', backref='returns')
+    date_returned = db.Column(db.Date)
 
-
-class History(db.Model):
-    __tablename__ = 'history'
-
-    id = db.Column(db.Integer, primary_key=True)
-    date_turned_in = db.Column(db.Date)
-    student_id = db.Column(db.Integer, ForeignKey('student.id'))
-    person = orm.relationship('Student', backref='history')
-    book_isbn = db.Column(db.String, ForeignKey('book.isbn'))
-    book = orm.relationship('Book', backref='history')
 
 whooshalchemy.whoosh_index(app, Student)
-whooshalchemy.whoosh_index(app, Teacher)
 whooshalchemy.whoosh_index(app, Book)
