@@ -34,6 +34,7 @@ class Book(db.Model):
     img = db.Column(db.String(256))
     genre = db.Column(db.String(45))
     publication_date = db.Column(db.Date)
+    page_count = db.Column(db.Integer)
 
 
 class FolloweeFollower(db.Model):

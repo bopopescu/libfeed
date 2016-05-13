@@ -84,6 +84,12 @@ def get_book(isbn):
             checked_out = True
     return jsonify({'book': mapper.book_to_dict(Book.query.filter_by(isbn=isbn).first()), 'checked_out': checked_out, 'user': {'id': s.id, 'first_name': s.first_name, 'last_name': s.last_name}})
 
+@api.route('/books', methods=["GET"])
+@login_required
+def get_books():
+    return jsonify({'books': list(map(mapper.book_to_dict, Book.query.all()))})
+
+
 @api.route('/check_out', methods=["POST"])
 @login_required
 def check_out():

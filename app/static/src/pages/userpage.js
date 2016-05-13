@@ -26,9 +26,6 @@ class User extends React.Component {
 		var r = {'author': borrow.author, 'date_returned': today, 'isbn': borrow.isbn, 'title': borrow.title};
 		var returns = this.state.returns;
 		returns.push(r);
-		console.log('here');
-		console.log(this.state.returns);
-		console.log(returns);
 		this.setState({
 	      borrows: borrows,
 		  returns: returns
@@ -40,7 +37,6 @@ class User extends React.Component {
 		var borrows = this.state.borrows;
 		var returns = this.state.returns;
 		if (data) {
-			console.log(returns);
 			return (
 				<div id="user-page">
 					<div className="container-fluid">

@@ -55,6 +55,15 @@ function getBook(isbn, cb){
 	})
 }
 
+function getBooks(cb){
+	request(API+'books', (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
+
 function checkOut(isbn, cb) {
 	var options = {
 		url: API+'check_out',
@@ -118,6 +127,7 @@ module.exports = {
 	getCurUserPage: getCurUserPage,
 	getStudent: getStudent,
 	getBook: getBook,
+	getBooks: getBooks,
 	search: search,
 	returnBook: returnBook,
 	follow: follow,

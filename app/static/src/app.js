@@ -8,6 +8,7 @@ var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
 var UserPage = require('./pages/userpage.js');
+var Browse = require('./pages/browse.js');
 var SearchResults = require('./pages/searchresults.js');
 
 var Router = router.Router;
@@ -26,6 +27,7 @@ class App extends React.Component {
 					<Route path="/search/:searchTerm" component={SearchResults} />
 					<Route path="/newsfeed" component={NewsFeed} />
 					<Route path="/user" component={UserPage} />
+					<Route path="/browse" component={Browse} />
 				</Router>
 			</div>
 		)
