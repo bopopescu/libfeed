@@ -84154,11 +84154,6 @@ var Book = function (_React$Component) {
 										'h3',
 										{ className: 'book-title-main' },
 										data.title
-									),
-									React.createElement(
-										'p',
-										{ className: 'author' },
-										data.author
 									)
 								)
 							),
@@ -84177,8 +84172,44 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 book-header' },
+								{ className: 'col-xs-3 book-header' },
 								React.createElement('img', { src: data.img, className: 'book-img' })
+							),
+							React.createElement(
+								'div',
+								{ className: 'col-xs-3' },
+								React.createElement(
+									'p',
+									{ className: 'user-detail' },
+									'Authors'
+								),
+								React.createElement(
+									'ul',
+									{ className: 'authors' },
+									data.authors.map(function (author) {
+										return React.createElement(
+											'li',
+											null,
+											author.name
+										);
+									})
+								),
+								React.createElement(
+									'p',
+									{ className: 'user-detail' },
+									'Genres'
+								),
+								React.createElement(
+									'ul',
+									{ className: 'genres' },
+									data.genres.map(function (genre) {
+										return React.createElement(
+											'li',
+											null,
+											genre.description
+										);
+									})
+								)
 							),
 							React.createElement(
 								'div',
@@ -84313,7 +84344,6 @@ var Browse = function (_React$Component) {
 		value: function render() {
 			var data = this.state.data;
 			if (data) {
-				console.log(data);
 				return React.createElement(
 					'div',
 					{ id: 'book-page' },
@@ -84344,21 +84374,33 @@ var Browse = function (_React$Component) {
 												{ className: 'student-name' },
 												React.createElement(
 													Link,
-													{ to: '/book/' + book.isbn },
+													{ to: '/books/' + book.isbn },
 													book.title
-												),
-												'    ',
-												React.createElement(
-													'span',
-													{ className: 'user-detail' },
-													book.author
-												),
-												React.createElement(
-													'span',
-													{ className: 'user-detail' },
-													'    ',
-													book.genre
 												)
+											),
+											React.createElement(
+												'ul',
+												{ className: 'browse-authors' },
+												book.authors.map(function (author) {
+													return React.createElement(
+														'li',
+														null,
+														author.name,
+														'        '
+													);
+												})
+											),
+											React.createElement(
+												'ul',
+												{ className: 'browse-genres' },
+												book.genres.map(function (genre) {
+													return React.createElement(
+														'li',
+														null,
+														genre.description,
+														'        '
+													);
+												})
 											),
 											React.createElement(
 												'p',
@@ -84483,9 +84525,7 @@ var SearchResults = function (_React$Component) {
 								return React.createElement(
 									Link,
 									{ to: '/books/' + book.isbn, className: 'list-group-item' },
-									book.title,
-									', ',
-									book.author
+									book.title
 								);
 							})
 						),
@@ -84619,12 +84659,6 @@ var Student = function (_React$Component) {
 												Link,
 												{ to: '/books/' + book.isbn, className: 'user-book-title' },
 												book.title
-											),
-											React.createElement(
-												'span',
-												{ className: 'user-detail' },
-												'    ',
-												book.author
 											)
 										);
 									})
@@ -84703,12 +84737,6 @@ var Student = function (_React$Component) {
 												Link,
 												{ to: '/books/' + book.isbn, className: 'user-book-title' },
 												book.title
-											),
-											React.createElement(
-												'span',
-												{ className: 'user-detail' },
-												'    ',
-												book.author
 											)
 										);
 									})

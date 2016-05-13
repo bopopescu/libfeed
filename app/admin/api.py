@@ -140,5 +140,5 @@ def unfollow():
 @api.route('/search/<search_term>', methods=["GET"])
 def search(search_term):
     students = list(map(mapper.student_to_dict, Student.query.filter((Student.first_name+" "+Student.last_name)==search_term).all()))
-    books = list(map(mapper.book_to_dict, Book.query.filter(or_(Book.title==search_term, Book.author==search_term.lower())).all()))
+    books = list(map(mapper.book_to_dict, Book.query.filter_by(title=search_term).all()))
     return jsonify({'students': students, 'books': books})

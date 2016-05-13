@@ -53,7 +53,7 @@ class Student extends React.Component {
 								<hr />
 								<ul>
 								{data.borrows.map( book => {
-									return (<li className="user-current-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{book.author}</span></li>)
+									return (<li className="user-current-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link></li>)
 								})}
 								</ul>
 							</div>
@@ -82,7 +82,7 @@ class Student extends React.Component {
 								<hr />
 								<ul>
 								{data.returns.map( book => {
-									return (<li className="user-past-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{book.author}</span></li>)
+									return (<li className="user-past-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link></li>)
 								})}
 								</ul>
 							</div>

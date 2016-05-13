@@ -46,7 +46,7 @@ class SearchResults extends React.Component {
 						<h4>Books</h4>
 						<div className="panel-body list-group">
 							{data.books.slice(0, 20).map( book => {
-								return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}, {book.author}</Link>)
+								return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}</Link>)
 							})}
 						</div>
 						<hr />

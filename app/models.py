@@ -9,8 +9,8 @@ class Student(db.Model):
     __searchable__ = ['first_name', 'last_name']
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(45))
-    last_name = db.Column(db.String(45))
+    first_name = db.Column(db.String(256), nullable=False)
+    last_name = db.Column(db.String(256), nullable=False)
     grade = db.Column(db.Integer)
     img = db.Column(db.String(256))
     followers = orm.relationship('Student',
@@ -25,16 +25,46 @@ class Student(db.Model):
 
 class Book(db.Model):
     __tablename__ = 'book'
-    __searchable__ = ['title', 'author']
+    __searchable__ = ['title']
 
-    isbn = db.Column(db.String(45), primary_key=True)
-    title = db.Column(db.String(256))
-    author = db.Column(db.String(45))
+    isbn = db.Column(db.String(256), primary_key=True)
+    title = db.Column(db.String(256), nullable=False)
     synopsis = db.Column(db.String(3000))
     img = db.Column(db.String(256))
-    genre = db.Column(db.String(45))
     publication_date = db.Column(db.Date)
     page_count = db.Column(db.Integer)
+    authors = orm.relationship('Author', secondary="book_author",
+                             backref="books")
+    genres = orm.relationship('Genre', secondary="book_genre",
+                             backref="books")
+class Author(db.Model):
+    __tablename__ = 'author'
+    __searchable__ = ['name']
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(256), nullable=False)
+
+
+class BookAuthor(db.Model):
+    __tablename__ = 'book_author'
+
+    author_id = db.Column(db.Integer, db.ForeignKey('author.id'), primary_key=True)
+    book_isbn = db.Column(db.String(256), db.ForeignKey('book.isbn'), primary_key=True)
+
+
+class Genre(db.Model):
+    __tablename__ = 'genre'
+    __searchable__ = ['description']
+
+    id = db.Column(db.Integer, primary_key=True)
+    description = db.Column(db.String(256), nullable=False)
+
+
+class BookGenre(db.Model):
+    __tablename__ = 'book_genre'
+
+    genre_id = db.Column(db.Integer, db.ForeignKey('genre.id'), primary_key=True)
+    book_isbn = db.Column(db.String(256), db.ForeignKey('book.isbn'), primary_key=True)
 
 
 class FolloweeFollower(db.Model):
@@ -48,7 +78,7 @@ class FolloweeFollower(db.Model):
 class Borrow(db.Model):
     __tablename__ = 'borrow'
 
-    isbn = db.Column(db.String(45), db.ForeignKey('book.isbn'), primary_key=True)
+    isbn = db.Column(db.String(256), db.ForeignKey('book.isbn'), primary_key=True)
     book = orm.relationship('Book')
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     student = orm.relationship('Student', backref='borrows')
@@ -60,24 +90,26 @@ class Review(db.Model):
     __tablename__ = 'review'
 
     id = db.Column(db.Integer, primary_key=True)
-    description = db.Column(db.String(3000))
-    rating = db.Column(db.Float)
-    date = db.Column(db.Date)
-    student_id = db.Column(db.Integer, ForeignKey('student.id'))
+    description = db.Column(db.String(3000), nullable=False)
+    rating = db.Column(db.Float, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+    student_id = db.Column(db.Integer, ForeignKey('student.id'), nullable=False)
     student = orm.relationship('Student', backref='reviews')
-    isbn = db.Column(db.String, ForeignKey('book.isbn'))
+    isbn = db.Column(db.String, ForeignKey('book.isbn'), nullable=False)
     book = orm.relationship('Book', backref='reviews')
 
 
 class Return(db.Model):
     __tablename__ = 'return'
 
-    isbn = db.Column(db.String(45), db.ForeignKey('book.isbn'), primary_key=True)
+    isbn = db.Column(db.String(256), db.ForeignKey('book.isbn'), primary_key=True)
     book = orm.relationship('Book')
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     student = orm.relationship('Student', backref='returns')
-    date_returned = db.Column(db.Date)
+    date_returned = db.Column(db.Date, nullable=False)
 
 
 whooshalchemy.whoosh_index(app, Student)
 whooshalchemy.whoosh_index(app, Book)
+whooshalchemy.whoosh_index(app, Author)
+whooshalchemy.whoosh_index(app, Genre)

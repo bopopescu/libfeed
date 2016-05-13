@@ -57,7 +57,6 @@ class Book extends React.Component {
 							<div className="col-xs-6 book-header">
 								<div className="book-info">
 									<h3 className="book-title-main">{data.title}</h3>
-									<p className="author">{data.author}</p>
 								</div>
 							</div>
 							<div className="col-xs-6 book-status">
@@ -65,8 +64,22 @@ class Book extends React.Component {
 							</div>
 						</div>
 						<div className="row">
-							<div className="col-xs-6 book-header">
+							<div className="col-xs-3 book-header">
 								<img src={data.img} className="book-img"/>
+							</div>
+							<div className="col-xs-3">
+								<p className="user-detail">Authors</p>
+								<ul className="authors">
+									{data.authors.map( author => {
+										return (<li>{author.name}</li>)
+									})}
+								</ul>
+								<p className="user-detail">Genres</p>
+								<ul className="genres">
+									{data.genres.map( genre => {
+										return (<li>{genre.description}</li>)
+									})}
+								</ul>
 							</div>
 							<div className="col-xs-6">
 								<p className="synopsis">{data.synopsis}</p>

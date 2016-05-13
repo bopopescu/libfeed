@@ -21,7 +21,6 @@ class Browse extends React.Component {
 	render() {
 		var data = this.state.data;
 		if (data) {
-			console.log(data);
 			return (
 				<div id="book-page">
 					<div className="container-fluid">
@@ -32,10 +31,17 @@ class Browse extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<p className="student-name"><Link to={'/book/'+book.isbn}>{book.title}</Link>&nbsp;&nbsp;&nbsp;&nbsp;
-													<span className="user-detail">{book.author}</span>
-													<span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{book.genre}</span>
-													</p>
+													<p className="student-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
+													<ul className="browse-authors">
+														{book.authors.map( author => {
+															return (<li>{author.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>)
+														})}
+													</ul>
+													<ul className="browse-genres">
+														{book.genres.map( genre => {
+															return (<li>{genre.description}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>)
+														})}
+													</ul>
 													<p className="review-descrip">{book.synopsis}</p>
 												</li>
 											</div>)
