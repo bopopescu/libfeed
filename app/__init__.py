@@ -1,10 +1,12 @@
 import logging, urllib2, json
-from flask import Flask, render_template, jsonify
-from flask.ext.stormpath import StormpathManager, user
-from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy import and_
+
+from flask import Flask, render_template, jsonify, request, redirect, url_for, session, flash
 from flask.ext.script import Manager
 
+from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
+
+from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy import and_
 
 logging.basicConfig(
     level=logging.DEBUG,
@@ -14,13 +16,46 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 app.config.from_object('config')
+app.secret_key = 'super secret key'
 
-stormpath_manager = StormpathManager(app)
+login_manager = LoginManager()
+
+login_manager.init_app(app)
 
 manager = Manager(app)
 db = SQLAlchemy(app)
 
 from models import *
+
+login_manager.login_view = 'login'
+
+@app.route('/register' , methods=['GET','POST'])
+def register():
+    if request.method == 'GET':
+        return render_template('register.html')
+    user = Student(request.form['email'], request.form['password'], request.form['first_name'], request.form['last_name'], request.form['grade'])
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for('login'))
+
+@app.route('/login',methods=['GET','POST'])
+def login():
+    if request.method == 'GET':
+        return render_template('login.html')
+    email = request.form['email']
+    password = request.form['password']
+    registered_user = Student.query.filter_by(email=email,password=password).first()
+    if registered_user is None:
+        flash('Email or Password is invalid' , 'error')
+        return redirect(url_for('login'))
+    login_user(registered_user)
+    flash('Logged in successfully')
+    return redirect(request.args.get('next') or url_for('index'))
+
+@app.route('/logout')
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.errorhandler(404)
 def page_not_found(e):
@@ -123,8 +158,4 @@ def add_books():
 
 @app.route('/<path:path>')
 def index(path):
-    if hasattr(user, 'given_name'):
-        cur_user =  Student.query.filter(and_(Student.first_name==user.given_name, Student.last_name==user.surname)).first()
-    else:
-        cur_user=''
-    return render_template('index.html', user=cur_user)
+    return render_template('index.html')

@@ -34,30 +34,53 @@
           </div>
       </div>
   </nav>
-<form class="register" method="post">
-  {{ form.hidden_tag() }}
+<form action="" method=post class="form-horizontal">
+  <h2>Sign up for FlaskLogin(Todo) Application </h2>
 
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul>
-        {% for message in messages %}
-          <li>{{ message }}</li>
-        {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-  {{ form.given_name(placeholder='First Name', required='true') }}
-  <br>
-  <br>
-  {{ form.surname(placeholder='Last Name', required='true') }}
-  <br>
-  <br>
-  {{ form.email(placeholder='Email', required='true', type='email') }}
-  <br>
-  <br>
-  {{ form.password(placeholder='Password', required='true', type='password') }}
-  <br>
-  <br>
+  <div class="control-group">
+      <div class="controls">
+        <input type="email" id="email" name="email" class="input-xlarge"
+          placeholder="Enter Email" value="{{ request.form.username }}"
+          required>
+      </div>
+  </div>
 
-  <button class="form-button" type="submit">Create Account</button>
+  <div class="control-group">
+      <div class="controls">
+        <input type="password" id="password" name="password" class="input-xlarge"
+          placeholder="Enter Password" value="{{ request.form.password }}"
+          required>
+      </div>
+  </div>
+
+  <div class="control-group">
+      <div class="controls">
+        <input type="first_name" id="first_name" name="first_name" class="input-xlarge"
+          placeholder="Enter First Name" value="{{ request.form.first_name }}"
+          required>
+      </div>
+  </div>
+
+  <div class="control-group">
+      <div class="controls">
+        <input type="last_name" id="last_name" name="last_name" class="input-xlarge"
+          placeholder="Enter Last Name" value="{{ request.form.last_name }}"
+          required>
+      </div>
+  </div>
+
+  <div class="control-group">
+      <div class="controls">
+        <input type="grade" id="grade" name="grade" class="input-xlarge"
+          placeholder="Enter Grade" value="{{ request.form.grade }}"
+          required>
+      </div>
+  </div>
+
+  <div class="control-group">
+      <div class="controls">
+        <button type="submit" class="btn btn-success">Signup</button>
+      </div>
+  </div>
 </form>
+</body>

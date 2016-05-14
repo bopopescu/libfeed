@@ -34,33 +34,26 @@
           </div>
       </div>
   </nav>
-{# Display errors (if there are any). #}
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul>
-      {% for message in messages %}
-        <li>{{ message }}</li>
-      {% endfor %}
-    </ul>
-  {% endif %}
-{% endwith %}
+  <form action="" method=post class="form-horizontal">
+     <h2>Sign in</h2>
+     <div class="control-group">
+         <div class="controls">
+           <input type="text" id="email" name="email" class="input-xlarge"
+             placeholder="Enter Email" required>
+         </div>
+     </div>
 
-{# Render the login form. #}
-<form method="post" class="login">
-  {{ form.hidden_tag() }}
-  {{ form.login(placeholder='Email', required='true') }}<br><br>
-  {{ form.password(placeholder='Password', required='true') }}<br><br>
-  <button type="submit" class="form-button">Log In</button>
-</form>
+     <div class="control-group">
+         <div class="controls">
+           <input type="password" id="password" name="password" class="input-xlarge"
+             placeholder="Enter Password" required>
+         </div>
+     </div>
 
-{# If social login is enabled, display social login buttons. #}
-{% if config['STORMPATH_ENABLE_FACEBOOK'] or config['STORMPATH_ENABLE_GOOGLE'] %}
-  <p>Or, log in using a social provider.</p>
-  {% if config['STORMPATH_ENABLE_FACEBOOK'] %}
-    {% include "flask_stormpath/facebook_login_form.html" %}
-  {% endif %}
-  {% if config['STORMPATH_ENABLE_GOOGLE'] %}
-    {% include "flask_stormpath/google_login_form.html" %}
-  {% endif %}
-{% endif %}
+     <div class="control-group">
+         <div class="controls">
+           <button type="submit" class="btn btn-success">Sign in</button>
+         </div>
+     </div>
+   </form>
 </body>

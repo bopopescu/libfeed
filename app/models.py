@@ -1,16 +1,23 @@
-from sqlalchemy import ForeignKey, orm
+from flask.ext.login import UserMixin, current_user
+
+from sqlalchemy import ForeignKey, orm, func, and_
 from sqlalchemy.orm import relationship
-import flask.ext.whooshalchemy as whooshalchemy
-from app import db, app
+
+from app import db, app, login_manager
 
 
-class Student(db.Model):
+@login_manager.user_loader
+def load_user(user_id):
+    return Student.query.get(int(user_id))
+
+class Student(UserMixin, db.Model):
     __tablename__ = 'student'
-    __searchable__ = ['first_name', 'last_name']
 
     id = db.Column(db.Integer, primary_key=True)
-    first_name = db.Column(db.String(256), nullable=False)
-    last_name = db.Column(db.String(256), nullable=False)
+    email = db.Column(db.String(50), unique=True, index=True)
+    password = db.Column(db.String(128))
+    first_name = db.Column(db.String(256), default='')
+    last_name = db.Column(db.String(256), default='')
     grade = db.Column(db.Integer)
     img = db.Column(db.String(256))
     followers = orm.relationship('Student',
@@ -22,10 +29,36 @@ class Student(db.Model):
                                primaryjoin=("Student.id==followee_follower.c.follower_id"),
                                secondaryjoin=("Student.id==followee_follower.c.followee_id"))
 
+    def __init__(self, email, password, first_name, last_name, grade):
+        self.email = email
+        self.password = password
+        self.first_name = first_name
+        self.last_name = last_name
+        self.grade = grade
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return unicode(self.id)
+
+    @staticmethod
+    def query_by_id(id):
+        return Student.query.filter(Student.id == id).first()
+
+    @staticmethod
+    def query_by_name(name):
+        return Student.query.filter('{0} {1}'.format(func.lower(Student.first_name), func.lower(Student.last_name)) == func.lower(name)).first()
+
 
 class Book(db.Model):
     __tablename__ = 'book'
-    __searchable__ = ['title']
 
     isbn = db.Column(db.String(256), primary_key=True)
     title = db.Column(db.String(256), nullable=False)
@@ -37,9 +70,13 @@ class Book(db.Model):
                              backref="books")
     genres = orm.relationship('Genre', secondary="book_genre",
                              backref="books")
+
+    @staticmethod
+    def query_by_isbn(isbn):
+        return Book.query.filter(Book.isbn==isbn).first()
+
 class Author(db.Model):
     __tablename__ = 'author'
-    __searchable__ = ['name']
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
@@ -54,7 +91,6 @@ class BookAuthor(db.Model):
 
 class Genre(db.Model):
     __tablename__ = 'genre'
-    __searchable__ = ['description']
 
     id = db.Column(db.Integer, primary_key=True)
     description = db.Column(db.String(256), nullable=False)
@@ -74,6 +110,9 @@ class FolloweeFollower(db.Model):
     follower_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     date = db.Column(db.Date)
 
+    @staticmethod
+    def query_by_id(followee_id, follower_id):
+        return FolloweeFollower.query.filter(FolloweeFollower.followee_id==followee_id, FolloweeFollower.follower_id==follower_id).first()
 
 class Borrow(db.Model):
     __tablename__ = 'borrow'
@@ -85,6 +124,9 @@ class Borrow(db.Model):
     date_checked_out = db.Column(db.Date)
     due_date = db.Column(db.Date)
 
+    @staticmethod
+    def query_by_isbn_id(isbn, id):
+        return Borrow.query.filter(and_(Borrow.isbn==isbn, Borrow.student_id==id).first())
 
 class Review(db.Model):
     __tablename__ = 'review'
@@ -107,9 +149,3 @@ class Return(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     student = orm.relationship('Student', backref='returns')
     date_returned = db.Column(db.Date, nullable=False)
-
-
-whooshalchemy.whoosh_index(app, Student)
-whooshalchemy.whoosh_index(app, Book)
-whooshalchemy.whoosh_index(app, Author)
-whooshalchemy.whoosh_index(app, Genre)
