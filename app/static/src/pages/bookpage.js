@@ -36,12 +36,17 @@ class Book extends React.Component {
 		this.setState({
 			reviews: this.state.reviews
 		})
-		React.findDOMNode(this.refs.reviewinput).value = ""; // Unset the value
+		React.findDOMNode(this.refs.reviewinput).value = "";
+		React.findDOMNode(this.refs.ratinginput).value = "";
 	}
 
-	handleChange(event) {
+	handleReview(event) {
         this.setState({description: event.target.value})
     }
+
+	handleRating(event) {
+		this.setState({rating: event.target.value})
+	}
 
 	render() {
 		var data = this.state.data;
@@ -105,8 +110,9 @@ class Book extends React.Component {
 								</ul>
 								<hr />
 								<form className="reviewForm">
-									<input placeholder="Write Review" ref="reviewinput" type="text" onChange={this.handleChange.bind(this)} />
-									<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, 5.0)}>Post Review</button>
+									<input placeholder="Write Review" ref="reviewinput" type="text" onChange={this.handleReview.bind(this)} />
+									<input className="ratinginput" placeholder="Rating" ref="ratinginput" type="text" onChange={this.handleRating.bind(this)} />
+									<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating)}>Post Review</button>
 								</form>
 							</div>
 						</div>

@@ -84119,12 +84119,18 @@ var Book = function (_React$Component) {
 			this.setState({
 				reviews: this.state.reviews
 			});
-			React.findDOMNode(this.refs.reviewinput).value = ""; // Unset the value
+			React.findDOMNode(this.refs.reviewinput).value = "";
+			React.findDOMNode(this.refs.ratinginput).value = "";
 		}
 	}, {
-		key: 'handleChange',
-		value: function handleChange(event) {
+		key: 'handleReview',
+		value: function handleReview(event) {
 			this.setState({ description: event.target.value });
+		}
+	}, {
+		key: 'handleRating',
+		value: function handleRating(event) {
+			this.setState({ rating: event.target.value });
 		}
 	}, {
 		key: 'render',
@@ -84279,10 +84285,11 @@ var Book = function (_React$Component) {
 								React.createElement(
 									'form',
 									{ className: 'reviewForm' },
-									React.createElement('input', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleChange.bind(this) }),
+									React.createElement('input', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleReview.bind(this) }),
+									React.createElement('input', { className: 'ratinginput', placeholder: 'Rating', ref: 'ratinginput', type: 'text', onChange: this.handleRating.bind(this) }),
 									React.createElement(
 										'button',
-										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, 5.0) },
+										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating) },
 										'Post Review'
 									)
 								)

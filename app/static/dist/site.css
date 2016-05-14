@@ -290,6 +290,10 @@ hr {
 .book-img {
     max-height: 300px;
 }
+
+.ratinginput {
+    width: 60px;
+}
 /************* USER PAGE *************/
 
 .return-btn {
