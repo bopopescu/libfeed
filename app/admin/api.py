@@ -7,7 +7,7 @@ from flask.ext.login import LoginManager, current_user, login_required
 
 from app import db, mapper, logger
 
-from app.models import Student, Book, Borrow, FolloweeFollower, Review, Return
+from app.models import Student, Book, Borrow, FolloweeFollower, Review, Return, Genre
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -58,8 +58,12 @@ def return_book():
     isbn = data['isbn']
     borrow = Borrow.query_by_isbn_id(isbn, current_user.id)
     db.session.delete(borrow)
-    return_b = Return(student_id=current_user.id, isbn=isbn, date_returned=datetime.datetime.now())
-    db.session.add(return_b)
+    return_t = Return.query_by_isbn_id(isbn, current_user.id)
+    if return_t:
+        return_t.date_returned = datetime.datetime.now()
+    else:
+        return_b = Return(student_id=current_user.id, isbn=isbn, date_returned=datetime.datetime.now())
+        db.session.add(return_b)
     db.session.commit()
     return 'OK'
 
@@ -87,6 +91,15 @@ def get_book(isbn):
 def get_books():
     return jsonify({'books': list(map(mapper.book_to_dict, Book.query.all()))})
 
+@api.route('/books/<genre>', methods=["GET"])
+@login_required
+def get_books_by_genre(genre):
+    return jsonify({'books': list(map(mapper.book_to_dict, Book.query_by_genre(genre)))})
+
+@api.route('/genres', methods=["GET"])
+@login_required
+def get_genres():
+    return jsonify({'genres': list(map(mapper.genre_to_dict, Genre.query.all()))})
 
 @api.route('/check_out', methods=["POST"])
 @login_required

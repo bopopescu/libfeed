@@ -3,7 +3,7 @@ from flask.ext.login import UserMixin, current_user
 from sqlalchemy import ForeignKey, orm, func, and_
 from sqlalchemy.orm import relationship
 
-from app import db, app, login_manager
+from app import db, app, login_manager, logger
 
 
 @login_manager.user_loader
@@ -75,6 +75,14 @@ class Book(db.Model):
     def query_by_isbn(isbn):
         return Book.query.filter(Book.isbn==isbn).first()
 
+    @staticmethod
+    def query_by_genre(genre_d):
+        genre_f = Genre.query.filter(func.lower(Genre.description)==func.lower(genre_d)).first()
+        logger.debug(genre_d)
+        logger.debug(genre_f)
+        return Book.query.filter(Book.genres.contains(genre_f)).all()
+
+
 class Author(db.Model):
     __tablename__ = 'author'
 
@@ -126,7 +134,7 @@ class Borrow(db.Model):
 
     @staticmethod
     def query_by_isbn_id(isbn, id):
-        return Borrow.query.filter(and_(Borrow.isbn==isbn, Borrow.student_id==id).first())
+        return Borrow.query.filter(and_(Borrow.isbn==isbn, Borrow.student_id==id)).first()
 
 class Review(db.Model):
     __tablename__ = 'review'
@@ -149,3 +157,7 @@ class Return(db.Model):
     student_id = db.Column(db.Integer, db.ForeignKey('student.id'), primary_key=True)
     student = orm.relationship('Student', backref='returns')
     date_returned = db.Column(db.Date, nullable=False)
+
+    @staticmethod
+    def query_by_isbn_id(isbn, id):
+        return Return.query.filter(and_(Return.isbn==isbn, Return.student_id==id)).first()
