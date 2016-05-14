@@ -63,6 +63,21 @@ function getBooks(cb){
 	})
 }
 
+function getBooksByGenre(genre, cb){
+	request(API+'books/'+genre, (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
+function getGenres(cb){
+	request(API+'genres', (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
 
 function checkOut(isbn, cb) {
 	var options = {
@@ -128,10 +143,12 @@ module.exports = {
 	getStudent: getStudent,
 	getBook: getBook,
 	getBooks: getBooks,
+	getBooksByGenre: getBooksByGenre,
 	search: search,
 	returnBook: returnBook,
 	follow: follow,
 	unfollow: unfollow,
 	checkOut: checkOut,
-	writeReview: writeReview
+	writeReview: writeReview,
+	getGenres: getGenres
 }
