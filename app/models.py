@@ -3,7 +3,7 @@ from flask.ext.login import UserMixin, current_user
 from sqlalchemy import ForeignKey, orm, func, and_
 from sqlalchemy.orm import relationship
 
-from app import db, app, login_manager, logger
+from app import db, app, login_manager
 
 
 @login_manager.user_loader
@@ -78,8 +78,6 @@ class Book(db.Model):
     @staticmethod
     def query_by_genre(genre_d):
         genre_f = Genre.query.filter(func.lower(Genre.description)==func.lower(genre_d)).first()
-        logger.debug(genre_d)
-        logger.debug(genre_f)
         return Book.query.filter(Book.genres.contains(genre_f)).all()
 
 

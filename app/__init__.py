@@ -10,10 +10,10 @@ from sqlalchemy import and_
 
 from app import settings
 
-logging.basicConfig(
-    level=logging.DEBUG,
-    format='%(levelname)s: %(message)s')
-logger = logging.getLogger(__name__)
+# logging.basicConfig(
+#     level=logging.DEBUG,
+#     format='%(levelname)s: %(message)s')
+# logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 
@@ -68,7 +68,6 @@ app.register_blueprint(api_module)
 
 @manager.command
 def add_books():
-    logger.debug("add books")
     app.config['SQLALCHEMY_ECHO'] = True
     with open("scrape.csv") as data_file:
         for line in data_file:

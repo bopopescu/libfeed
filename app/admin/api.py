@@ -8,7 +8,7 @@ from flask.ext.login import LoginManager, current_user, login_required
 from boto.s3.connection import S3Connection
 from boto.s3.key import Key
 
-from app import db, mapper, logger, settings
+from app import db, mapper, settings
 
 from app.models import Student, Book, Borrow, FolloweeFollower, Review, Return, Genre
 
