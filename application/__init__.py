@@ -3,6 +3,8 @@ import logging, urllib2, json
 from flask import Flask, render_template, jsonify, request, redirect, url_for, session, flash
 from flask.ext.script import Manager
 
+from flask.ext.cors import CORS
+
 from flask.ext.login import LoginManager, login_user, logout_user, current_user, login_required
 
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -16,6 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 application = Flask(__name__)
+CORS(application)
 
 application.config.from_object('config')
 application.secret_key = settings.SECRET_KEY

@@ -27,20 +27,19 @@
           </div>
           <div class="collapse navbar-collapse" id="navbar-collapse">
               <ul class="nav navbar-nav navbar-right">
-                  <li><a href="/about">About</a></li>
                   <li><a href="/register">Register</a></li>
                   <li><a href="/login">Login</a></li>
               </ul>
           </div>
       </div>
   </nav>
-<form action="" method=post class="form-horizontal">
-  <h2>Sign up for FlaskLogin(Todo) Application </h2>
+<form action="" method=post class="form-horizontal register-form">
+  <h5>Sign Up For LibFeed</h5>
 
   <div class="control-group">
       <div class="controls">
         <input type="email" id="email" name="email" class="input-xlarge"
-          placeholder="Enter Email" value="{{ request.form.username }}"
+          placeholder="Email" value="{{ request.form.username }}"
           required>
       </div>
   </div>
@@ -48,7 +47,7 @@
   <div class="control-group">
       <div class="controls">
         <input type="password" id="password" name="password" class="input-xlarge"
-          placeholder="Enter Password" value="{{ request.form.password }}"
+          placeholder="Password" value="{{ request.form.password }}"
           required>
       </div>
   </div>
@@ -56,7 +55,7 @@
   <div class="control-group">
       <div class="controls">
         <input type="first_name" id="first_name" name="first_name" class="input-xlarge"
-          placeholder="Enter First Name" value="{{ request.form.first_name }}"
+          placeholder="First Name" value="{{ request.form.first_name }}"
           required>
       </div>
   </div>
@@ -64,7 +63,7 @@
   <div class="control-group">
       <div class="controls">
         <input type="last_name" id="last_name" name="last_name" class="input-xlarge"
-          placeholder="Enter Last Name" value="{{ request.form.last_name }}"
+          placeholder="Last Name" value="{{ request.form.last_name }}"
           required>
       </div>
   </div>
@@ -72,14 +71,14 @@
   <div class="control-group">
       <div class="controls">
         <input type="grade" id="grade" name="grade" class="input-xlarge"
-          placeholder="Enter Grade" value="{{ request.form.grade }}"
+          placeholder="Grade" value="{{ request.form.grade }}"
           required>
       </div>
   </div>
 
   <div class="control-group">
       <div class="controls">
-        <button type="submit" class="btn btn-success">Signup</button>
+        <button type="submit" class="btn btn-success">Sign Up</button>
       </div>
   </div>
 </form>

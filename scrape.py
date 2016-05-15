@@ -44,6 +44,9 @@ def main():
                     author = author
             except:
                 author = ''
+            isbn = isbn.encode('ascii','ignore')
+            author = author.encode('ascii','ignore')
+            title = title.encode('ascii','ignore')
             row = [isbn, title, author]
             try:
                 writer.writerow(row)

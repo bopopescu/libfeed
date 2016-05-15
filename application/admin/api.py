@@ -147,12 +147,14 @@ def unfollow():
     return 'OK'
 
 @api.route('/search/<search_term>', methods=["GET"])
+@login_required
 def search(search_term):
     students = list(map(mapper.student_to_dict, Student.query.filter((Student.first_name+" "+Student.last_name)==search_term).all()))
     books = list(map(mapper.book_to_dict, Book.query.filter_by(title=search_term).all()))
     return jsonify({'students': students, 'books': books})
 
 @api.route('/upload', methods=['POST'])
+@login_required
 def upload():
     data_file = request.files['file']
     file_name = data_file.filename
