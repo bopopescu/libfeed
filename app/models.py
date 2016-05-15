@@ -3,7 +3,7 @@ from flask.ext.login import UserMixin, current_user
 from sqlalchemy import ForeignKey, orm, func, and_
 from sqlalchemy.orm import relationship
 
-from app import db, app, login_manager
+from app import db, app, login_manager, logger
 
 
 @login_manager.user_loader

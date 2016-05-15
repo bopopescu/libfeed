@@ -10,10 +10,10 @@ from sqlalchemy import and_
 
 from app import settings
 
-# logging.basicConfig(
-#     level=logging.DEBUG,
-#     format='%(levelname)s: %(message)s')
-# logger = logging.getLogger(__name__)
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(levelname)s: %(message)s')
+logger = logging.getLogger(__name__)
 
 app = Flask(__name__)
 

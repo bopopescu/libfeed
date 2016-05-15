@@ -8,5 +8,6 @@ Flask-Script==2.0.5
 Flask-SQLAlchemy==2.1
 Flask-Login==0.2.9
 boto==2.38.0
+logging==0.4.9.6
 psycopg2==2.6.1
 SQLAlchemy==1.0.12
