@@ -93,6 +93,10 @@ hr {
     margin-bottom: 10px;
 }
 
+.none {
+    display: none;
+}
+
 /************* NAVBAR *************/
 .navbar-default {
     background-color: white;
@@ -379,6 +383,30 @@ hr {
 .user-name {
     margin-bottom: 0;
 }
+
+input[type=file] {
+    display: inline-block;
+    font-size: 9px;
+    padding-left: 80px;
+}
+
+.photo p {
+    font-size: 9px;
+}
+
+.upload-btn {
+    width: 50px;
+    font-size: 10px;
+}
+
+.upload-click-btn {
+    font-size: 9px;
+    width: 70px;
+    padding: 2px;
+    margin-top: 20px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
 /************* SEARCH *************/
 
 .searchButton {
@@ -469,4 +497,9 @@ button, input, select, textarea {
     font-size: 9px;
     opacity: .5;
     display: inline;
+}
+
+#genre-page a {
+    font-size: 12px;
+    text-transform: uppercase;
 }

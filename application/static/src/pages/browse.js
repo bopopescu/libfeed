@@ -22,7 +22,7 @@ class Browse extends React.Component {
 		var data = this.state.data;
 		if (data) {
 			return (
-				<div id="book-page">
+				<div id="genre-page">
 					<div className="container-fluid">
 						<div className="row">
 							<h4>Genres</h4>

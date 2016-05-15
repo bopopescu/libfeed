@@ -83615,7 +83615,7 @@ function Node (value, prev, next, list) {
 'use strict';
 
 var request = require('request');
-var API = 'http://libfeed.co/api/';
+var API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb) {
 	request(API + 'cur_user_newsfeed', function (error, response, body) {
@@ -84373,7 +84373,7 @@ var Browse = function (_React$Component) {
 			if (data) {
 				return React.createElement(
 					'div',
-					{ id: 'book-page' },
+					{ id: 'genre-page' },
 					React.createElement(
 						'div',
 						{ className: 'container-fluid' },
@@ -84931,7 +84931,7 @@ var User = function (_React$Component) {
 
 		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(User).call(this));
 
-		_this.state = { data: null };
+		_this.state = { data: null, photo: false };
 		return _this;
 	}
 
@@ -84962,6 +84962,13 @@ var User = function (_React$Component) {
 			});
 		}
 	}, {
+		key: 'handleClickPhoto',
+		value: function handleClickPhoto() {
+			this.setState({
+				photo: true
+			});
+		}
+	}, {
 		key: 'render',
 		value: function render() {
 			var _this3 = this;
@@ -84969,6 +84976,7 @@ var User = function (_React$Component) {
 			var data = this.state.data;
 			var borrows = this.state.borrows;
 			var returns = this.state.returns;
+			var photo = this.state.photo;
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84995,15 +85003,30 @@ var User = function (_React$Component) {
 									data.grade,
 									'th Grade'
 								),
-								React.createElement('img', { src: data.img, className: 'user-img' })
-							),
-							React.createElement(
-								'form',
-								{ action: 'api/upload', method: 'post', encType: 'multipart/form-data' },
-								React.createElement('input', { type: 'file', name: 'file' }),
+								React.createElement('img', { src: data.img, className: 'user-img' }),
 								React.createElement('br', null),
-								React.createElement('br', null),
-								React.createElement('input', { type: 'submit', value: 'Upload' })
+								React.createElement(
+									'button',
+									{ type: 'button', className: 'btn btn-primary upload-click-btn', onClick: this.handleClickPhoto.bind(this) },
+									'Upload Photo'
+								),
+								React.createElement(
+									'div',
+									{ className: photo ? 'photo' : 'none' },
+									React.createElement(
+										'p',
+										null,
+										'Upload Photo'
+									),
+									React.createElement(
+										'form',
+										{ action: 'api/upload', method: 'post', encType: 'multipart/form-data' },
+										React.createElement('input', { className: 'upload', type: 'file', name: 'file' }),
+										React.createElement('br', null),
+										React.createElement('br', null),
+										React.createElement('input', { className: 'upload-btn return-btn btn btn-primary', type: 'submit', value: 'Upload' })
+									)
+								)
 							),
 							React.createElement(
 								'div',

@@ -18,7 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 application = Flask(__name__)
-CORS(application)
+# CORS(application)
 
 application.config.from_object('config')
 application.secret_key = settings.SECRET_KEY

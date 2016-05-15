@@ -6,7 +6,7 @@ class User extends React.Component {
 
 	constructor() {
 		super();
-		this.state = {data: null};
+		this.state = {data: null, photo: false};
 	}
 
 	componentDidMount() {
@@ -32,10 +32,17 @@ class User extends React.Component {
 	    });
 	}
 
+	handleClickPhoto() {
+		this.setState({
+			photo: true
+		});
+	}
+
 	render() {
 		var data = this.state.data;
 		var borrows = this.state.borrows;
 		var returns = this.state.returns;
+		var photo = this.state.photo;
 		if (data) {
 			return (
 				<div id="user-page">
@@ -44,12 +51,16 @@ class User extends React.Component {
 							<div className="col-xs-6 user-profile">
 								<h4 className="user-name">{data.first_name} {data.last_name}</h4>
 								<p className="user-detail">{data.grade}th Grade</p>
-								<img src={data.img} className="user-img"/>
+								<img src={data.img} className="user-img"/><br />
+								<button type="button" className="btn btn-primary upload-click-btn" onClick={this.handleClickPhoto.bind(this)}>Upload Photo</button>
+								<div className={photo ? 'photo' : 'none'} >
+									<p>Upload Photo</p>
+									<form action="api/upload" method="post" encType="multipart/form-data">
+		  								<input className="upload" type="file" name="file" /><br /><br />
+		  								<input className="upload-btn return-btn btn btn-primary" type="submit" value="Upload" />
+									</form>
+								</div>
 							</div>
-							<form action="api/upload" method="post" encType="multipart/form-data">
-  								<input type="file" name="file" /><br /><br />
-  								<input type="submit" value="Upload" />
-							</form>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
 								<table className="table user-cur-reads">
