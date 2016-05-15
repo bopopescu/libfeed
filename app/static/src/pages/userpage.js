@@ -46,6 +46,10 @@ class User extends React.Component {
 								<p className="user-detail">{data.grade}th Grade</p>
 								<img src={data.img} className="user-img"/>
 							</div>
+							<form action="api/upload" method="post" encType="multipart/form-data">
+  								<input type="file" name="file" /><br /><br />
+  								<input type="submit" value="Upload" />
+							</form>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
 								<table className="table user-cur-reads">

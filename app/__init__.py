@@ -8,6 +8,8 @@ from flask.ext.login import LoginManager, login_user, logout_user, current_user,
 from flask.ext.sqlalchemy import SQLAlchemy
 from sqlalchemy import and_
 
+from app import settings
+
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(levelname)s: %(message)s')
@@ -16,7 +18,7 @@ logger = logging.getLogger(__name__)
 app = Flask(__name__)
 
 app.config.from_object('config')
-app.secret_key = 'super secret key'
+app.secret_key = settings.SECRET_KEY
 
 login_manager = LoginManager()
 

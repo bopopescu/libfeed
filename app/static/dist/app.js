@@ -84998,6 +84998,14 @@ var User = function (_React$Component) {
 								React.createElement('img', { src: data.img, className: 'user-img' })
 							),
 							React.createElement(
+								'form',
+								{ action: 'api/upload', method: 'post', encType: 'multipart/form-data' },
+								React.createElement('input', { type: 'file', name: 'file' }),
+								React.createElement('br', null),
+								React.createElement('br', null),
+								React.createElement('input', { type: 'submit', value: 'Upload' })
+							),
+							React.createElement(
 								'div',
 								{ className: 'col-xs-6' },
 								React.createElement(

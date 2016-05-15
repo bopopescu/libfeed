@@ -1,11 +1,14 @@
 import datetime
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, redirect, url_for
 from sqlalchemy import or_, and_, update
 
 from flask.ext.login import LoginManager, current_user, login_required
 
-from app import db, mapper, logger
+from boto.s3.connection import S3Connection
+from boto.s3.key import Key
+
+from app import db, mapper, logger, settings
 
 from app.models import Student, Book, Borrow, FolloweeFollower, Review, Return, Genre
 
@@ -148,3 +151,17 @@ def search(search_term):
     students = list(map(mapper.student_to_dict, Student.query.filter((Student.first_name+" "+Student.last_name)==search_term).all()))
     books = list(map(mapper.book_to_dict, Book.query.filter_by(title=search_term).all()))
     return jsonify({'students': students, 'books': books})
+
+@api.route('/upload', methods=['POST'])
+def upload():
+    data_file = request.files['file']
+    file_name = data_file.filename
+    conn = S3Connection(settings.AWS_ACCESS_KEY, settings.AWS_SECRET_KEY)
+    bucket = conn.get_bucket('libfeed')
+    k = Key(bucket)
+    key_img = '{0}_{1}_{2}'.format(current_user.first_name, current_user.last_name, file_name)
+    k.key = key_img
+    k.set_contents_from_string(data_file.read())
+    current_user.img = 'https://s3-us-west-2.amazonaws.com/libfeed/{0}'.format(key_img)
+    db.session.commit()
+    return redirect('/user')
