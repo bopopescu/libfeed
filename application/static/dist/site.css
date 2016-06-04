@@ -425,6 +425,30 @@ button, input, select, textarea {
     -webkit-font-smoothing: antialiased;
 }
 
+.searchtype-student-btn {
+    width: 60px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.searchtype-book-btn {
+    width: 45px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.searchtype-author-btn {
+    width: 55px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.searchtype-selected {
+    background-color: blue;
+}
 
 /************* LOGIN PAGE *************/
 

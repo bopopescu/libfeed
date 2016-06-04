@@ -149,9 +149,13 @@ def unfollow():
 @api.route('/search/<search_term>', methods=["GET"])
 @login_required
 def search(search_term):
-    students = list(map(mapper.student_to_dict, Student.query.filter((Student.first_name+" "+Student.last_name)==search_term).all()))
-    books = list(map(mapper.book_to_dict, Book.query.filter_by(title=search_term).all()))
-    return jsonify({'students': students, 'books': books})
+    students = list(map(mapper.student_to_dict, Student.query.filter(
+        or_((Student.first_name+" "+Student.last_name).contains(search_term), Student.first_name.contains(search_term),
+        Student.last_name.contains(search_term)
+        )).all()))
+    books = list(map(mapper.book_to_dict, Book.query.filter(Book.title.contains(search_term)).all()))
+    authors = list(map(mapper.author_to_dict, Author.query.filter(Author.name.contains(search_term)).all()))
+    return jsonify({'students': students, 'books': books, 'authors': authors})
 
 @api.route('/upload', methods=['POST'])
 @login_required

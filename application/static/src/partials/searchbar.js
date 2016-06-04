@@ -6,7 +6,7 @@ var searchTerm;
 class SearchBar extends React.Component {
     constructor() {
         super();
-        this.state = {searchTerm: ""}
+        this.state = {searchTerm: "", searchType: ""}
     }
 
     handleChange(event) {
@@ -19,16 +19,24 @@ class SearchBar extends React.Component {
         }
     }
 
+    changeType(selectedType) {
+        this.setState({searchType: selectedType})
+    }
+
 	render() {
+        var searchType = this.state.searchType;
 		return (
             <div className="row">
+            <h4>Search for: <button type="button" className={searchType=="student" ? "btn btn-primary searchtype-student-btn searchtype-selected" : "btn btn-primary searchtype-student-btn"} onClick={this.changeType.bind(this, 'student')}>students</button>&nbsp;
+            <button type="button" className={searchType=="book" ? "btn btn-primary searchtype-book-btn searchtype-selected" : "btn btn-primary searchtype-book-btn"} onClick={this.changeType.bind(this, 'book')}>books</button>&nbsp;
+            <button type="button" className={searchType=="author" ? "btn btn-primary searchtype-author-btn searchtype-selected" : "btn btn-primary searchtype-author-btn"} onClick={this.changeType.bind(this, 'author')}>authors</button></h4>
             <div className="col-xs-4">
     			<form className="searchForm">
-    				<input type="text" placeholder="Search" onKeyDown={this.handleKeyDown.bind(this)} onChange={this.handleChange.bind(this)} />
+    				<input type="text" placeholder="Search" onKeyDown={this.handleKeyDown.bind(this)} onChange={this.handleChange.bind(this)} disabled={!searchType}/>
     			</form>
             </div>
-            <div className="col-xs-8 searchButton">
-                <Link id="searchButton" to={'/search/'+this.state.searchTerm} className="searchButton">Go</Link>
+            <div className={searchType ? "col-xs-8 searchButton" : "none"}>
+                <Link id="searchButton" to={'/search/'+this.state.searchType+'/'+this.state.searchTerm} className="searchButton">Go</Link>
             </div>
             </div>
 		)

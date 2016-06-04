@@ -21,7 +21,7 @@ def main():
     writer = csv.writer(fw)
 
     num = 0
-    for i in range(1, 100):
+    for i in range(1, 1181):
         search = "http://aisd.sdp.sirsi.net/client/en_US/richards/search/results?rw={0}&lm=RICHARDSLIB".format(num)
         soup = make_soup(search)
         results = soup.find_all(class_="results_cell")

@@ -50,6 +50,13 @@ class SearchResults extends React.Component {
 							})}
 						</div>
 						<hr />
+						<h4>Authors</h4>
+						<div className="panel-body list-group">
+							{data.authors.slice(0, 20).map( author => {
+								return (<Link to={'/authors/'+author.id} className="list-group-item">{author.name}</Link>)
+							})}
+						</div>
+						<hr />
 					</div>
 				</div>
 			)

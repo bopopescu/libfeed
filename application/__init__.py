@@ -18,7 +18,7 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 application = Flask(__name__)
-# CORS(application)
+CORS(application)
 
 application.config.from_object('config')
 application.secret_key = settings.SECRET_KEY
@@ -74,6 +74,7 @@ def add_books():
     application.config['SQLALCHEMY_ECHO'] = True
     with open("scrape.csv") as data_file:
         for line in data_file:
+            logger.debug(line)
             parts = line.split(',')
             title = parts[1].strip()
             author = parts[2].rstrip().strip()
@@ -81,82 +82,87 @@ def add_books():
                 author = author.replace(' ', '+')
                 title = title.replace(' ', '+')
                 x = "https://www.googleapis.com/books/v1/volumes?q={0}+inauthor:{1}&key=AIzaSyAJc0gefPcK1rjswykfixo5oyqVzOCGuWo".format(title, author)
-                x = urllib2.urlopen(x).read()
-                y = json.loads(x)
-                if 'items' in y:
-                    if y['items']:
-                        z = y['items'][0]['volumeInfo']
-                        if 'title' in z:
-                            title = z['title']
-                        else:
-                            title = ''
-                        if 'industryIdentifiers' in z:
-                            isbn = z['industryIdentifiers'][0]['identifier']
-                        else:
-                            isbn = ''
-                        if 'description' in z:
-                            description = z['description']
-                        else:
-                            description = ''
-                        if 'publishedDate' in z:
-                            published_date = z['publishedDate']
-                        else:
-                            published_date = ''
-                        if 'imageLinks' in z:
-                            image = z['imageLinks']['thumbnail']
-                        else:
-                            image = ''
-                        if 'pageCount' in z:
-                            page_count = z['pageCount']
-                        else:
-                            page_count = 0
-                        if 'authors' in z:
-                            authors = z['authors']
-                        else:
-                            authors = ['']
-                        if 'categories' in z:
-                            categories = z['categories']
-                        else:
-                            categories = ['']
-                        book = Book(isbn=isbn, synopsis=description, img=image, page_count=page_count, title=title)
-                        book_test = Book.query.filter_by(isbn=isbn).first()
-                        if not book_test:
-                            try:
-                                db.session.merge(book)
-                                db.session.commit()
-                            except:
-                                pass
-                        for author in authors:
-                            author_test = Author.query.filter_by(name=author).first()
-                            if not author_test:
-                                author_insert = Author(name=author)
-                                db.session.merge(author_insert)
-                                db.session.commit()
-                                author_test = Author.query.filter_by(name=author).first()
-                            author_id = author_test.id
-                            book_author = BookAuthor(author_id=author_id, book_isbn=isbn)
-                            try:
-                                db.session.merge(book_author)
-                                db.session.commit()
-                            except:
-                                pass
-                        for genre in categories:
-                            genre_test = Genre.query.filter_by(description=genre).first()
-                            if not genre_test:
-                                genre_insert = Genre(description=genre)
+                try:
+                    x = urllib2.urlopen(x).read()
+                    y = json.loads(x)
+                    if 'items' in y:
+                        if y['items']:
+                            z = y['items'][0]['volumeInfo']
+                            if 'title' in z:
+                                title = z['title']
+                            else:
+                                title = ''
+                            if 'industryIdentifiers' in z:
+                                isbn = z['industryIdentifiers'][0]['identifier']
+                            else:
+                                isbn = ''
+                            if 'description' in z:
+                                description = z['description']
+                                if len(description) > 3000:
+                                    description = description[0:2996] + u'...'
+                            else:
+                                description = ''
+                            if 'publishedDate' in z:
+                                published_date = z['publishedDate']
+                            else:
+                                published_date = ''
+                            if 'imageLinks' in z:
+                                image = z['imageLinks']['thumbnail']
+                            else:
+                                image = ''
+                            if 'pageCount' in z:
+                                page_count = z['pageCount']
+                            else:
+                                page_count = 0
+                            if 'authors' in z:
+                                authors = z['authors']
+                            else:
+                                authors = ['']
+                            if 'categories' in z:
+                                categories = z['categories']
+                            else:
+                                categories = ['']
+                            book = Book(isbn=isbn, synopsis=description, img=image, page_count=page_count, title=title)
+                            book_test = Book.query.filter_by(isbn=isbn).first()
+                            if not book_test:
                                 try:
-                                    db.session.merge(genre_insert)
+                                    db.session.merge(book)
                                     db.session.commit()
                                 except:
                                     pass
+                            for author in authors:
+                                author_test = Author.query.filter_by(name=author).first()
+                                if not author_test:
+                                    author_insert = Author(name=author)
+                                    db.session.merge(author_insert)
+                                    db.session.commit()
+                                    author_test = Author.query.filter_by(name=author).first()
+                                author_id = author_test.id
+                                book_author = BookAuthor(author_id=author_id, book_isbn=isbn)
+                                try:
+                                    db.session.merge(book_author)
+                                    db.session.commit()
+                                except:
+                                    pass
+                            for genre in categories:
                                 genre_test = Genre.query.filter_by(description=genre).first()
-                            genre_id= genre_test.id
-                            book_genre = BookGenre(genre_id=genre_id, book_isbn=isbn)
-                            try:
-                                db.session.merge(book_genre)
-                                db.session.commit()
-                            except:
-                                pass
+                                if not genre_test:
+                                    genre_insert = Genre(description=genre)
+                                    try:
+                                        db.session.merge(genre_insert)
+                                        db.session.commit()
+                                    except:
+                                        pass
+                                    genre_test = Genre.query.filter_by(description=genre).first()
+                                genre_id= genre_test.id
+                                book_genre = BookGenre(genre_id=genre_id, book_isbn=isbn)
+                                try:
+                                    db.session.merge(book_genre)
+                                    db.session.commit()
+                                except:
+                                    pass
+                except:
+                    pass
 
 @application.route('/', defaults={'path': ''})
 

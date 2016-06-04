@@ -7,7 +7,6 @@ class Home extends React.Component {
 			<div className="home-page">
 				<div className="container-fluid">
 					<div className="search-area">
-						<h4>Search for books, authors, or students.</h4>
 						<SearchBar />
 					</div>
 				</div>

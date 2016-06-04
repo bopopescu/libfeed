@@ -83870,11 +83870,6 @@ var Home = function (_React$Component) {
 					React.createElement(
 						'div',
 						{ className: 'search-area' },
-						React.createElement(
-							'h4',
-							null,
-							'Search for books, authors, or students.'
-						),
 						React.createElement(SearchBar, null)
 					)
 				)
@@ -84642,6 +84637,23 @@ var SearchResults = function (_React$Component) {
 								);
 							})
 						),
+						React.createElement('hr', null),
+						React.createElement(
+							'h4',
+							null,
+							'Authors'
+						),
+						React.createElement(
+							'div',
+							{ className: 'panel-body list-group' },
+							data.authors.slice(0, 20).map(function (author) {
+								return React.createElement(
+									Link,
+									{ to: '/authors/' + author.id, className: 'list-group-item' },
+									author.name
+								);
+							})
+						),
 						React.createElement('hr', null)
 					)
 				);
@@ -85265,7 +85277,7 @@ var SearchBar = function (_React$Component) {
 
         var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(SearchBar).call(this));
 
-        _this.state = { searchTerm: "" };
+        _this.state = { searchTerm: "", searchType: "" };
         return _this;
     }
 
@@ -85282,26 +85294,54 @@ var SearchBar = function (_React$Component) {
             }
         }
     }, {
+        key: 'changeType',
+        value: function changeType(selectedType) {
+            this.setState({ searchType: selectedType });
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var searchType = this.state.searchType;
             return React.createElement(
                 'div',
                 { className: 'row' },
+                React.createElement(
+                    'h4',
+                    null,
+                    'Search for: ',
+                    React.createElement(
+                        'button',
+                        { type: 'button', className: searchType == "student" ? "btn btn-primary searchtype-student-btn searchtype-selected" : "btn btn-primary searchtype-student-btn", onClick: this.changeType.bind(this, 'student') },
+                        'students'
+                    ),
+                    ' ',
+                    React.createElement(
+                        'button',
+                        { type: 'button', className: searchType == "book" ? "btn btn-primary searchtype-book-btn searchtype-selected" : "btn btn-primary searchtype-book-btn", onClick: this.changeType.bind(this, 'book') },
+                        'books'
+                    ),
+                    ' ',
+                    React.createElement(
+                        'button',
+                        { type: 'button', className: searchType == "author" ? "btn btn-primary searchtype-author-btn searchtype-selected" : "btn btn-primary searchtype-author-btn", onClick: this.changeType.bind(this, 'author') },
+                        'authors'
+                    )
+                ),
                 React.createElement(
                     'div',
                     { className: 'col-xs-4' },
                     React.createElement(
                         'form',
                         { className: 'searchForm' },
-                        React.createElement('input', { type: 'text', placeholder: 'Search', onKeyDown: this.handleKeyDown.bind(this), onChange: this.handleChange.bind(this) })
+                        React.createElement('input', { type: 'text', placeholder: 'Search', onKeyDown: this.handleKeyDown.bind(this), onChange: this.handleChange.bind(this), disabled: !searchType })
                     )
                 ),
                 React.createElement(
                     'div',
-                    { className: 'col-xs-8 searchButton' },
+                    { className: searchType ? "col-xs-8 searchButton" : "none" },
                     React.createElement(
                         Link,
-                        { id: 'searchButton', to: '/search/' + this.state.searchTerm, className: 'searchButton' },
+                        { id: 'searchButton', to: '/search/' + this.state.searchType + '/' + this.state.searchTerm, className: 'searchButton' },
                         'Go'
                     )
                 )
