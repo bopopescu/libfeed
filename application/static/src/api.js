@@ -107,8 +107,25 @@ function writeReview(isbn, description, rating, cb) {
 	})
 }
 
-function search(term, cb){
-	request(API+'search/'+term, (error, response, body) => {
+function searchStudent(term, cb){
+	request(API+'search_student/'+term, (error, response, body) => {
+		console.log(body);
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
+function searchBook(term, cb){
+	request(API+'search_book/'+term, (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
+function searchAuthor(term, cb){
+	request(API+'search_author/'+term, (error, response, body) => {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -144,7 +161,9 @@ module.exports = {
 	getBook: getBook,
 	getBooks: getBooks,
 	getBooksByGenre: getBooksByGenre,
-	search: search,
+	searchStudent: searchStudent,
+	searchBook: searchBook,
+	searchAuthor: searchAuthor,
 	returnBook: returnBook,
 	follow: follow,
 	unfollow: unfollow,

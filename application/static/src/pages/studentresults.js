@@ -1,10 +1,8 @@
-// searchresults.js
-
 var React = require('react');
 var api = require('../api.js');
 var Link = require('react-router').Link;
 
-class SearchResults extends React.Component {
+class StudentResults extends React.Component {
 
 	constructor() {
 		super();
@@ -21,7 +19,7 @@ class SearchResults extends React.Component {
 	}
 
 	setSearchData(searchTerm) {
-		api.search(searchTerm, (err, data) => {
+		api.searchStudent(searchTerm, (err, data) => {
 			if (err) console.error("[SearchPage:componentDidMount] There's been an error retrieving data!");
 			else this.setState({data: data});
 		})
@@ -36,24 +34,10 @@ class SearchResults extends React.Component {
 					<div className="container">
 						<h3>Search Results for “{this.props.params.searchTerm}”</h3>
 						<hr />
-						<h4>Users</h4>
+						<h4>Students</h4>
 						<div className="panel-body list-group">
 							{data.students.slice(0, 20).map( student => {
 								return (<Link to={'/students/'+student.id} className="list-group-item">{student.first_name} {student.last_name}</Link>)
-							})}
-						</div>
-						<hr />
-						<h4>Books</h4>
-						<div className="panel-body list-group">
-							{data.books.slice(0, 20).map( book => {
-								return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}</Link>)
-							})}
-						</div>
-						<hr />
-						<h4>Authors</h4>
-						<div className="panel-body list-group">
-							{data.authors.slice(0, 20).map( author => {
-								return (<Link to={'/authors/'+author.id} className="list-group-item">{author.name}</Link>)
 							})}
 						</div>
 						<hr />
@@ -68,4 +52,4 @@ class SearchResults extends React.Component {
 	}
 }
 
-module.exports = SearchResults;
+module.exports = StudentResults;

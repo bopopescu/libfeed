@@ -10,7 +10,9 @@ var NewsFeed = require('./newsfeed/newsfeed.js');
 var UserPage = require('./pages/userpage.js');
 var Browse = require('./pages/browse.js');
 var Genre = require('./pages/genre.js');
-var SearchResults = require('./pages/searchresults.js');
+var StudentResults = require('./pages/studentresults.js');
+var BookResults = require('./pages/bookresults.js');
+var AuthorResults = require('./pages/authorresults.js');
 
 var Router = router.Router;
 var Route = router.Route;
@@ -25,7 +27,9 @@ class App extends React.Component {
 					<Route path="/about" title="About" component={AboutPage} />
 					<Route path="/students/:studentId" component={StudentPage} />
 					<Route path="/books/:bookIsbn" component={BookPage} />
-					<Route path="/search/:searchTerm" component={SearchResults} />
+					<Route path="/search/student/:searchTerm" component={StudentResults} />
+					<Route path="/search/book/:searchTerm" component={BookResults} />
+					<Route path="/search/author/:searchTerm" component={AuthorResults} />
 					<Route path="/newsfeed" component={NewsFeed} />
 					<Route path="/user" component={UserPage} />
 					<Route path="/browse" component={Browse} />
