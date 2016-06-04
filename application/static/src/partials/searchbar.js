@@ -25,6 +25,7 @@ class SearchBar extends React.Component {
 
 	render() {
         var searchType = this.state.searchType;
+        var searchTerm = this.state.searchTerm;
 		return (
             <div className="row">
             <h4>Search for: <button type="button" className={searchType=="student" ? "btn btn-primary searchtype-student-btn searchtype-selected" : "btn btn-primary searchtype-student-btn"} onClick={this.changeType.bind(this, 'student')}>students</button>&nbsp;
@@ -35,7 +36,7 @@ class SearchBar extends React.Component {
     				<input type="text" placeholder="Search" onKeyDown={this.handleKeyDown.bind(this)} onChange={this.handleChange.bind(this)} disabled={!searchType}/>
     			</form>
             </div>
-            <div className={searchType ? "col-xs-8 searchButton" : "none"}>
+            <div className={searchTerm ? "col-xs-8 searchButton" : "none"}>
                 <Link id="searchButton" to={'/search/'+this.state.searchType+'/'+this.state.searchTerm} className="searchButton">Go</Link>
             </div>
             </div>

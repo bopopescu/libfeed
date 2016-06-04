@@ -31,7 +31,7 @@ class Genre extends React.Component {
 									return (<div>
 												<hr />
 												<li>
-													<p className="student-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
+													<p className="list-book-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
 													<ul className="browse-authors">
 														{book.authors.map( author => {
 															return (<li>{author.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>)

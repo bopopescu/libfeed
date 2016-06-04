@@ -46,7 +46,9 @@ class Student extends React.Component {
 									<button type="button" className="btn btn-primary follow-btn" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
 								</div>
 								<p className="user-detail">{data.grade}th Grade</p>
-								<img src={data.img} className="student-img"/>
+								<div className="student-img">
+									<img src={data.img} />
+								</div>
 							</div>
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>

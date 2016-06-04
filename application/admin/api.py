@@ -1,7 +1,7 @@
 import datetime
 
 from flask import Blueprint, jsonify, request, redirect, url_for
-from sqlalchemy import or_, and_, update
+from sqlalchemy import or_, and_, update, func
 
 from flask.ext.login import LoginManager, current_user, login_required
 
@@ -10,7 +10,7 @@ from boto.s3.key import Key
 
 from application import db, mapper, logger, settings
 
-from application.models import Student, Book, Borrow, FolloweeFollower, Review, Return, Genre
+from application.models import *
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -89,6 +89,11 @@ def get_book(isbn):
             checked_out = True
     return jsonify({'book': mapper.book_to_dict(Book.query_by_isbn(isbn)), 'checked_out': checked_out, 'user': {'id': current_user.id, 'first_name': current_user.first_name, 'last_name': current_user.last_name}})
 
+@api.route('/author/<id>', methods=["GET"])
+@login_required
+def get_author(id):
+    return jsonify({'author': mapper.author_to_dict(Author.query_by_id(id))})
+
 @api.route('/books', methods=["GET"])
 @login_required
 def get_books():
@@ -150,21 +155,21 @@ def unfollow():
 @login_required
 def search_student(search_term):
     students = list(map(mapper.student_to_dict, Student.query.filter(
-        or_((Student.first_name+" "+Student.last_name).contains(search_term), Student.first_name.contains(search_term),
-        Student.last_name.contains(search_term)
+        or_((func.lower(Student.first_name)+" "+func.lower(Student.last_name)).contains(search_term.lower()), func.lower(Student.first_name).contains(search_term.lower()),
+        func.lower(Student.last_name).contains(search_term.lower())
         )).all()))
     return jsonify({'students': students})
 
 @api.route('/search_book/<search_term>', methods=["GET"])
 @login_required
 def search_book(search_term):
-    books = list(map(mapper.book_to_dict, Book.query.filter(Book.title.contains(search_term)).all()))
+    books = list(map(mapper.book_to_dict, Book.query.filter(func.lower(Book.title).contains(search_term.lower())).all()))
     return jsonify({'books': books})
 
 @api.route('/search_author/<search_term>', methods=["GET"])
 @login_required
 def search_author(search_term):
-    authors = list(map(mapper.author_to_dict, Author.query.filter(Author.name.contains(search_term)).all()))
+    authors = list(map(mapper.author_to_dict, Author.query.filter(func.lower(Author.name).contains(search_term.lower())).all()))
     return jsonify({'authors': authors})
 
 @api.route('/upload', methods=['POST'])

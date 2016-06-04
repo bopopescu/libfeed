@@ -83615,7 +83615,7 @@ function Node (value, prev, next, list) {
 'use strict';
 
 var request = require('request');
-var API = 'http://libfeed.co/api/';
+var API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb) {
 	request(API + 'cur_user_newsfeed', function (error, response, body) {
@@ -83665,6 +83665,14 @@ function unfollow(followee_id, cb) {
 
 function getBook(isbn, cb) {
 	request(API + 'book/' + isbn, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	});
+}
+
+function getAuthor(id, cb) {
+	request(API + 'author/' + id, function (error, response, body) {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -83725,7 +83733,6 @@ function writeReview(isbn, description, rating, cb) {
 
 function searchStudent(term, cb) {
 	request(API + 'search_student/' + term, function (error, response, body) {
-		console.log(body);
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -83775,6 +83782,7 @@ module.exports = {
 	getCurUserPage: getCurUserPage,
 	getStudent: getStudent,
 	getBook: getBook,
+	getAuthor: getAuthor,
 	getBooks: getBooks,
 	getBooksByGenre: getBooksByGenre,
 	searchStudent: searchStudent,
@@ -83807,6 +83815,7 @@ var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
 var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
+var AuthorPage = require('./pages/authorpage.js');
 var NewsFeed = require('./newsfeed/newsfeed.js');
 var UserPage = require('./pages/userpage.js');
 var Browse = require('./pages/browse.js');
@@ -83841,6 +83850,7 @@ var App = function (_React$Component) {
 					React.createElement(Route, { path: '/about', title: 'About', component: AboutPage }),
 					React.createElement(Route, { path: '/students/:studentId', component: StudentPage }),
 					React.createElement(Route, { path: '/books/:bookIsbn', component: BookPage }),
+					React.createElement(Route, { path: '/authors/:authorId', component: AuthorPage }),
 					React.createElement(Route, { path: '/search/student/:searchTerm', component: StudentResults }),
 					React.createElement(Route, { path: '/search/book/:searchTerm', component: BookResults }),
 					React.createElement(Route, { path: '/search/author/:searchTerm', component: AuthorResults }),
@@ -83858,7 +83868,7 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/authorresults.js":502,"./pages/bookpage.js":503,"./pages/bookresults.js":504,"./pages/browse.js":505,"./pages/genre.js":506,"./pages/studentpage.js":507,"./pages/studentresults.js":508,"./pages/userpage.js":509,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
+},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/authorpage.js":502,"./pages/authorresults.js":503,"./pages/bookpage.js":504,"./pages/bookresults.js":505,"./pages/browse.js":506,"./pages/genre.js":507,"./pages/studentpage.js":508,"./pages/studentresults.js":509,"./pages/userpage.js":510,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83905,7 +83915,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/searchbar.js":510,"react":419}],500:[function(require,module,exports){
+},{"./partials/searchbar.js":511,"react":419}],500:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84110,6 +84120,92 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
+var Link = require('react-router').Link;
+var api = require('../api.js');
+
+var Author = function (_React$Component) {
+	_inherits(Author, _React$Component);
+
+	function Author() {
+		_classCallCheck(this, Author);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Author).call(this));
+
+		_this.state = { data: null };
+		return _this;
+	}
+
+	_createClass(Author, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getAuthor(this.props.params.authorId, function (err, data) {
+				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
+					_this2.setState({ data: data.author });
+				}
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var data = this.state.data;
+			if (data) {
+				return React.createElement(
+					'div',
+					{ id: 'author-page' },
+					React.createElement(
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'h3',
+								{ className: 'author-title' },
+								data.name
+							),
+							React.createElement(
+								'ul',
+								null,
+								data.books.map(function (book) {
+									return React.createElement(
+										'li',
+										null,
+										React.createElement(
+											Link,
+											{ to: '/books/' + book.isbn },
+											book.title
+										)
+									);
+								})
+							)
+						)
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	}]);
+
+	return Author;
+}(React.Component);
+
+module.exports = Author;
+
+},{"../api.js":497,"react":419,"react-router":284}],503:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
 var api = require('../api.js');
 var Link = require('react-router').Link;
 
@@ -84156,7 +84252,7 @@ var AuthorResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: 'container' },
+						{ className: data.authors.length ? "container" : "none" },
 						React.createElement(
 							'h3',
 							null,
@@ -84182,6 +84278,17 @@ var AuthorResults = function (_React$Component) {
 							})
 						),
 						React.createElement('hr', null)
+					),
+					React.createElement(
+						'div',
+						{ className: data.authors.length ? "none" : "container" },
+						React.createElement(
+							'h3',
+							null,
+							'No Results Found for “',
+							this.props.params.searchTerm,
+							'”'
+						)
 					)
 				);
 			} else {
@@ -84195,7 +84302,7 @@ var AuthorResults = function (_React$Component) {
 
 module.exports = AuthorResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],503:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],504:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84229,7 +84336,7 @@ var Book = function (_React$Component) {
 
 			api.getBook(this.props.params.bookIsbn, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user });
+					_this2.setState({ data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: "" });
 				}
 			});
 		}
@@ -84252,10 +84359,10 @@ var Book = function (_React$Component) {
 			today = mm + '/' + dd + '/' + yy;
 			var reviews = this.state.reviews.push({ 'description': description, 'rating': rating, 'date': today, 'student_name': this.state.user.first_name + ' ' + this.state.user.last_name, 'student_id': this.state.user.id });
 			this.setState({
-				reviews: this.state.reviews
+				reviews: this.state.reviews,
+				rating: ""
 			});
 			React.findDOMNode(this.refs.reviewinput).value = "";
-			React.findDOMNode(this.refs.ratinginput).value = "";
 		}
 	}, {
 		key: 'handleReview',
@@ -84263,9 +84370,9 @@ var Book = function (_React$Component) {
 			this.setState({ description: event.target.value });
 		}
 	}, {
-		key: 'handleRating',
-		value: function handleRating(event) {
-			this.setState({ rating: event.target.value });
+		key: 'changeRating',
+		value: function changeRating(ratingValue) {
+			this.setState({ rating: ratingValue });
 		}
 	}, {
 		key: 'render',
@@ -84274,7 +84381,8 @@ var Book = function (_React$Component) {
 			var checked_out = this.state.checked_out;
 			var reviews = this.state.reviews;
 			var description = "";
-			var rating = "";
+			var rating = this.state.rating;
+			console.log(rating);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84331,7 +84439,11 @@ var Book = function (_React$Component) {
 										return React.createElement(
 											'li',
 											null,
-											author.name
+											React.createElement(
+												Link,
+												{ to: '/authors/' + author.id },
+												author.name
+											)
 										);
 									})
 								),
@@ -84421,10 +84533,43 @@ var Book = function (_React$Component) {
 									'form',
 									{ className: 'reviewForm' },
 									React.createElement('input', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleReview.bind(this) }),
-									React.createElement('input', { className: 'ratinginput', placeholder: 'Rating', ref: 'ratinginput', type: 'text', onChange: this.handleRating.bind(this) }),
+									React.createElement(
+										'span',
+										{ className: 'rating-selector' },
+										'Rating: ',
+										React.createElement(
+											'button',
+											{ type: 'button', className: rating == 1 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 1) },
+											'1'
+										),
+										' ',
+										React.createElement(
+											'button',
+											{ type: 'button', className: rating == 2 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 2) },
+											'2'
+										),
+										' ',
+										React.createElement(
+											'button',
+											{ type: 'button', className: rating == 3 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 3) },
+											'3'
+										),
+										' ',
+										React.createElement(
+											'button',
+											{ type: 'button', className: rating == 4 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 4) },
+											'4'
+										),
+										' ',
+										React.createElement(
+											'button',
+											{ type: 'button', className: rating == 5 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 5) },
+											'5'
+										)
+									),
 									React.createElement(
 										'button',
-										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating) },
+										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating), disabled: !(rating && this.state.description) },
 										'Post Review'
 									)
 								)
@@ -84443,7 +84588,7 @@ var Book = function (_React$Component) {
 
 module.exports = Book;
 
-},{"../api.js":497,"react":419,"react-router":284}],504:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84501,7 +84646,7 @@ var BookResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: 'container' },
+						{ className: data.books.length ? "container" : "none" },
 						React.createElement(
 							'h3',
 							null,
@@ -84527,6 +84672,17 @@ var BookResults = function (_React$Component) {
 							})
 						),
 						React.createElement('hr', null)
+					),
+					React.createElement(
+						'div',
+						{ className: data.books.length ? "none" : "container" },
+						React.createElement(
+							'h3',
+							null,
+							'No Results Found for “',
+							this.props.params.searchTerm,
+							'”'
+						)
 					)
 				);
 			} else {
@@ -84540,7 +84696,7 @@ var BookResults = function (_React$Component) {
 
 module.exports = BookResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84570,13 +84726,7 @@ var Browse = function (_React$Component) {
 	_createClass(Browse, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
-			var _this2 = this;
-
-			api.getGenres(function (err, data) {
-				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.genres });
-				}
-			});
+			this.setState({ data: ['Biography & Autobiography', 'Comics & Graphic Novels', 'Young Adult Fiction', 'Fiction', 'Young Adult Nonfiction'] });
 		}
 	}, {
 		key: 'render',
@@ -84606,8 +84756,8 @@ var Browse = function (_React$Component) {
 										null,
 										React.createElement(
 											Link,
-											{ to: '/browse/' + genre.description },
-											genre.description
+											{ to: '/browse/' + genre },
+											genre
 										)
 									);
 								})
@@ -84626,7 +84776,7 @@ var Browse = function (_React$Component) {
 
 module.exports = Browse;
 
-},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],507:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84696,7 +84846,7 @@ var Genre = function (_React$Component) {
 											null,
 											React.createElement(
 												'p',
-												{ className: 'student-name' },
+												{ className: 'list-book-name' },
 												React.createElement(
 													Link,
 													{ to: '/books/' + book.isbn },
@@ -84750,7 +84900,7 @@ var Genre = function (_React$Component) {
 
 module.exports = Genre;
 
-},{"../api.js":497,"react":419,"react-router":284}],507:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],508:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84844,7 +84994,11 @@ var Student = function (_React$Component) {
 									data.grade,
 									'th Grade'
 								),
-								React.createElement('img', { src: data.img, className: 'student-img' })
+								React.createElement(
+									'div',
+									{ className: 'student-img' },
+									React.createElement('img', { src: data.img })
+								)
 							),
 							React.createElement(
 								'div',
@@ -85002,7 +85156,7 @@ var Student = function (_React$Component) {
 
 module.exports = Student;
 
-},{"../api.js":497,"react":419,"react-router":284}],508:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],509:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85060,7 +85214,7 @@ var StudentResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: 'container' },
+						{ className: data.students.length ? "container" : "none" },
 						React.createElement(
 							'h3',
 							null,
@@ -85088,6 +85242,17 @@ var StudentResults = function (_React$Component) {
 							})
 						),
 						React.createElement('hr', null)
+					),
+					React.createElement(
+						'div',
+						{ className: data.students.length ? "none" : "container" },
+						React.createElement(
+							'h3',
+							null,
+							'No Results Found for “',
+							this.props.params.searchTerm,
+							'”'
+						)
 					)
 				);
 			} else {
@@ -85101,7 +85266,7 @@ var StudentResults = function (_React$Component) {
 
 module.exports = StudentResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],509:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],510:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85196,28 +85361,26 @@ var User = function (_React$Component) {
 									data.grade,
 									'th Grade'
 								),
-								React.createElement('img', { src: data.img, className: 'user-img' }),
-								React.createElement('br', null),
+								React.createElement(
+									'div',
+									{ className: 'student-img' },
+									React.createElement('img', { src: data.img }),
+									React.createElement('br', null)
+								),
 								React.createElement(
 									'button',
-									{ type: 'button', className: 'btn btn-primary upload-click-btn', onClick: this.handleClickPhoto.bind(this) },
+									{ type: 'button', className: photo ? 'none' : "btn btn-primary upload-click-btn", onClick: this.handleClickPhoto.bind(this) },
 									'Upload Photo'
 								),
 								React.createElement(
 									'div',
 									{ className: photo ? 'photo' : 'none' },
 									React.createElement(
-										'p',
-										null,
-										'Upload Photo'
-									),
-									React.createElement(
 										'form',
 										{ action: 'api/upload', method: 'post', encType: 'multipart/form-data' },
 										React.createElement('input', { className: 'upload', type: 'file', name: 'file' }),
 										React.createElement('br', null),
-										React.createElement('br', null),
-										React.createElement('input', { className: 'upload-btn return-btn btn btn-primary', type: 'submit', value: 'Upload' })
+										React.createElement('input', { className: 'upload-btn btn btn-primary', type: 'submit', value: 'Upload' })
 									)
 								)
 							),
@@ -85434,7 +85597,7 @@ var User = function (_React$Component) {
 
 module.exports = User;
 
-},{"../api.js":497,"react":419,"react-router":284}],510:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],511:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85483,6 +85646,7 @@ var SearchBar = function (_React$Component) {
         key: 'render',
         value: function render() {
             var searchType = this.state.searchType;
+            var searchTerm = this.state.searchTerm;
             return React.createElement(
                 'div',
                 { className: 'row' },
@@ -85519,7 +85683,7 @@ var SearchBar = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: searchType ? "col-xs-8 searchButton" : "none" },
+                    { className: searchTerm ? "col-xs-8 searchButton" : "none" },
                     React.createElement(
                         Link,
                         { id: 'searchButton', to: '/search/' + this.state.searchType + '/' + this.state.searchTerm, className: 'searchButton' },

@@ -51,13 +51,14 @@ class User extends React.Component {
 							<div className="col-xs-6 user-profile">
 								<h4 className="user-name">{data.first_name} {data.last_name}</h4>
 								<p className="user-detail">{data.grade}th Grade</p>
-								<img src={data.img} className="user-img"/><br />
-								<button type="button" className="btn btn-primary upload-click-btn" onClick={this.handleClickPhoto.bind(this)}>Upload Photo</button>
+								<div className="student-img">
+									<img src={data.img} /><br />
+								</div>
+								<button type="button" className={photo ? 'none' : "btn btn-primary upload-click-btn"} onClick={this.handleClickPhoto.bind(this)}>Upload Photo</button>
 								<div className={photo ? 'photo' : 'none'} >
-									<p>Upload Photo</p>
 									<form action="api/upload" method="post" encType="multipart/form-data">
-		  								<input className="upload" type="file" name="file" /><br /><br />
-		  								<input className="upload-btn return-btn btn btn-primary" type="submit" value="Upload" />
+		  								<input className="upload" type="file" name="file" /><br />
+		  								<input className="upload-btn btn btn-primary" type="submit" value="Upload" />
 									</form>
 								</div>
 							</div>

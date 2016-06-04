@@ -31,7 +31,7 @@ class StudentResults extends React.Component {
 			console.log(data);
 			return (
 				<div className="search-results">
-					<div className="container">
+					<div className={data.students.length ? "container" : "none"}>
 						<h3>Search Results for “{this.props.params.searchTerm}”</h3>
 						<hr />
 						<h4>Students</h4>
@@ -41,6 +41,9 @@ class StudentResults extends React.Component {
 							})}
 						</div>
 						<hr />
+					</div>
+					<div className={data.students.length ? "none" : "container"}>
+						<h3>No Results Found for “{this.props.params.searchTerm}”</h3>
 					</div>
 				</div>
 			)

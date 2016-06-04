@@ -40,7 +40,7 @@ h6 {
 
 p {
     font-family: 'Gotham SSm',sans-serif;
-    color: #777;
+    color: #333333;
     font-size: 15px;
     font-weight: 300;
     line-height: 1.9em;
@@ -54,7 +54,7 @@ ul {
 
 li {
     font-family: 'Gotham SSm',sans-serif;
-    color: #777;
+    color: #333333;
     font-size: 15px;
     font-weight: 300;
     line-height: 1.9em;
@@ -134,8 +134,23 @@ hr {
 
 /************* STUDENT PAGE *************/
 .student-img {
-    max-width: 200px;
+    position: relative;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
     border-radius: 100px;
+    margin-left: 130px;
+}
+
+.student-img img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
 
 .student-page-name {
@@ -247,10 +262,6 @@ hr {
     height: 75px;
 }
 
-.available {
-    float: left;
-}
-
 .book-status {
     margin-top: 25px;
 }
@@ -288,7 +299,7 @@ hr {
 }
 
 .reviewForm {
-    margin-bottom: 20px;
+    margin-bottom: 50px;
 }
 
 .book-img {
@@ -298,6 +309,37 @@ hr {
 .ratinginput {
     width: 60px;
 }
+
+.rating-btn {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    font-size: 10px;
+    padding: 2px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.rating-btn-selected {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    font-size: 10px;
+    padding: 2px;
+    background-color: blue;
+    border-color: white;
+}
+
+.rating-selector {
+    font-family: 'Gotham SSm',sans-serif;
+    color: #333333;
+    font-size: 15px;
+    font-weight: 300;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+    padding-left: 20px;
+}
+
 /************* USER PAGE *************/
 
 .return-btn {
@@ -369,7 +411,7 @@ hr {
 }
 
 .review-descrip {
-    font-size: 12px;
+    font-size: 13px;
 }
 
 .followers a {
@@ -397,15 +439,23 @@ input[type=file] {
 .upload-btn {
     width: 50px;
     font-size: 10px;
-}
-
-.upload-click-btn {
-    font-size: 9px;
-    width: 70px;
     padding: 2px;
     margin-top: 20px;
     background-color: #1eb6a7;
     border-color: white;
+}
+
+.upload-click-btn {
+    font-size: 11px;
+    width: 80px;
+    padding: 2px;
+    margin-top: 20px;
+    background-color: #1eb6a7;
+    border-color: white;
+}
+
+.photo {
+    padding-top: 20px;
 }
 /************* SEARCH *************/
 
@@ -511,19 +561,31 @@ button, input, select, textarea {
 
 .browse-authors li {
     text-transform: uppercase;
-    font-size: 9px;
-    opacity: .5;
+    font-size: 12px;
+    opacity: .75;
     display: inline;
 }
 
 .browse-genres li {
     text-transform: uppercase;
-    font-size: 9px;
-    opacity: .5;
+    font-size: 12px;
+    opacity: .75;
     display: inline;
+    padding-bottom: 5px;
 }
 
 #genre-page a {
     font-size: 12px;
     text-transform: uppercase;
+}
+
+.list-book-name a{
+    color: #1eb6a7;
+    font-size: 16px
+}
+
+.list-book-name {
+    color: #1eb6a7;
+    font-size: 16px;
+    margin-bottom: 0;
 }

@@ -1,5 +1,5 @@
 const request = require('request');
-const API = 'http://libfeed.co/api/';
+const API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb){
 	request(API+'cur_user_newsfeed', (error, response, body) => {
@@ -49,6 +49,14 @@ function unfollow(followee_id, cb) {
 
 function getBook(isbn, cb){
 	request(API+'book/'+isbn, (error, response, body) => {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+		if (!error) body = JSON.parse(body);
+		cb(error, body);
+	})
+}
+
+function getAuthor(id, cb){
+	request(API+'author/'+id, (error, response, body) => {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -109,7 +117,6 @@ function writeReview(isbn, description, rating, cb) {
 
 function searchStudent(term, cb){
 	request(API+'search_student/'+term, (error, response, body) => {
-		console.log(body);
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -159,6 +166,7 @@ module.exports = {
 	getCurUserPage: getCurUserPage,
 	getStudent: getStudent,
 	getBook: getBook,
+	getAuthor: getAuthor,
 	getBooks: getBooks,
 	getBooksByGenre: getBooksByGenre,
 	searchStudent: searchStudent,

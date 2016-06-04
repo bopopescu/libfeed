@@ -87,6 +87,10 @@ class Author(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(256), nullable=False)
 
+    @staticmethod
+    def query_by_id(id):
+        return Author.query.filter(Author.id==id).first()
+
 
 class BookAuthor(db.Model):
     __tablename__ = 'book_author'

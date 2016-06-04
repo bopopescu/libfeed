@@ -13,7 +13,7 @@ class Book extends React.Component {
 		api.getBook(this.props.params.bookIsbn, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user});
+				this.setState({data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: ""});
 			}
 		});
 	}
@@ -34,18 +34,18 @@ class Book extends React.Component {
 		today = mm+'/'+dd+'/'+yy;
 		var reviews = this.state.reviews.push({'description': description, 'rating': rating, 'date': today, 'student_name': this.state.user.first_name + ' ' + this.state.user.last_name, 'student_id': this.state.user.id});
 		this.setState({
-			reviews: this.state.reviews
+			reviews: this.state.reviews,
+			rating: ""
 		})
 		React.findDOMNode(this.refs.reviewinput).value = "";
-		React.findDOMNode(this.refs.ratinginput).value = "";
 	}
 
 	handleReview(event) {
         this.setState({description: event.target.value})
     }
 
-	handleRating(event) {
-		this.setState({rating: event.target.value})
+	changeRating(ratingValue) {
+		this.setState({rating: ratingValue})
 	}
 
 	render() {
@@ -53,7 +53,8 @@ class Book extends React.Component {
 		var checked_out = this.state.checked_out;
 		var reviews = this.state.reviews;
 		var description = "";
-		var rating = "";
+		var rating = this.state.rating;
+		console.log(rating);
 		if (data) {
 			return (
 				<div id="book-page">
@@ -76,7 +77,7 @@ class Book extends React.Component {
 								<p className="user-detail">Authors</p>
 								<ul className="authors">
 									{data.authors.map( author => {
-										return (<li>{author.name}</li>)
+										return (<li><Link to={'/authors/'+author.id}>{author.name}</Link></li>)
 									})}
 								</ul>
 								<p className="user-detail">Genres</p>
@@ -111,8 +112,12 @@ class Book extends React.Component {
 								<hr />
 								<form className="reviewForm">
 									<input placeholder="Write Review" ref="reviewinput" type="text" onChange={this.handleReview.bind(this)} />
-									<input className="ratinginput" placeholder="Rating" ref="ratinginput" type="text" onChange={this.handleRating.bind(this)} />
-									<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating)}>Post Review</button>
+									<span className="rating-selector">Rating: <button type="button" className={rating==1 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 1)}>1</button>&nbsp;
+									<button type="button" className={rating==2 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 2)}>2</button>&nbsp;
+									<button type="button" className={rating==3 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 3)}>3</button>&nbsp;
+									<button type="button" className={rating==4 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 4)}>4</button>&nbsp;
+									<button type="button" className={rating==5 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 5)}>5</button></span>
+									<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating)} disabled={!(rating && this.state.description)}>Post Review</button>
 								</form>
 							</div>
 						</div>
