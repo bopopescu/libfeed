@@ -83615,7 +83615,7 @@ function Node (value, prev, next, list) {
 'use strict';
 
 var request = require('request');
-var API = 'http://localhost:5000/api/';
+var API = 'http://libfeed.co/api/';
 
 function getCurUserNewsfeed(cb) {
 	request(API + 'cur_user_newsfeed', function (error, response, body) {
