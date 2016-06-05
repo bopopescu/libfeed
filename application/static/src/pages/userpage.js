@@ -50,7 +50,7 @@ class User extends React.Component {
 						<div className="row">
 							<div className="col-xs-6 user-profile">
 								<h4 className="user-name">{data.first_name} {data.last_name}</h4>
-								<p className="user-detail">{data.grade}th Grade</p>
+								<p className="grade">{data.grade}th Grade</p>
 								<div className="student-img">
 									<img src={data.img} /><br />
 								</div>
@@ -118,7 +118,7 @@ class User extends React.Component {
 								{data.followers.map( follower => {
 									return (<div className="list">
 												<li>
-													<img src={follower.img} className="thumbnail"/>
+													<img src={follower.img} className="thumbnail-follower"/>
 													<p className="followers"><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
 												</li>
 											</div>)

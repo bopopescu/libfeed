@@ -83615,7 +83615,7 @@ function Node (value, prev, next, list) {
 'use strict';
 
 var request = require('request');
-var API = 'http://libfeed.co/api/';
+var API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb) {
 	request(API + 'cur_user_newsfeed', function (error, response, body) {
@@ -83978,7 +83978,11 @@ var NewsFeed = function (_React$Component) {
 											React.createElement(
 												'li',
 												null,
-												React.createElement('img', { src: book.student.img, className: 'thumbnail' }),
+												React.createElement(
+													'div',
+													{ className: 'thumbnail' },
+													React.createElement('img', { src: book.student.img })
+												),
 												React.createElement(
 													Link,
 													{ to: '/students/' + book.student.id, className: 'student-name' },
@@ -84015,7 +84019,11 @@ var NewsFeed = function (_React$Component) {
 											React.createElement(
 												'li',
 												null,
-												React.createElement('img', { src: review.student.img, className: 'thumbnail' }),
+												React.createElement(
+													'div',
+													{ className: 'thumbnail' },
+													React.createElement('img', { src: review.student.img })
+												),
 												React.createElement(
 													Link,
 													{ to: '/students/' + review.student.id, className: 'student-name' },
@@ -84161,17 +84169,18 @@ var Author = function (_React$Component) {
 							'div',
 							{ className: 'row' },
 							React.createElement(
-								'h3',
+								'p',
 								{ className: 'author-title' },
 								data.name
 							),
+							React.createElement('hr', null),
 							React.createElement(
 								'ul',
 								null,
 								data.books.map(function (book) {
 									return React.createElement(
 										'li',
-										null,
+										{ className: 'author-book-title' },
 										React.createElement(
 											Link,
 											{ to: '/books/' + book.isbn },
@@ -84411,7 +84420,7 @@ var Book = function (_React$Component) {
 								{ className: 'col-xs-6 book-status' },
 								React.createElement(
 									'button',
-									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out > 0 ? this.checkOut.bind(this, data.isbn) : '' },
+									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out > 0 ? this.checkOut.bind(this, data.isbn) : '', disabled: checked_out },
 									!checked_out ? "Check Out" : 'Checked Out'
 								)
 							)
@@ -84459,7 +84468,11 @@ var Book = function (_React$Component) {
 										return React.createElement(
 											'li',
 											null,
-											genre.description
+											React.createElement(
+												Link,
+												{ to: '/browse/' + genre.description },
+												genre.description
+											)
 										);
 									})
 								)
@@ -84510,7 +84523,8 @@ var Book = function (_React$Component) {
 														'span',
 														{ className: 'user-detail' },
 														review.rating,
-														' stars'
+														' ',
+														review.rating == 1 ? 'star' : 'stars'
 													),
 													React.createElement(
 														'span',
@@ -84831,7 +84845,8 @@ var Genre = function (_React$Component) {
 							React.createElement(
 								'h4',
 								null,
-								'Books'
+								'Books - ',
+								this.props.params.genre
 							),
 							React.createElement(
 								'ul',
@@ -84860,20 +84875,11 @@ var Genre = function (_React$Component) {
 													return React.createElement(
 														'li',
 														null,
-														author.name,
-														'        '
-													);
-												})
-											),
-											React.createElement(
-												'ul',
-												{ className: 'browse-genres' },
-												book.genres.map(function (genre) {
-													return React.createElement(
-														'li',
-														null,
-														genre.description,
-														'        '
+														React.createElement(
+															Link,
+															{ to: '/authors/' + author.id },
+															author.name
+														)
 													);
 												})
 											),
@@ -84990,7 +84996,7 @@ var Student = function (_React$Component) {
 								),
 								React.createElement(
 									'p',
-									{ className: 'user-detail' },
+									{ className: 'grade' },
 									data.grade,
 									'th Grade'
 								),
@@ -85065,7 +85071,8 @@ var Student = function (_React$Component) {
 														review.author,
 														'    ',
 														review.rating,
-														' stars'
+														' ',
+														review.rating == 1 ? 'star' : 'stars'
 													)
 												),
 												React.createElement(
@@ -85125,7 +85132,11 @@ var Student = function (_React$Component) {
 											React.createElement(
 												'li',
 												null,
-												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
+												React.createElement(
+													'div',
+													{ className: 'thumbnail-follower' },
+													React.createElement('img', { src: follower.img })
+												),
 												React.createElement(
 													'p',
 													{ className: 'followers' },
@@ -85357,7 +85368,7 @@ var User = function (_React$Component) {
 								),
 								React.createElement(
 									'p',
-									{ className: 'user-detail' },
+									{ className: 'grade' },
 									data.grade,
 									'th Grade'
 								),
@@ -85566,7 +85577,7 @@ var User = function (_React$Component) {
 											React.createElement(
 												'li',
 												null,
-												React.createElement('img', { src: follower.img, className: 'thumbnail' }),
+												React.createElement('img', { src: follower.img, className: 'thumbnail-follower' }),
 												React.createElement(
 													'p',
 													{ className: 'followers' },
@@ -85652,7 +85663,7 @@ var SearchBar = function (_React$Component) {
                 { className: 'row' },
                 React.createElement(
                     'h4',
-                    null,
+                    { className: 'search-bar' },
                     'Search for: ',
                     React.createElement(
                         'button',

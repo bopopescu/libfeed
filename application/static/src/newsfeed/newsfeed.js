@@ -26,7 +26,7 @@ class NewsFeed extends React.Component {
 							<div className="col-xs-6">
 								<ul>
 								{data.borrows.map( book => {
-									return (<div className="news-list-item"><li><img src={book.student.img} className='thumbnail' />
+									return (<div className="news-list-item"><li><div className="thumbnail"><img src={book.student.img} /></div>
 											<Link to={'/students/'+book.student.id} className="student-name">{book.student.first_name} {book.student.last_name}</Link> checked out
 											<Link to={'/books/'+book.book.isbn} className="book-title"> {book.book.title}</Link> {book.days_passed}.</li><br /></div>)
 								})}
@@ -35,7 +35,7 @@ class NewsFeed extends React.Component {
 							<div className="col-xs-6">
 								<ul>
 								{data.reviews.map( review => {
-									return (<div className="news-list-item"><li><img src={review.student.img} className='thumbnail' />
+									return (<div className="news-list-item"><li><div className="thumbnail"><img src={review.student.img} /></div>
 											<Link to={'/students/'+review.student.id} className="student-name">{review.student.first_name} {review.student.last_name}</Link> wrote a review for
 											<Link to={'/books/'+review.book.isbn} className="book-title"> {review.book.title}</Link> {review.days_passed}.</li><br /></div>)
 								})}

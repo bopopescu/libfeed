@@ -179,12 +179,61 @@ hr {
 }
 
 .thumbnail {
-    max-width: 30px;
+    max-width: 50px;
     margin-bottom: 0px;
     padding: 0px;
     margin-right: 10px;
     border-radius: 50px;
     float: left;
+}
+
+.thumbnail {
+    position: relative;
+    width: 50px;
+    height: 50px;
+    overflow: hidden;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+
+.thumbnail img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
+}
+
+.thumbnail-follower {
+    max-width: 30px;
+    margin-bottom: 0px;
+    padding: 0px;
+    margin-right: 10px;
+    border-radius: 30px;
+    float: left;
+}
+
+.thumbnail-follower {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    overflow: hidden;
+    border-radius: 50px;
+    margin-right: 10px;
+}
+
+.thumbnail-follower img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  height: 100%;
+  width: auto;
+  -webkit-transform: translate(-50%,-50%);
+      -ms-transform: translate(-50%,-50%);
+          transform: translate(-50%,-50%);
 }
 
 .header {
@@ -198,10 +247,12 @@ hr {
 .student-page-name .btn {
     background-color: #1eb6a7;
     border-color: white;
+    font-size: 12px;
+    width: 65px;
 }
 
 .follow-btn {
-    width: 65px;
+    width: 60px;
     padding: 2px;
     background-color: #1eb6a7;
     border-color: white;
@@ -212,7 +263,7 @@ hr {
     font-style: italic;
     color: #1eb6a7;
     float: left;
-    font-size: 14px;
+    font-size: 18px;
 }
 
 .authors li {
@@ -224,7 +275,7 @@ hr {
 }
 
 .synopsis {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .book-header {
@@ -237,12 +288,12 @@ hr {
 
 .student-name a{
     color: #1eb6a7;
-    font-size: 13px
+    font-size: 15px
 }
 
 .student-name {
     color: #1eb6a7;
-    font-size: 13px
+    font-size: 14px
 }
 
 
@@ -271,7 +322,7 @@ hr {
     padding: 2px;
     background-color: #1eb6a7;
     border-color: white;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .checkout:hover {
@@ -326,7 +377,7 @@ hr {
     border-radius: 30px;
     font-size: 10px;
     padding: 2px;
-    background-color: blue;
+    background-color: #286090;
     border-color: white;
 }
 
@@ -362,11 +413,11 @@ hr {
 }
 
 .user-cur-reads td .btn{
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .user-past-reads td {
-    font-size: 11px;
+    font-size: 13px;
 }
 
 .user-past {
@@ -385,18 +436,29 @@ hr {
 .user-book-title {
     font-style: italic;
     color: #1eb6a7;
-    font-size: 13px;
+    font-size: 15px;
 }
 
 .user-detail {
     text-transform: uppercase;
-    font-size: 10px;
+    font-size: 14px;
     opacity: .5;
+    margin: 0;
+    color: #333333;
+}
+
+.grade {
+    text-transform: uppercase;
+    font-size: 13px;
+    opacity: .7;
+    margin: 0;
+    color: #333333;
+    margin-bottom: 10px;
 }
 
 .user-due-date {
     text-transform: uppercase;
-    font-size: 11px;
+    font-size: 13px;
     opacity: .5;
     color: red;
     line-height: 2.2em;
@@ -405,17 +467,17 @@ hr {
 
 .user-return-date {
     text-transform: uppercase;
-    font-size: 11px;
-    opacity: .5;
+    font-size: 13px;
+    opacity: .85;
     line-height: 2.2em;
 }
 
 .review-descrip {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .followers a {
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .follow-row {
@@ -460,7 +522,7 @@ input[type=file] {
 /************* SEARCH *************/
 
 .searchButton {
-    margin-top: 5px;
+    font-size: 20px;
     text-transform: uppercase;
 }
 
@@ -482,10 +544,22 @@ button, input, select, textarea {
     border-color: white;
 }
 
+.searchtype-student-btn:hover {
+    background-color: #1eb6a7;
+    opacity: .5;
+    border-color: white;
+}
+
 .searchtype-book-btn {
     width: 45px;
     padding: 2px;
     background-color: #1eb6a7;
+    border-color: white;
+}
+
+.searchtype-book-btn:hover {
+    background-color: #1eb6a7;
+    opacity: .5;
     border-color: white;
 }
 
@@ -496,8 +570,18 @@ button, input, select, textarea {
     border-color: white;
 }
 
+.searchtype-author-btn:hover {
+    background-color: #1eb6a7;
+    opacity: .5;
+    border-color: white;
+}
+
 .searchtype-selected {
-    background-color: blue;
+    background-color: #286090;
+}
+
+.search-bar {
+    padding-left: 18px;
 }
 
 /************* LOGIN PAGE *************/
@@ -550,32 +634,34 @@ button, input, select, textarea {
 .book-title {
     font-style: italic;
     color: #1eb6a7;
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .newsfeed li {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 /************* BROWSE *************/
-
-.browse-authors li {
-    text-transform: uppercase;
-    font-size: 12px;
-    opacity: .75;
-    display: inline;
-}
 
 .browse-genres li {
     text-transform: uppercase;
     font-size: 12px;
     opacity: .75;
     display: inline;
-    padding-bottom: 5px;
+}
+
+.browse-authors {
+    padding-bottom: 10px;
+}
+
+.browse-authors a {
+    font-size: 13px;
+    opacity: .75;
+    text-transform: uppercase;
 }
 
 #genre-page a {
-    font-size: 12px;
+    font-size: 14px;
     text-transform: uppercase;
 }
 
@@ -588,4 +674,15 @@ button, input, select, textarea {
     color: #1eb6a7;
     font-size: 16px;
     margin-bottom: 0;
+}
+
+/************* AUTHOR PAGE *************/
+
+.author-title {
+    color: #1eb6a7;
+    font-size: 20px;
+}
+
+.author-book-title {
+    font-style: italic;
 }

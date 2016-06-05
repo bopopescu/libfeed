@@ -66,7 +66,7 @@ class Book extends React.Component {
 								</div>
 							</div>
 							<div className="col-xs-6 book-status">
-								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out > 0 ? this.checkOut.bind(this, data.isbn) : ''}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
+								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out > 0 ? this.checkOut.bind(this, data.isbn) : ''} disabled={checked_out}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
 							</div>
 						</div>
 						<div className="row">
@@ -83,7 +83,7 @@ class Book extends React.Component {
 								<p className="user-detail">Genres</p>
 								<ul className="genres">
 									{data.genres.map( genre => {
-										return (<li>{genre.description}</li>)
+										return (<li><Link to={'/browse/'+genre.description}>{genre.description}</Link></li>)
 									})}
 								</ul>
 							</div>
@@ -101,7 +101,7 @@ class Book extends React.Component {
 													<hr />
 													<li>
 														<p className="student-name"><Link to={'/students/'+review.student_id}>{review.student_name}</Link>&nbsp;&nbsp;&nbsp;&nbsp;
-														<span className="user-detail">{review.rating} stars</span>
+														<span className="user-detail">{review.rating} {review.rating==1 ? 'star' : 'stars'}</span>
 														<span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{review.date}</span>
 														</p>
 														<p className="review-descrip">{review.description}</p>

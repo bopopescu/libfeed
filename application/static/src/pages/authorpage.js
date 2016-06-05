@@ -25,10 +25,11 @@ class Author extends React.Component {
 				<div id="author-page">
 					<div className="container-fluid">
 						<div className="row">
-							<h3 className="author-title">{data.name}</h3>
+							<p className="author-title">{data.name}</p>
+							<hr />
 							<ul>
 								{data.books.map( book => {
-									return (<li><Link to={'/books/'+book.isbn}>{book.title}</Link></li>)
+									return (<li className="author-book-title"><Link to={'/books/'+book.isbn}>{book.title}</Link></li>)
 								})}
 							</ul>
 						</div>

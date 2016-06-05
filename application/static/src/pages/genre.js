@@ -25,7 +25,7 @@ class Genre extends React.Component {
 				<div id="book-page">
 					<div className="container-fluid">
 						<div className="row">
-							<h4>Books</h4>
+							<h4>Books - {this.props.params.genre}</h4>
 							<ul>
 								{data.map( book => {
 									return (<div>
@@ -34,12 +34,7 @@ class Genre extends React.Component {
 													<p className="list-book-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
 													<ul className="browse-authors">
 														{book.authors.map( author => {
-															return (<li>{author.name}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>)
-														})}
-													</ul>
-													<ul className="browse-genres">
-														{book.genres.map( genre => {
-															return (<li>{genre.description}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>)
+															return (<li><Link to={'/authors/'+author.id}>{author.name}</Link></li>)
 														})}
 													</ul>
 													<p className="review-descrip">{book.synopsis}</p>

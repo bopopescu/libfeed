@@ -45,7 +45,7 @@ class Student extends React.Component {
 									<h4 className="user-name">{data.first_name} {data.last_name}</h4>
 									<button type="button" className="btn btn-primary follow-btn" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
 								</div>
-								<p className="user-detail">{data.grade}th Grade</p>
+								<p className="grade">{data.grade}th Grade</p>
 								<div className="student-img">
 									<img src={data.img} />
 								</div>
@@ -72,7 +72,7 @@ class Student extends React.Component {
 												<li>
 													<p><Link to={'/books/'+review.isbn} className="user-book-title">{review.title}</Link>
 													<span className="user-detail">,&nbsp;&nbsp;&nbsp;&nbsp;{review.author}&nbsp;&nbsp;&nbsp;&nbsp;
-													{review.rating} stars</span></p>
+													{review.rating} {review.rating==1 ? 'star' : 'stars'}</span></p>
 													<p className="review-descrip">{review.description}</p>
 												</li>
 											</div>)
@@ -96,7 +96,9 @@ class Student extends React.Component {
 								{data.followers.map( follower => {
 									return (<div className="list">
 												<li>
-													<img src={follower.img} className="thumbnail"/>
+													<div className="thumbnail-follower">
+														<img src={follower.img}/>
+													</div>
 													<p className="followers"><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
 												</li>
 											</div>)

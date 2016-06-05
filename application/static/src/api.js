@@ -1,5 +1,5 @@
 const request = require('request');
-const API = 'http://libfeed.co/api/';
+const API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb){
 	request(API+'cur_user_newsfeed', (error, response, body) => {

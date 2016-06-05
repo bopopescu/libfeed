@@ -28,7 +28,7 @@ class SearchBar extends React.Component {
         var searchTerm = this.state.searchTerm;
 		return (
             <div className="row">
-            <h4>Search for: <button type="button" className={searchType=="student" ? "btn btn-primary searchtype-student-btn searchtype-selected" : "btn btn-primary searchtype-student-btn"} onClick={this.changeType.bind(this, 'student')}>students</button>&nbsp;
+            <h4 className="search-bar">Search for: <button type="button" className={searchType=="student" ? "btn btn-primary searchtype-student-btn searchtype-selected" : "btn btn-primary searchtype-student-btn"} onClick={this.changeType.bind(this, 'student')}>students</button>&nbsp;
             <button type="button" className={searchType=="book" ? "btn btn-primary searchtype-book-btn searchtype-selected" : "btn btn-primary searchtype-book-btn"} onClick={this.changeType.bind(this, 'book')}>books</button>&nbsp;
             <button type="button" className={searchType=="author" ? "btn btn-primary searchtype-author-btn searchtype-selected" : "btn btn-primary searchtype-author-btn"} onClick={this.changeType.bind(this, 'author')}>authors</button></h4>
             <div className="col-xs-4">
