@@ -83687,8 +83687,9 @@ function getBooks(cb) {
 	});
 }
 
-function getBooksByGenre(genre, cb) {
-	request(API + 'books/' + genre, function (error, response, body) {
+function getBooksByGenre(limit, offset, genre, cb) {
+	genre = genre.replace("&", "and");
+	request(API + 'books?genre=' + genre + '&limit=' + limit + '&offset=' + offset, function (error, response, body) {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
@@ -83915,7 +83916,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/searchbar.js":511,"react":419}],500:[function(require,module,exports){
+},{"./partials/searchbar.js":512,"react":419}],500:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84804,27 +84805,38 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var React = require('react');
 var Link = require('react-router').Link;
 var api = require('../api.js');
+var Paginator = require('../partials/paginator.js');
+var LIMIT = 10;
 
 var Genre = function (_React$Component) {
 	_inherits(Genre, _React$Component);
 
-	function Genre() {
+	function Genre(props) {
 		_classCallCheck(this, Genre);
 
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Genre).call(this));
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Genre).call(this, props));
 
-		_this.state = { data: null };
+		var page = parseInt(props.location.query.page) || 1;
+		_this.state = { data: null, page: page, lastPage: null };
 		return _this;
 	}
 
 	_createClass(Genre, [{
 		key: 'componentDidMount',
 		value: function componentDidMount() {
+			this.getData(this.state.page);
+		}
+	}, {
+		key: 'getData',
+		value: function getData(page) {
 			var _this2 = this;
 
-			api.getBooksByGenre(this.props.params.genre, function (err, data) {
+			var offset = (page - 1) * LIMIT;
+			console.log(offset);
+			console.log(LIMIT);
+			api.getBooksByGenre(LIMIT, offset, this.props.params.genre, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.books });
+					_this2.setState({ data: data.books, lastPage: Math.ceil(data.count / LIMIT) });
 				}
 			});
 		}
@@ -84839,6 +84851,13 @@ var Genre = function (_React$Component) {
 					React.createElement(
 						'div',
 						{ className: 'container-fluid' },
+						React.createElement(Paginator, {
+							pagePath: '/' + this.props.params.genre,
+							currentPage: this.state.page,
+							lastPage: this.state.lastPage,
+							pageLimit: 5,
+							changePage: this.getData.bind(this)
+						}),
 						React.createElement(
 							'div',
 							{ className: 'row' },
@@ -84906,7 +84925,7 @@ var Genre = function (_React$Component) {
 
 module.exports = Genre;
 
-},{"../api.js":497,"react":419,"react-router":284}],508:[function(require,module,exports){
+},{"../api.js":497,"../partials/paginator.js":511,"react":419,"react-router":284}],508:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85609,6 +85628,221 @@ var User = function (_React$Component) {
 module.exports = User;
 
 },{"../api.js":497,"react":419,"react-router":284}],511:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var Link = require('react-router').Link;
+
+var Paginator = function (_React$Component) {
+	_inherits(Paginator, _React$Component);
+
+	function Paginator(props) {
+		_classCallCheck(this, Paginator);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Paginator).call(this, props));
+
+		_this.state = { page: parseInt(props.currentPage) };
+		return _this;
+	}
+
+	_createClass(Paginator, [{
+		key: 'changePage',
+		value: function changePage(page) {
+			this.setState({ page: page });
+			this.props.changePage(page);
+		}
+	}, {
+		key: 'availablePages',
+		value: function availablePages(limit, current, last) {
+			var start, end;
+			var middle = Math.ceil(limit / 2);
+			var pages = [];
+			if (last <= limit) {
+				start = 1;
+				end = last;
+			} else if (last - current <= middle) {
+				start = last - limit + 1;
+				end = last;
+			} else if (current <= middle) {
+				start = 1;
+				end = limit;
+			} else {
+				var startOffset = current - middle;
+				start = startOffset + 1;
+				end = startOffset + limit;
+			}
+			for (var i = start; i <= end; i++) {
+				pages.push(i);
+			}
+			return pages;
+		}
+	}, {
+		key: 'getButtons',
+		value: function getButtons(pages) {
+			var _this2 = this;
+
+			return React.createElement(
+				'ul',
+				{ className: 'pagination' },
+				React.createElement(
+					'li',
+					null,
+					React.createElement(
+						'a',
+						{ href: '#', 'aria-label': 'Previous' },
+						React.createElement(
+							'span',
+							{ 'aria-hidden': 'true' },
+							'«'
+						)
+					)
+				),
+				pages.map(function (page) {
+					return React.createElement(
+						'li',
+						null,
+						React.createElement(
+							'a',
+							{ href: '#', onClick: function onClick() {
+									return _this2.changePage(page);
+								} },
+							page
+						)
+					);
+				}),
+				React.createElement(
+					'li',
+					null,
+					React.createElement(
+						'a',
+						{ href: '#', 'aria-label': 'Next' },
+						React.createElement(
+							'span',
+							{ 'aria-hidden': 'true' },
+							'»'
+						)
+					)
+				)
+			);
+		}
+	}, {
+		key: 'getLinkButtons',
+		value: function getLinkButtons(pages, path) {
+			var _this3 = this;
+
+			var currentPage = this.state.page;
+			var hasNext = currentPage < this.props.pageLimit;
+			var nextClass = currentPage < this.props.lastPage ? '' : 'disabled';
+			var previousClass = currentPage > 1 ? '' : 'disabled';
+			return React.createElement(
+				'ul',
+				{ className: 'pagination' },
+				React.createElement(
+					'li',
+					{ className: previousClass },
+					React.createElement(
+						Link,
+						{
+							to: { pathname: path, query: { page: currentPage - 1 } },
+							onClick: this.previousPage },
+						React.createElement(
+							'span',
+							{ 'aria-hidden': 'true' },
+							'«'
+						)
+					)
+				),
+				pages.map(function (page) {
+					var activeClass = page == currentPage ? 'active' : '';
+					return React.createElement(
+						'li',
+						{ className: activeClass },
+						React.createElement(
+							Link,
+							{ to: { pathname: path, query: { page: page } }, onClick: function onClick() {
+									return _this3.changePage(page);
+								} },
+							page
+						)
+					);
+				}),
+				React.createElement(
+					'li',
+					{ className: nextClass },
+					React.createElement(
+						Link,
+						{
+							to: { pathname: path, query: { page: currentPage + 1 } },
+							onClick: this.nextPage },
+						React.createElement(
+							'span',
+							{ 'aria-hidden': 'true' },
+							'»'
+						)
+					)
+				)
+			);
+		}
+	}, {
+		key: 'nextPage',
+		value: function nextPage() {
+			var currentPage = this.state.page;
+			if (currentPage < this.props.lastPage) {
+				this.setState({ page: currentPage + 1 });
+				this.props.changePage(currentPage + 1);
+			}
+		}
+	}, {
+		key: 'previousPage',
+		value: function previousPage() {
+			var currentPage = this.state.page;
+			if (currentPage > 1) {
+				this.setState({ page: currentPage - 1 });
+				this.props.changePage(currentPage - 1);
+			}
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var p = this.props;
+			var pageButtons;
+			var pages = this.availablePages(p.pageLimit, this.state.page, p.lastPage);
+			if (p.pagePath) pageButtons = this.getLinkButtons(pages, p.pagePath);else pageButtons = this.getButtons(pages);
+			return React.createElement(
+				'nav',
+				{ className: 'paginator' },
+				pageButtons
+			);
+		}
+	}]);
+
+	return Paginator;
+}(React.Component);
+
+Paginator.propTypes = {
+	currentPage: React.PropTypes.number,
+	changePage: React.PropTypes.func,
+	pagePath: React.PropTypes.string,
+	lastPage: React.PropTypes.number,
+	pageLimit: React.PropTypes.number
+};
+Paginator.defaultProps = {
+	currentPage: 1,
+	lastPage: 10,
+	pageLimit: 5
+};
+
+module.exports = Paginator;
+
+},{"react":419,"react-router":284}],512:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();

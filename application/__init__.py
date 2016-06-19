@@ -49,7 +49,7 @@ def login():
         return render_template('login.html')
     email = request.form['email']
     password = request.form['password']
-    registered_user = Student.query.filter_by(email=email,password=password).first()
+    registered_user = Student.login_user(email, password)
     if registered_user is None:
         flash('Email or Password is invalid' , 'error')
         return redirect(url_for('login'))

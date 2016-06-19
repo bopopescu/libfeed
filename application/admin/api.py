@@ -94,13 +94,14 @@ def get_author(id):
 
 @api.route('/books', methods=["GET"])
 @login_required
-def get_books():
-    return jsonify({'books': list(map(mapper.book_to_dict, Book.query.all()))})
-
-@api.route('/books/<genre>', methods=["GET"])
-@login_required
-def get_books_by_genre(genre):
-    return jsonify({'books': list(map(mapper.book_to_dict, Book.query_by_genre(genre)))})
+def get_books_by_genre():
+    count = db.session.query(func.count(Book.isbn))
+    count = count.scalar()
+    offset = int(request.args.get('offset'))
+    limit = int(request.args.get('limit'))
+    genre = request.args.get('genre')
+    genre = genre.replace('and', '&')
+    return jsonify({'books': list(map(mapper.book_to_dict, Book.query_by_genre(genre, offset, limit))), 'count': count})
 
 @api.route('/genres', methods=["GET"])
 @login_required

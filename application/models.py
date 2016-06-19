@@ -1,5 +1,7 @@
 from flask.ext.login import UserMixin, current_user
 
+from werkzeug.security import generate_password_hash, check_password_hash
+
 from sqlalchemy import ForeignKey, orm, func, and_
 from sqlalchemy.orm import relationship
 
@@ -31,10 +33,13 @@ class Student(UserMixin, db.Model):
 
     def __init__(self, email, password, first_name, last_name, grade):
         self.email = email
-        self.password = password
+        self.password = generate_password_hash(password)
         self.first_name = first_name
         self.last_name = last_name
         self.grade = grade
+
+    def check_password(self, password):
+        return check_password_hash(self.password, password)
 
     def is_authenticated(self):
         return True
@@ -56,6 +61,11 @@ class Student(UserMixin, db.Model):
     def query_by_name(name):
         return Student.query.filter('{0} {1}'.format(func.lower(Student.first_name), func.lower(Student.last_name)) == func.lower(name)).first()
 
+    @staticmethod
+    def login_user(email, password):
+        s = Student.query.filter(Student.email == email).first()
+        s.check_password(password)
+        return s
 
 class Book(db.Model):
     __tablename__ = 'book'
@@ -76,9 +86,9 @@ class Book(db.Model):
         return Book.query.filter(Book.isbn==isbn).first()
 
     @staticmethod
-    def query_by_genre(genre_d):
+    def query_by_genre(genre_d, offset, limit):
         genre_f = Genre.query.filter(func.lower(Genre.description)==func.lower(genre_d)).first()
-        return Book.query.filter(Book.genres.contains(genre_f)).slice(0, 10)
+        return Book.query.filter(Book.genres.contains(genre_f)).slice(offset, offset+limit)
 
 
 class Author(db.Model):

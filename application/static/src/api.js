@@ -71,8 +71,9 @@ function getBooks(cb){
 	})
 }
 
-function getBooksByGenre(genre, cb){
-	request(API+'books/'+genre, (error, response, body) => {
+function getBooksByGenre(limit, offset, genre, cb){
+	genre = genre.replace("&", "and");
+	request(`${API}books?genre=${genre}&limit=${limit}&offset=${offset}`, (error, response, body) => {
 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
 		if (!error) body = JSON.parse(body);
 		cb(error, body);
