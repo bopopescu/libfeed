@@ -4,7 +4,3 @@
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 .DS_Store
-config.py
-config.pyc
-settings.py
-settings.pyc
