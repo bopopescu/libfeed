@@ -84,7 +84,7 @@ def add_books():
             if author and title:
                 author = author.replace(' ', '+')
                 title = title.replace(' ', '+')
-                x = "https://www.googleapis.com/books/v1/volumes?q={0}+inauthor:{1}&key=AIzaSyAJc0gefPcK1rjswykfixo5oyqVzOCGuWo".format(title, author)
+                x = "https://www.googleapis.com/books/v1/volumes?q={0}+inauthor:{1}&key={2}".format(title, author, settings.GOOGLE_API_KEY)
                 x = urllib2.urlopen(x).read()
                 y = json.loads(x)
                 if 'items' in y:
