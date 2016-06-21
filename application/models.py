@@ -64,8 +64,13 @@ class Student(UserMixin, db.Model):
     @staticmethod
     def login_user(email, password):
         s = Student.query.filter(Student.email == email).first()
-        s.check_password(password)
-        return s
+        if s:
+            if s.check_password(password):
+                return s
+            else:
+                return None
+        else:
+            return None
 
 class Book(db.Model):
     __tablename__ = 'book'

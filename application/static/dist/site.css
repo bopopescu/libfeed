@@ -603,9 +603,16 @@ button, input, select, textarea {
     width: 250px;
 }
 
+.login-form button:hover {
+    background-color: #1eb6a7;
+    border-color: #1eb6a7;
+    opacity: .5;
+}
+
 .login-form .control-group {
     padding-bottom: 20px;
 }
+
 
 /************* REGISTER PAGE *************/
 
@@ -626,9 +633,31 @@ button, input, select, textarea {
     width: 250px;
 }
 
+.register-form button:hover {
+    background-color: #1eb6a7;
+    border-color: #1eb6a7;
+    opacity: .5;
+}
+
+.register-form select {
+    width: 250px;
+}
+
+.register-form optgroup {
+    color: #777;
+    font-size: 15px;
+    line-height: 1.9em;
+    -webkit-font-smoothing: antialiased;
+}
+
 .register-form .control-group {
     padding-bottom: 20px;
 }
+
+.flashes li {
+    color: red;
+}
+
 /************* NEWS FEED *************/
 
 .book-title {

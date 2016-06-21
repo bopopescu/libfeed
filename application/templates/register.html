@@ -70,11 +70,30 @@
 
   <div class="control-group">
       <div class="controls">
-        <input type="grade" id="grade" name="grade" class="input-xlarge"
-          placeholder="Grade" value="{{ request.form.grade }}"
-          required>
+        <select required name="grade">
+          <option value="" disabled selected>Grade</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+          <option value="8">8</option>
+          <option value="8">9</option>
+          <option value="10">10</option>
+          <option value="11">11</option>
+          <option value="12">12</option>
+        </select>
       </div>
   </div>
+
+  {% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+        {% for message in messages %}
+          <li>{{ message }}</li>
+        {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+
+
 
   <div class="control-group">
       <div class="controls">

@@ -39,9 +39,14 @@ def register():
     if request.method == 'GET':
         return render_template('register.html')
     user = Student(request.form['email'], request.form['password'], request.form['first_name'], request.form['last_name'], request.form['grade'])
-    db.session.add(user)
-    db.session.commit()
-    return redirect(url_for('login'))
+    user_test = Student.query.filter(Student.email == request.form['email']).first()
+    if not user_test:
+        db.session.add(user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    else:
+        flash('Email already in use.' , 'error')
+        return redirect(url_for('register'))
 
 @application.route('/login',methods=['GET','POST'])
 def login():
@@ -51,10 +56,9 @@ def login():
     password = request.form['password']
     registered_user = Student.login_user(email, password)
     if registered_user is None:
-        flash('Email or Password is invalid' , 'error')
+        flash('Email or Password is invalid.' , 'error')
         return redirect(url_for('login'))
     login_user(registered_user)
-    flash('Logged in successfully')
     return redirect(request.args.get('next') or url_for('index'))
 
 @application.route('/logout')
