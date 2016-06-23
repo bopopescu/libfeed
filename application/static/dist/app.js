@@ -84346,7 +84346,19 @@ var Book = function (_React$Component) {
 
 			api.getBook(this.props.params.bookIsbn, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: "" });
+					var sum = 0;
+					var review_length;
+					var avg_rating = 0;
+					if (data.book.reviews.length > 0) {
+						review_length = data.book.reviews.length;
+						for (var i = 0; i < review_length; i++) {
+							sum += data.book.reviews[i].rating;
+						}
+						avg_rating = sum / review_length;
+						console.log('here');
+					}
+					console.log(avg_rating);
+					_this2.setState({ data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: "", avg_rating: avg_rating });
 				}
 			});
 		}
@@ -84370,6 +84382,7 @@ var Book = function (_React$Component) {
 			var reviews = this.state.reviews.push({ 'description': description, 'rating': rating, 'date': today, 'student_name': this.state.user.first_name + ' ' + this.state.user.last_name, 'student_id': this.state.user.id });
 			this.setState({
 				reviews: this.state.reviews,
+				avg_rating: (this.state.avg_rating * (this.state.reviews.length - 1) + rating) / this.state.reviews.length,
 				rating: ""
 			});
 			React.findDOMNode(this.refs.reviewinput).value = "";
@@ -84392,7 +84405,9 @@ var Book = function (_React$Component) {
 			var reviews = this.state.reviews;
 			var description = "";
 			var rating = this.state.rating;
-			console.log(rating);
+			var avg_rating = (Math.round(this.state.avg_rating * 2) / 2).toFixed(1);
+
+			console.log(avg_rating);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -84499,6 +84514,12 @@ var Book = function (_React$Component) {
 									'h3',
 									null,
 									'Reviews'
+								),
+								React.createElement(
+									'p',
+									{ className: avg_rating == 0 ? "none" : "grade" },
+									'Average Rating: ',
+									avg_rating
 								),
 								React.createElement(
 									'ul',
@@ -85035,6 +85056,11 @@ var Student = function (_React$Component) {
 								),
 								React.createElement('hr', null),
 								React.createElement(
+									'p',
+									{ className: data.borrows.length > 0 ? "none" : "grade" },
+									'No books currently checked out.'
+								),
+								React.createElement(
 									'ul',
 									null,
 									data.borrows.map(function (book) {
@@ -85063,6 +85089,11 @@ var Student = function (_React$Component) {
 									'h3',
 									null,
 									'Reviews'
+								),
+								React.createElement(
+									'p',
+									{ className: data.reviews.length > 0 ? "none" : "grade" },
+									'No reviews yet.'
 								),
 								React.createElement(
 									'ul',
@@ -85114,6 +85145,11 @@ var Student = function (_React$Component) {
 								),
 								React.createElement('hr', null),
 								React.createElement(
+									'p',
+									{ className: data.borrows.length > 0 ? "none" : "grade" },
+									'No books have been returned yet.'
+								),
+								React.createElement(
 									'ul',
 									null,
 									data.returns.map(function (book) {
@@ -85140,6 +85176,11 @@ var Student = function (_React$Component) {
 									'h3',
 									null,
 									'Followers'
+								),
+								React.createElement(
+									'p',
+									{ className: data.followers.length > 0 ? "none" : "grade" },
+									'No followers yet.'
 								),
 								React.createElement(
 									'ul',
@@ -85365,6 +85406,7 @@ var User = function (_React$Component) {
 			var borrows = this.state.borrows;
 			var returns = this.state.returns;
 			var photo = this.state.photo;
+			console.log(borrows);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -85421,6 +85463,11 @@ var User = function (_React$Component) {
 									'h6',
 									null,
 									'Currently Reading'
+								),
+								React.createElement(
+									'p',
+									{ className: borrows.length > 0 ? "none" : "grade" },
+									'Go check out a book!'
 								),
 								React.createElement(
 									'table',
@@ -85488,6 +85535,11 @@ var User = function (_React$Component) {
 								React.createElement(
 									'ul',
 									null,
+									React.createElement(
+										'p',
+										{ className: data.reviews.length > 0 ? "none" : "grade" },
+										'Go review a book!'
+									),
 									data.reviews.map(function (review) {
 										return React.createElement(
 											'div',
@@ -85522,8 +85574,7 @@ var User = function (_React$Component) {
 												)
 											)
 										);
-									}),
-									React.createElement('hr', null)
+									})
 								)
 							),
 							React.createElement(
@@ -85533,6 +85584,11 @@ var User = function (_React$Component) {
 									'h6',
 									null,
 									'Past Reads'
+								),
+								React.createElement(
+									'p',
+									{ className: returns.length > 0 ? "none" : "grade" },
+									'Books you return will appear here.'
 								),
 								React.createElement(
 									'table',
@@ -85585,6 +85641,11 @@ var User = function (_React$Component) {
 									'h3',
 									null,
 									'Followers'
+								),
+								React.createElement(
+									'p',
+									{ className: data.followers.length > 0 ? "none" : "grade" },
+									'Follow other students!'
 								),
 								React.createElement(
 									'ul',

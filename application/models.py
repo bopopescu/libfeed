@@ -37,6 +37,8 @@ class Student(UserMixin, db.Model):
         self.first_name = first_name
         self.last_name = last_name
         self.grade = grade
+        logger.debug('here')
+        self.img = 'https://s3-us-west-2.amazonaws.com/libfeed/default-medium.png'
 
     def check_password(self, password):
         return check_password_hash(self.password, password)

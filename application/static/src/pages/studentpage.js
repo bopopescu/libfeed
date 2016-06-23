@@ -53,6 +53,7 @@ class Student extends React.Component {
 							<div className="col-xs-6">
 								<h6>Currently Reading</h6>
 								<hr />
+								<p className={data.borrows.length > 0 ? "none": "grade"}>No books currently checked out.</p>
 								<ul>
 								{data.borrows.map( book => {
 									return (<li className="user-current-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link></li>)
@@ -65,6 +66,7 @@ class Student extends React.Component {
 						<div className="row">
 							<div className="col-xs-6">
 								<h3>Reviews</h3>
+								<p className={data.reviews.length > 0 ? "none": "grade"}>No reviews yet.</p>
 								<ul>
 								{data.reviews.map( review => {
 									return (<div>
@@ -82,6 +84,7 @@ class Student extends React.Component {
 							<div className="col-xs-6 student-past-reads">
 								<h6>Past Reads</h6>
 								<hr />
+								<p className={data.borrows.length > 0 ? "none": "grade"}>No books have been returned yet.</p>
 								<ul>
 								{data.returns.map( book => {
 									return (<li className="user-past-read"><Link to={'/books/'+book.isbn} className="user-book-title">{book.title}</Link></li>)
@@ -92,6 +95,7 @@ class Student extends React.Component {
 						<div className="row follow-row">
 							<div className="col-xs-12">
 								<h3>Followers</h3>
+								<p className={data.followers.length > 0 ? "none": "grade"}>No followers yet.</p>
 								<ul>
 								{data.followers.map( follower => {
 									return (<div className="list">

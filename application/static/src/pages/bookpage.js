@@ -13,7 +13,19 @@ class Book extends React.Component {
 		api.getBook(this.props.params.bookIsbn, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: ""});
+				var sum = 0;
+				var review_length;
+				var avg_rating = 0;
+				if (data.book.reviews.length > 0) {
+					review_length = data.book.reviews.length;
+					for (var i = 0; i < review_length; i++) {
+						sum += data.book.reviews[i].rating;
+					}
+					avg_rating = sum/review_length;
+					console.log('here');
+				}
+				console.log(avg_rating);
+				this.setState({data: data.book, checked_out: data.checked_out, reviews: data.book.reviews, user: data.user, rating: "", avg_rating: avg_rating});
 			}
 		});
 	}
@@ -35,7 +47,8 @@ class Book extends React.Component {
 		var reviews = this.state.reviews.push({'description': description, 'rating': rating, 'date': today, 'student_name': this.state.user.first_name + ' ' + this.state.user.last_name, 'student_id': this.state.user.id});
 		this.setState({
 			reviews: this.state.reviews,
-			rating: ""
+			avg_rating: (this.state.avg_rating*(this.state.reviews.length-1)+rating) / this.state.reviews.length,
+			rating: "",
 		})
 		React.findDOMNode(this.refs.reviewinput).value = "";
 	}
@@ -54,7 +67,9 @@ class Book extends React.Component {
 		var reviews = this.state.reviews;
 		var description = "";
 		var rating = this.state.rating;
-		console.log(rating);
+		var avg_rating = (Math.round(this.state.avg_rating * 2)/2).toFixed(1);
+
+		console.log(avg_rating);
 		if (data) {
 			return (
 				<div id="book-page">
@@ -95,6 +110,7 @@ class Book extends React.Component {
 						<div className="row">
 							<div className="col-xs-12">
 								<h3>Reviews</h3>
+								<p className={avg_rating == 0 ? "none": "grade"}>Average Rating: {avg_rating}</p>
 								<ul>
 									{data.reviews.map( review => {
 										return (<div>
