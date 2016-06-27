@@ -76,7 +76,7 @@ def get_student(id):
     student = Student.query_by_id(id)
     follow = FolloweeFollower.query_by_id(id, current_user.id)
     follow_status = True if follow else False
-    return jsonify({'student': mapper.student_to_dict(student), 'follow_status': follow_status})
+    return jsonify({'student': mapper.student_to_dict(student), 'follow_status': follow_status, 'current_user': mapper.student_to_dict(current_user)})
 
 @api.route('/book/<isbn>', methods=["GET"])
 @login_required

@@ -13,28 +13,39 @@ class Student extends React.Component {
 		api.getStudent(this.props.params.studentId, (err, data) => {
 			if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");
 			else {
-				this.setState({data: data.student, follow_status: data.follow_status});
+				this.setState({data: data.student, follow_status: data.follow_status, followers: data.student.followers, current_user: data.current_user});
 			}
 		});
 	}
 
 	follow(id) {
 		api.follow(id);
+		var followers = this.state.followers.push({'first_name': this.state.current_user.first_name, 'last_name': this.state.current_user.last_name, 'id': this.state.current_user.id, 'img': this.state.current_user.img});
 	    this.setState({
-	      follow_status: true
+	      follow_status: true,
+		  followers: this.state.followers
 	    });
 	}
 
 	unfollow(id) {
 		api.unfollow(id);
+		var followers = this.state.followers;
+		for (var i=0; i < followers.length; i++) {
+			if (followers[i].id == this.state.current_user.id) {
+				followers.splice(i, 1);
+			}
+		}
 	    this.setState({
-	      follow_status: false
+	      follow_status: false,
+		  followers: followers
 	    });
 	}
 
 	render() {
 		var data = this.state.data;
 		var follow_status = this.state.follow_status;
+		var followers = this.state.followers;
+		console.log(followers);
 		if (data) {
 			return (
 				<div id="student-page">
@@ -95,15 +106,15 @@ class Student extends React.Component {
 						<div className="row follow-row">
 							<div className="col-xs-12">
 								<h3>Followers</h3>
-								<p className={data.followers.length > 0 ? "none": "grade"}>No followers yet.</p>
+								<p className={this.state.followers.length > 0 ? "none": "grade"}>No followers yet.</p>
 								<ul>
-								{data.followers.map( follower => {
+								{this.state.followers.map( follower => {
 									return (<div className="list">
 												<li>
 													<div className="thumbnail-follower">
 														<img src={follower.img}/>
 													</div>
-													<p className="followers"><Link to={'/students/'+follower.id}>{follower.first_name} {follower.last_name}</Link></p>
+													<p className="followers"><a href={'http://libfeed.co/students/'+follower.id}>{follower.first_name} {follower.last_name}</a></p>
 												</li>
 											</div>)
 								})}

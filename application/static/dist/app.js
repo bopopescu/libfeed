@@ -84980,7 +84980,7 @@ var Student = function (_React$Component) {
 
 			api.getStudent(this.props.params.studentId, function (err, data) {
 				if (err) console.err("[UserPage:componentDidMount] There's been an error retrieving data!");else {
-					_this2.setState({ data: data.student, follow_status: data.follow_status });
+					_this2.setState({ data: data.student, follow_status: data.follow_status, followers: data.student.followers, current_user: data.current_user });
 				}
 			});
 		}
@@ -84988,16 +84988,25 @@ var Student = function (_React$Component) {
 		key: 'follow',
 		value: function follow(id) {
 			api.follow(id);
+			var followers = this.state.followers.push({ 'first_name': this.state.current_user.first_name, 'last_name': this.state.current_user.last_name, 'id': this.state.current_user.id, 'img': this.state.current_user.img });
 			this.setState({
-				follow_status: true
+				follow_status: true,
+				followers: this.state.followers
 			});
 		}
 	}, {
 		key: 'unfollow',
 		value: function unfollow(id) {
 			api.unfollow(id);
+			var followers = this.state.followers;
+			for (var i = 0; i < followers.length; i++) {
+				if (followers[i].id == this.state.current_user.id) {
+					followers.splice(i, 1);
+				}
+			}
 			this.setState({
-				follow_status: false
+				follow_status: false,
+				followers: followers
 			});
 		}
 	}, {
@@ -85005,6 +85014,8 @@ var Student = function (_React$Component) {
 		value: function render() {
 			var data = this.state.data;
 			var follow_status = this.state.follow_status;
+			var followers = this.state.followers;
+			console.log(followers);
 			if (data) {
 				return React.createElement(
 					'div',
@@ -85179,13 +85190,13 @@ var Student = function (_React$Component) {
 								),
 								React.createElement(
 									'p',
-									{ className: data.followers.length > 0 ? "none" : "grade" },
+									{ className: this.state.followers.length > 0 ? "none" : "grade" },
 									'No followers yet.'
 								),
 								React.createElement(
 									'ul',
 									null,
-									data.followers.map(function (follower) {
+									this.state.followers.map(function (follower) {
 										return React.createElement(
 											'div',
 											{ className: 'list' },
@@ -85201,8 +85212,8 @@ var Student = function (_React$Component) {
 													'p',
 													{ className: 'followers' },
 													React.createElement(
-														Link,
-														{ to: '/students/' + follower.id },
+														'a',
+														{ href: 'http://libfeed.co/students/' + follower.id },
 														follower.first_name,
 														' ',
 														follower.last_name
