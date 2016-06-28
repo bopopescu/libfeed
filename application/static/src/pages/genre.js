@@ -42,23 +42,25 @@ class Genre extends React.Component {
 							changePage={this.getData.bind(this)}
 						/>
 						<div className="row">
-							<h4>Books - {this.props.params.genre}</h4>
-							<ul>
-								{data.map( book => {
-									return (<div>
-												<hr />
-												<li>
-													<p className="list-book-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
-													<ul className="browse-authors">
-														{book.authors.map( author => {
-															return (<li><Link to={'/authors/'+author.id}>{author.name}</Link></li>)
-														})}
-													</ul>
-													<p className="review-descrip">{book.synopsis}</p>
-												</li>
-											</div>)
-								})}
-							</ul>
+							<div className="col-xs-12">
+								<h4>Books - {this.props.params.genre}</h4>
+								<ul>
+									{data.map( book => {
+										return (<div>
+													<hr />
+													<li>
+														<p className="list-book-name"><Link to={'/books/'+book.isbn}>{book.title}</Link></p>
+														<ul className="browse-authors">
+															{book.authors.map( author => {
+																return (<li><Link to={'/authors/'+author.id}>{author.name}</Link></li>)
+															})}
+														</ul>
+														<p className="review-descrip">{book.synopsis}</p>
+													</li>
+												</div>)
+									})}
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>

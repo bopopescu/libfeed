@@ -31,19 +31,22 @@ class BookResults extends React.Component {
 			console.log(data);
 			return (
 				<div className="search-results">
-					<div className={data.books.length ? "container" : "none"}>
-						<h3>Search Results for “{this.props.params.searchTerm}”</h3>
-						<hr />
-						<h4>Books</h4>
-						<div className="panel-body list-group">
-							{data.books.slice(0, 20).map( book => {
-								return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}</Link>)
-							})}
+					<div className="container">
+						<div className="row">
+							<div className={data.books.length ? "col-xs-6 search-results-area" : "none"}>
+								<h3>Search Results for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+								<hr />
+								<h6>Books</h6>
+								<div className="panel-body list-group">
+									{data.books.slice(0, 20).map( book => {
+										return (<Link to={'/books/'+book.isbn} className="list-group-item">{book.title}</Link>)
+									})}
+								</div>
+							</div>
+							<div className={data.books.length ? "none" : "col-xs-6 search-results-area"}>
+								<h3>No Results Found for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+							</div>
 						</div>
-						<hr />
-					</div>
-					<div className={data.books.length ? "none" : "container"}>
-						<h3>No Results Found for “{this.props.params.searchTerm}”</h3>
 					</div>
 				</div>
 			)

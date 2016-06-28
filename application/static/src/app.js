@@ -6,8 +6,9 @@ var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
 var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
+var SearchPage = require('./pages/searchpage.js');
 var AuthorPage = require('./pages/authorpage.js');
-var NewsFeed = require('./newsfeed/newsfeed.js');
+var Feed = require('./pages/feed.js');
 var UserPage = require('./pages/userpage.js');
 var Browse = require('./pages/browse.js');
 var Genre = require('./pages/genre.js');
@@ -29,10 +30,11 @@ class App extends React.Component {
 					<Route path="/students/:studentId" component={StudentPage} />
 					<Route path="/books/:bookIsbn" component={BookPage} />
 					<Route path="/authors/:authorId" component={AuthorPage} />
+					<Route path="/search" title="Search" component={SearchPage} />
 					<Route path="/search/student/:searchTerm" component={StudentResults} />
 					<Route path="/search/book/:searchTerm" component={BookResults} />
 					<Route path="/search/author/:searchTerm" component={AuthorResults} />
-					<Route path="/newsfeed" component={NewsFeed} />
+					<Route path="/feed" component={Feed} />
 					<Route path="/user" component={UserPage} />
 					<Route path="/browse" component={Browse} />
 					<Route path="/browse/:genre" component={Genre} />

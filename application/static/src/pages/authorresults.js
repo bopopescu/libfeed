@@ -31,20 +31,24 @@ class AuthorResults extends React.Component {
 			console.log(data);
 			return (
 				<div className="search-results">
-					<div className={data.authors.length ? "container" : "none"}>
-						<h3>Search Results for “{this.props.params.searchTerm}”</h3>
-						<hr />
-						<h4>Authors</h4>
-						<div className="panel-body list-group">
-							{data.authors.slice(0, 20).map( author => {
-								return (<Link to={'/authors/'+author.id} className="list-group-item">{author.name}</Link>)
-							})}
+					<div className="container">
+						<div className="row">
+							<div className={data.authors.length ? "col-xs-6 search-results-area" : "none"}>
+								<h3>Search Results for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+								<hr />
+								<h6>Authors</h6>
+								<div className="panel-body list-group">
+									{data.authors.slice(0, 20).map( author => {
+										return (<Link to={'/authors/'+author.id} className="list-group-item">{author.name}</Link>)
+									})}
+								</div>
+							</div>
+							<div className={data.authors.length ? "none" : "col-xs-6 search-results-area"}>
+								<h3>No Results Found for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+							</div>
 						</div>
-						<hr />
 					</div>
-					<div className={data.authors.length ? "none" : "container"}>
-						<h3>No Results Found for “{this.props.params.searchTerm}”</h3>
-					</div>
+
 				</div>
 			)
 		} else {

@@ -31,20 +31,28 @@ class StudentResults extends React.Component {
 			console.log(data);
 			return (
 				<div className="search-results">
-					<div className={data.students.length ? "container" : "none"}>
-						<h3>Search Results for “{this.props.params.searchTerm}”</h3>
-						<hr />
-						<h4>Students</h4>
-						<div className="panel-body list-group">
-							{data.students.slice(0, 20).map( student => {
-								return (<Link to={'/students/'+student.id} className="list-group-item">{student.first_name} {student.last_name}</Link>)
-							})}
+					<div className="container">
+						<div className="row">
+							<div className={data.students.length ? "col-xs-6 search-results-area" : "none"}>
+								<h3>Search Results for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+								<hr />
+								<h6>Students</h6>
+								<div className="panel-body list-group">
+									{data.students.slice(0, 20).map( student => {
+										return (
+											<div>
+												<Link to={'/students/'+student.id} className="list-group-item"><span className="thumbnail-follower"><img src={student.img} /></span>{student.first_name} {student.last_name}</Link>
+											</div>
+										)
+									})}
+								</div>
+							</div>
+							<div className={data.students.length ? "none" : "col-xs-6 search-results-area"}>
+								<h3>No Results Found for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
+							</div>
 						</div>
-						<hr />
 					</div>
-					<div className={data.students.length ? "none" : "container"}>
-						<h3>No Results Found for “{this.props.params.searchTerm}”</h3>
-					</div>
+
 				</div>
 			)
 		} else {

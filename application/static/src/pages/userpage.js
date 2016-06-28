@@ -49,8 +49,8 @@ class User extends React.Component {
 				<div id="user-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6 user-profile">
-								<h4 className="user-name">{data.first_name} {data.last_name}</h4>
+							<div className="col-xs-12 col-md-6 user-profile">
+								<h6 className="user-name">{data.first_name} {data.last_name}</h6>
 								<p className="grade">{data.grade}th Grade</p>
 								<div className="student-img">
 									<img src={data.img} /><br />
@@ -63,7 +63,7 @@ class User extends React.Component {
 									</form>
 								</div>
 							</div>
-							<div className="col-xs-6">
+							<div className="col-xs-12 col-md-6">
 								<h6>Currently Reading</h6>
 								<p className={borrows.length > 0 ? "none": "grade"}>Go check out a book!</p>
 								<table className="table user-cur-reads">
@@ -82,8 +82,8 @@ class User extends React.Component {
 						<br />
 						<br />
 						<div className="row">
-							<div className="col-xs-6">
-								<h3>Reviews</h3>
+							<div className="col-xs-12 col-md-6">
+								<h6>Reviews</h6>
 								<ul>
 								<p className={data.reviews.length > 0 ? "none": "grade"}>Go review a book!</p>
 								{data.reviews.map( review => {
@@ -100,7 +100,7 @@ class User extends React.Component {
 								})}
 								</ul>
 							</div>
-							<div className="col-xs-6 user-past">
+							<div className="col-xs-12 col-md-6 user-past">
 								<h6>Past Reads</h6>
 								<p className={returns.length > 0 ? "none": "grade"}>Books you return will appear here.</p>
 								<table className="table user-past-reads">
@@ -115,8 +115,8 @@ class User extends React.Component {
 							</div>
 						</div>
 						<div className="row follow-row">
-							<div className="col-xs-12">
-								<h3>Followers</h3>
+							<div className="col-xs-12 col-md-6">
+								<h6>Followers</h6>
 								<p className={data.followers.length > 0 ? "none": "grade"}>Follow other students!</p>
 								<ul>
 								{data.followers.map( follower => {

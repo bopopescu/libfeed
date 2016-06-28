@@ -30,12 +30,12 @@ h5 {
 
 h6 {
     font-family: 'Gotham SSm',sans-serif;
-    color: #777;
-    font-size: 16px;
-    font-weight: 300;
     line-height: 1.9em;
     -webkit-font-smoothing: antialiased;
     text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 500;
+    color: #3299CC;
 }
 
 p {
@@ -72,7 +72,7 @@ a {
 
 a:hover {
     text-decoration: none;
-    color: #1eb6a7;
+    color: #3299CC;
 }
 
 #app .container-fluid {
@@ -98,34 +98,44 @@ hr {
 }
 
 /************* NAVBAR *************/
+.navbar-toggle {
+    width: 50px;
+}
+
+.navbar {
+    margin-bottom: 0;
+}
+
 .navbar-default {
     background-color: white;
     border-color: white;
 }
 
 .navbar>.container .navbar-brand, .navbar>.container-fluid .navbar-brand {
-    margin-left: 10px;
-    margin-top: 20px;
+    margin-left: 1px;
+    margin-top: 5px;
+    color: #3299CC;
 }
 
 .navbar-default .navbar-nav>li>a {
-    margin-top: 20px;
+    margin-top: 5px;
     text-transform: uppercase;
     letter-spacing: .1em;
     font-size: 12px;
 }
 
 .navbar-default .navbar-nav>li>a:hover {
-    color: #1eb6a7;
+    color: #3299CC;
 }
 
 .site-title {
     letter-spacing: .2em;
     font-size: 16px;
+    font-weight: 500;
 }
 
 .logo {
-    max-width: 70px;
+    max-width: 35px;
     padding-bottom: 10px;
     padding-top: 10px;
     float: left;
@@ -157,7 +167,8 @@ hr {
     display: inline-block;
 }
 
-.student-page-name h4{
+.student-page-name h6{
+    text-transform: none;
     float: left;
 }
 
@@ -166,8 +177,8 @@ hr {
 }
 
 .student-page-name .btn {
-    margin-top: 18px;
-    margin-left: 15px;
+    margin-top: 15px;
+    margin-left: 13px;
     font-size: 10px;
     width: 50px;
 }
@@ -245,7 +256,7 @@ hr {
 }
 
 .student-page-name .btn {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
     font-size: 12px;
     width: 65px;
@@ -254,14 +265,14 @@ hr {
 .follow-btn {
     width: 60px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 /************* BOOK PAGE *************/
 .book-title-main {
     font-style: italic;
-    color: #1eb6a7;
+    color: #3299CC;
     float: left;
     font-size: 18px;
 }
@@ -287,12 +298,12 @@ hr {
 }
 
 .student-name a{
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 15px
 }
 
 .student-name {
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 14px
 }
 
@@ -320,31 +331,31 @@ hr {
 .checkout-btn {
     width: 100px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
     font-size: 14px;
 }
 
 .checkout:hover {
     opacity: .5;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .checkout:active {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .review-btn {
     margin-left: 20px;
     width: 100px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .review-btn:hover {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
     opacity: .5;
 }
@@ -367,7 +378,7 @@ hr {
     border-radius: 30px;
     font-size: 10px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
@@ -397,18 +408,18 @@ hr {
     width: 65px;
     margin-left: 10px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .return-btn:hover {
     opacity: .5;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .return-btn:active {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
@@ -435,7 +446,7 @@ hr {
 
 .user-book-title {
     font-style: italic;
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 15px;
 }
 
@@ -486,6 +497,7 @@ hr {
 
 .user-name {
     margin-bottom: 0;
+    text-transform: none;
 }
 
 input[type=file] {
@@ -503,7 +515,7 @@ input[type=file] {
     font-size: 10px;
     padding: 2px;
     margin-top: 20px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
@@ -512,7 +524,7 @@ input[type=file] {
     width: 80px;
     padding: 2px;
     margin-top: 20px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
@@ -520,6 +532,15 @@ input[type=file] {
     padding-top: 20px;
 }
 /************* SEARCH *************/
+.search-page {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
+}
+
+.search-area {
+    margin-top: 100px;
+}
 
 .searchButton {
     font-size: 20px;
@@ -540,12 +561,12 @@ button, input, select, textarea {
 .searchtype-student-btn {
     width: 60px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .searchtype-student-btn:hover {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     opacity: .5;
     border-color: white;
 }
@@ -553,12 +574,12 @@ button, input, select, textarea {
 .searchtype-book-btn {
     width: 45px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .searchtype-book-btn:hover {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     opacity: .5;
     border-color: white;
 }
@@ -566,12 +587,12 @@ button, input, select, textarea {
 .searchtype-author-btn {
     width: 55px;
     padding: 2px;
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     border-color: white;
 }
 
 .searchtype-author-btn:hover {
-    background-color: #1eb6a7;
+    background-color: #3299CC;
     opacity: .5;
     border-color: white;
 }
@@ -591,8 +612,8 @@ button, input, select, textarea {
 }
 
 .btn-success {
-    background-color: #1eb6a7;
-    border-color: #1eb6a7;
+    background-color: #3299CC;
+    border-color: #3299CC;
 }
 
 .login-form input {
@@ -604,8 +625,8 @@ button, input, select, textarea {
 }
 
 .login-form button:hover {
-    background-color: #1eb6a7;
-    border-color: #1eb6a7;
+    background-color: #3299CC;
+    border-color: #3299CC;
     opacity: .5;
 }
 
@@ -621,8 +642,8 @@ button, input, select, textarea {
 }
 
 .btn-success {
-    background-color: #1eb6a7;
-    border-color: #1eb6a7;
+    background-color: #3299CC;
+    border-color: #3299CC;
 }
 
 .register-form input {
@@ -634,8 +655,8 @@ button, input, select, textarea {
 }
 
 .register-form button:hover {
-    background-color: #1eb6a7;
-    border-color: #1eb6a7;
+    background-color: #3299CC;
+    border-color: #3299CC;
     opacity: .5;
 }
 
@@ -662,15 +683,43 @@ button, input, select, textarea {
 
 .book-title {
     font-style: italic;
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 14px;
+}
+
+.feed-items {
+    margin-top: 50px;
+}
+
+.newsfeed {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
 }
 
 .newsfeed li {
     font-size: 14px;
+    padding-top: 1px;
+}
+
+.news-info {
+    margin-top: 20px;
+}
+
+.followers-needed {
+    margin-top: 100px;
 }
 
 /************* BROWSE *************/
+#genre-page {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
+}
+
+.genre-list {
+    margin-top: 100px;
+}
 
 .browse-genres li {
     text-transform: uppercase;
@@ -695,12 +744,12 @@ button, input, select, textarea {
 }
 
 .list-book-name a{
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 16px
 }
 
 .list-book-name {
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 16px;
     margin-bottom: 0;
 }
@@ -708,10 +757,91 @@ button, input, select, textarea {
 /************* AUTHOR PAGE *************/
 
 .author-title {
-    color: #1eb6a7;
+    color: #3299CC;
     font-size: 20px;
 }
 
 .author-book-title {
     font-style: italic;
+}
+
+/************* HOME PAGE *************/
+
+.home-page {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
+}
+
+.quote-body {
+    margin-top: 200px;
+}
+
+.book-quote {
+    color: #3299CC;
+    font-weight: 500;
+    font-size: 18px;
+}
+
+.quoted-by {
+    color: #777;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.italic {
+    font-style: italic;
+}
+
+/************* ABOUT PAGE *************/
+
+.about-page {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
+}
+
+.about-title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3299CC;
+}
+
+.about-section {
+    margin-top: 100px;
+}
+
+.site-creator {
+    padding-top: 20px;
+    color: #777;
+}
+
+.site-creator a {
+    color: #3299CC;
+}
+
+/************* SEARCH RESULTS *************/
+
+.search-results {
+    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+    background-size: 100vw;
+    height: 100vh;
+}
+
+.result-found {
+    font-size: 18px;
+    font-weight: 500;
+    color: #3299CC;
+    font-style: italic;
+}
+
+.search-results-area {
+    margin-top: 50px;
+}
+
+a.list-group-item:hover {
+    background: #3299CC;
+    opacity: .5;
+    cursor: pointer;
+    color: white;
 }

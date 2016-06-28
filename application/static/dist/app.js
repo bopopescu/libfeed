@@ -83615,7 +83615,7 @@ function Node (value, prev, next, list) {
 'use strict';
 
 var request = require('request');
-var API = 'http://libfeed.co/api/';
+var API = 'http://localhost:5000/api/';
 
 function getCurUserNewsfeed(cb) {
 	request(API + 'cur_user_newsfeed', function (error, response, body) {
@@ -83816,8 +83816,9 @@ var HomePage = require('./homepage.js');
 var AboutPage = require('./pages/aboutpage.js');
 var StudentPage = require('./pages/studentpage.js');
 var BookPage = require('./pages/bookpage.js');
+var SearchPage = require('./pages/searchpage.js');
 var AuthorPage = require('./pages/authorpage.js');
-var NewsFeed = require('./newsfeed/newsfeed.js');
+var Feed = require('./pages/feed.js');
 var UserPage = require('./pages/userpage.js');
 var Browse = require('./pages/browse.js');
 var Genre = require('./pages/genre.js');
@@ -83852,10 +83853,11 @@ var App = function (_React$Component) {
 					React.createElement(Route, { path: '/students/:studentId', component: StudentPage }),
 					React.createElement(Route, { path: '/books/:bookIsbn', component: BookPage }),
 					React.createElement(Route, { path: '/authors/:authorId', component: AuthorPage }),
+					React.createElement(Route, { path: '/search', title: 'Search', component: SearchPage }),
 					React.createElement(Route, { path: '/search/student/:searchTerm', component: StudentResults }),
 					React.createElement(Route, { path: '/search/book/:searchTerm', component: BookResults }),
 					React.createElement(Route, { path: '/search/author/:searchTerm', component: AuthorResults }),
-					React.createElement(Route, { path: '/newsfeed', component: NewsFeed }),
+					React.createElement(Route, { path: '/feed', component: Feed }),
 					React.createElement(Route, { path: '/user', component: UserPage }),
 					React.createElement(Route, { path: '/browse', component: Browse }),
 					React.createElement(Route, { path: '/browse/:genre', component: Genre })
@@ -83869,8 +83871,8 @@ var App = function (_React$Component) {
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('app'));
 
-},{"./homepage.js":499,"./newsfeed/newsfeed.js":500,"./pages/aboutpage.js":501,"./pages/authorpage.js":502,"./pages/authorresults.js":503,"./pages/bookpage.js":504,"./pages/bookresults.js":505,"./pages/browse.js":506,"./pages/genre.js":507,"./pages/studentpage.js":508,"./pages/studentresults.js":509,"./pages/userpage.js":510,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
-'use strict';
+},{"./homepage.js":499,"./pages/aboutpage.js":500,"./pages/authorpage.js":501,"./pages/authorresults.js":502,"./pages/bookpage.js":503,"./pages/bookresults.js":504,"./pages/browse.js":505,"./pages/feed.js":506,"./pages/genre.js":507,"./pages/searchpage.js":508,"./pages/studentpage.js":509,"./pages/studentresults.js":510,"./pages/userpage.js":511,"react":419,"react-dom":256,"react-router":284}],499:[function(require,module,exports){
+"use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -83881,7 +83883,6 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var React = require('react');
-var SearchBar = require('./partials/searchbar.js');
 
 var Home = function (_React$Component) {
 	_inherits(Home, _React$Component);
@@ -83893,18 +83894,36 @@ var Home = function (_React$Component) {
 	}
 
 	_createClass(Home, [{
-		key: 'render',
+		key: "render",
 		value: function render() {
 			return React.createElement(
-				'div',
-				{ className: 'home-page' },
+				"div",
+				{ className: "home-page" },
 				React.createElement(
-					'div',
-					{ className: 'container-fluid' },
+					"div",
+					{ className: "container-fluid" },
 					React.createElement(
-						'div',
-						{ className: 'search-area' },
-						React.createElement(SearchBar, null)
+						"div",
+						{ className: "row" },
+						React.createElement(
+							"div",
+							{ className: "quote-body col-xs-6" },
+							React.createElement(
+								"p",
+								{ className: "book-quote" },
+								"“Reading one book is like eating one potato chip.”"
+							),
+							React.createElement(
+								"p",
+								{ className: "quoted-by" },
+								" - Diane Duane, ",
+								React.createElement(
+									"span",
+									{ className: "italic" },
+									"So You Want to Be a Wizard"
+								)
+							)
+						)
 					)
 				)
 			);
@@ -83916,153 +83935,7 @@ var Home = function (_React$Component) {
 
 module.exports = Home;
 
-},{"./partials/searchbar.js":512,"react":419}],500:[function(require,module,exports){
-'use strict';
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var React = require('react');
-var api = require('../api.js');
-var Link = require('react-router').Link;
-
-var NewsFeed = function (_React$Component) {
-	_inherits(NewsFeed, _React$Component);
-
-	function NewsFeed() {
-		_classCallCheck(this, NewsFeed);
-
-		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(NewsFeed).call(this));
-
-		_this.state = { data: null };
-		return _this;
-	}
-
-	_createClass(NewsFeed, [{
-		key: 'componentDidMount',
-		value: function componentDidMount() {
-			var _this2 = this;
-
-			api.getCurUserNewsfeed(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data });
-			});
-		}
-	}, {
-		key: 'render',
-		value: function render() {
-			var data = this.state.data;
-			if (data) {
-				return React.createElement(
-					'div',
-					{ className: 'newsfeed' },
-					React.createElement(
-						'div',
-						{ className: 'container-fluid' },
-						React.createElement(
-							'div',
-							{ className: 'row' },
-							React.createElement(
-								'div',
-								{ className: 'col-xs-6' },
-								React.createElement(
-									'ul',
-									null,
-									data.borrows.map(function (book) {
-										return React.createElement(
-											'div',
-											{ className: 'news-list-item' },
-											React.createElement(
-												'li',
-												null,
-												React.createElement(
-													'div',
-													{ className: 'thumbnail' },
-													React.createElement('img', { src: book.student.img })
-												),
-												React.createElement(
-													Link,
-													{ to: '/students/' + book.student.id, className: 'student-name' },
-													book.student.first_name,
-													' ',
-													book.student.last_name
-												),
-												' checked out',
-												React.createElement(
-													Link,
-													{ to: '/books/' + book.book.isbn, className: 'book-title' },
-													' ',
-													book.book.title
-												),
-												' ',
-												book.days_passed,
-												'.'
-											),
-											React.createElement('br', null)
-										);
-									})
-								)
-							),
-							React.createElement(
-								'div',
-								{ className: 'col-xs-6' },
-								React.createElement(
-									'ul',
-									null,
-									data.reviews.map(function (review) {
-										return React.createElement(
-											'div',
-											{ className: 'news-list-item' },
-											React.createElement(
-												'li',
-												null,
-												React.createElement(
-													'div',
-													{ className: 'thumbnail' },
-													React.createElement('img', { src: review.student.img })
-												),
-												React.createElement(
-													Link,
-													{ to: '/students/' + review.student.id, className: 'student-name' },
-													review.student.first_name,
-													' ',
-													review.student.last_name
-												),
-												' wrote a review for',
-												React.createElement(
-													Link,
-													{ to: '/books/' + review.book.isbn, className: 'book-title' },
-													' ',
-													review.book.title
-												),
-												' ',
-												review.days_passed,
-												'.'
-											),
-											React.createElement('br', null)
-										);
-									})
-								)
-							)
-						)
-					)
-				);
-			} else {
-				return React.createElement('div', null);
-			}
-		}
-	}]);
-
-	return NewsFeed;
-}(React.Component);
-
-module.exports = NewsFeed;
-
-},{"../api.js":497,"react":419,"react-router":284}],501:[function(require,module,exports){
+},{"react":419}],500:[function(require,module,exports){
 "use strict";
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84094,17 +83967,35 @@ var About = function (_React$Component) {
 					"div",
 					{ className: "container-fluid" },
 					React.createElement(
-						"h5",
-						null,
-						"About LibFeed"
-					),
-					React.createElement(
 						"div",
-						{ "class": "about-description" },
+						{ className: "row" },
 						React.createElement(
-							"p",
-							null,
-							"LibFeed helps students at Ann Richards to find books to read. Students can browse what books are available in their library, see what books their friends have read, and read reviews by other students at their school."
+							"div",
+							{ className: "col-xs-6 about-section" },
+							React.createElement(
+								"h5",
+								{ className: "about-title" },
+								"About LibFeed"
+							),
+							React.createElement(
+								"div",
+								{ className: "about-description" },
+								React.createElement(
+									"p",
+									null,
+									"LibFeed helps students at Ann Richards to find books to read. Students can browse what books are available in their library, see what books their friends have read, and read reviews by other students at their school."
+								)
+							),
+							React.createElement(
+								"p",
+								{ className: "site-creator" },
+								"Created by ",
+								React.createElement(
+									"a",
+									{ href: "http://leslierice.tech/" },
+									"Leslie Rice"
+								)
+							)
 						)
 					)
 				)
@@ -84117,7 +84008,7 @@ var About = function (_React$Component) {
 
 module.exports = About;
 
-},{"react":419}],502:[function(require,module,exports){
+},{"react":419}],501:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84204,7 +84095,7 @@ var Author = function (_React$Component) {
 
 module.exports = Author;
 
-},{"../api.js":497,"react":419,"react-router":284}],503:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],502:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84262,42 +84153,59 @@ var AuthorResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: data.authors.length ? "container" : "none" },
-						React.createElement(
-							'h3',
-							null,
-							'Search Results for “',
-							this.props.params.searchTerm,
-							'”'
-						),
-						React.createElement('hr', null),
-						React.createElement(
-							'h4',
-							null,
-							'Authors'
-						),
+						{ className: 'container' },
 						React.createElement(
 							'div',
-							{ className: 'panel-body list-group' },
-							data.authors.slice(0, 20).map(function (author) {
-								return React.createElement(
-									Link,
-									{ to: '/authors/' + author.id, className: 'list-group-item' },
-									author.name
-								);
-							})
-						),
-						React.createElement('hr', null)
-					),
-					React.createElement(
-						'div',
-						{ className: data.authors.length ? "none" : "container" },
-						React.createElement(
-							'h3',
-							null,
-							'No Results Found for “',
-							this.props.params.searchTerm,
-							'”'
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: data.authors.length ? "col-xs-6 search-results-area" : "none" },
+								React.createElement(
+									'h3',
+									null,
+									'Search Results for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'h6',
+									null,
+									'Authors'
+								),
+								React.createElement(
+									'div',
+									{ className: 'panel-body list-group' },
+									data.authors.slice(0, 20).map(function (author) {
+										return React.createElement(
+											Link,
+											{ to: '/authors/' + author.id, className: 'list-group-item' },
+											author.name
+										);
+									})
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: data.authors.length ? "none" : "col-xs-6 search-results-area" },
+								React.createElement(
+									'h3',
+									null,
+									'No Results Found for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								)
+							)
 						)
 					)
 				);
@@ -84312,7 +84220,7 @@ var AuthorResults = function (_React$Component) {
 
 module.exports = AuthorResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],504:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],503:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84624,7 +84532,7 @@ var Book = function (_React$Component) {
 
 module.exports = Book;
 
-},{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],504:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84682,42 +84590,59 @@ var BookResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: data.books.length ? "container" : "none" },
-						React.createElement(
-							'h3',
-							null,
-							'Search Results for “',
-							this.props.params.searchTerm,
-							'”'
-						),
-						React.createElement('hr', null),
-						React.createElement(
-							'h4',
-							null,
-							'Books'
-						),
+						{ className: 'container' },
 						React.createElement(
 							'div',
-							{ className: 'panel-body list-group' },
-							data.books.slice(0, 20).map(function (book) {
-								return React.createElement(
-									Link,
-									{ to: '/books/' + book.isbn, className: 'list-group-item' },
-									book.title
-								);
-							})
-						),
-						React.createElement('hr', null)
-					),
-					React.createElement(
-						'div',
-						{ className: data.books.length ? "none" : "container" },
-						React.createElement(
-							'h3',
-							null,
-							'No Results Found for “',
-							this.props.params.searchTerm,
-							'”'
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: data.books.length ? "col-xs-6 search-results-area" : "none" },
+								React.createElement(
+									'h3',
+									null,
+									'Search Results for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'h6',
+									null,
+									'Books'
+								),
+								React.createElement(
+									'div',
+									{ className: 'panel-body list-group' },
+									data.books.slice(0, 20).map(function (book) {
+										return React.createElement(
+											Link,
+											{ to: '/books/' + book.isbn, className: 'list-group-item' },
+											book.title
+										);
+									})
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: data.books.length ? "none" : "col-xs-6 search-results-area" },
+								React.createElement(
+									'h3',
+									null,
+									'No Results Found for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								)
+							)
 						)
 					)
 				);
@@ -84732,7 +84657,7 @@ var BookResults = function (_React$Component) {
 
 module.exports = BookResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],505:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -84779,24 +84704,32 @@ var Browse = function (_React$Component) {
 							'div',
 							{ className: 'row' },
 							React.createElement(
-								'h4',
-								null,
-								'Genres'
-							),
-							React.createElement(
-								'ul',
-								null,
-								data.map(function (genre) {
-									return React.createElement(
-										'li',
+								'div',
+								{ className: 'col-xs-6' },
+								React.createElement(
+									'div',
+									{ className: 'genre-list' },
+									React.createElement(
+										'h6',
 										null,
-										React.createElement(
-											Link,
-											{ to: '/browse/' + genre },
-											genre
-										)
-									);
-								})
+										'Genres'
+									),
+									React.createElement(
+										'ul',
+										null,
+										data.map(function (genre) {
+											return React.createElement(
+												'li',
+												null,
+												React.createElement(
+													Link,
+													{ to: '/browse/' + genre },
+													genre
+												)
+											);
+										})
+									)
+								)
 							)
 						)
 					)
@@ -84811,6 +84744,161 @@ var Browse = function (_React$Component) {
 }(React.Component);
 
 module.exports = Browse;
+
+},{"../api.js":497,"react":419,"react-router":284}],506:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var api = require('../api.js');
+var Link = require('react-router').Link;
+
+var Feed = function (_React$Component) {
+	_inherits(Feed, _React$Component);
+
+	function Feed() {
+		_classCallCheck(this, Feed);
+
+		var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Feed).call(this));
+
+		_this.state = { data: null };
+		return _this;
+	}
+
+	_createClass(Feed, [{
+		key: 'componentDidMount',
+		value: function componentDidMount() {
+			var _this2 = this;
+
+			api.getCurUserNewsfeed(function (err, data) {
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data });
+			});
+		}
+	}, {
+		key: 'render',
+		value: function render() {
+			var data = this.state.data;
+			if (data) {
+				return React.createElement(
+					'div',
+					{ className: 'newsfeed' },
+					React.createElement(
+						'div',
+						{ className: 'container-fluid' },
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: 'col-xs-6 feed-items' },
+								React.createElement(
+									'ul',
+									null,
+									data.borrows.map(function (book) {
+										return React.createElement(
+											'div',
+											{ className: 'news-list-item' },
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'span',
+													{ className: 'thumbnail' },
+													React.createElement('img', { src: book.student.img })
+												),
+												React.createElement(
+													'span',
+													{ className: 'news-info' },
+													React.createElement(
+														Link,
+														{ to: '/students/' + book.student.id, className: 'student-name' },
+														book.student.first_name,
+														' ',
+														book.student.last_name
+													),
+													' checked out',
+													React.createElement(
+														Link,
+														{ to: '/books/' + book.book.isbn, className: 'book-title' },
+														' ',
+														book.book.title
+													),
+													' ',
+													book.days_passed,
+													'.'
+												)
+											),
+											React.createElement('br', null)
+										);
+									})
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.reviews.map(function (review) {
+										return React.createElement(
+											'div',
+											{ className: 'news-list-item' },
+											React.createElement(
+												'li',
+												null,
+												React.createElement(
+													'div',
+													{ className: 'thumbnail' },
+													React.createElement('img', { src: review.student.img })
+												),
+												React.createElement(
+													'div',
+													{ className: 'news-info' },
+													React.createElement(
+														Link,
+														{ to: '/students/' + review.student.id, className: 'student-name' },
+														review.student.first_name,
+														' ',
+														review.student.last_name
+													),
+													' wrote a review for',
+													React.createElement(
+														Link,
+														{ to: '/books/' + review.book.isbn, className: 'book-title' },
+														' ',
+														review.book.title
+													),
+													' ',
+													review.days_passed,
+													'.'
+												)
+											),
+											React.createElement('br', null)
+										);
+									})
+								),
+								React.createElement(
+									'p',
+									{ className: data.reviews.length > 0 || data.borrows.length > 0 ? "none" : "followers-needed" },
+									'Follow other students to see what books they have recently checked out or reviewed!'
+								)
+							)
+						)
+					)
+				);
+			} else {
+				return React.createElement('div', null);
+			}
+		}
+	}]);
+
+	return Feed;
+}(React.Component);
+
+module.exports = Feed;
 
 },{"../api.js":497,"react":419,"react-router":284}],507:[function(require,module,exports){
 'use strict';
@@ -84883,54 +84971,58 @@ var Genre = function (_React$Component) {
 							'div',
 							{ className: 'row' },
 							React.createElement(
-								'h4',
-								null,
-								'Books - ',
-								this.props.params.genre
-							),
-							React.createElement(
-								'ul',
-								null,
-								data.map(function (book) {
-									return React.createElement(
-										'div',
-										null,
-										React.createElement('hr', null),
-										React.createElement(
-											'li',
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'h4',
+									null,
+									'Books - ',
+									this.props.params.genre
+								),
+								React.createElement(
+									'ul',
+									null,
+									data.map(function (book) {
+										return React.createElement(
+											'div',
 											null,
+											React.createElement('hr', null),
 											React.createElement(
-												'p',
-												{ className: 'list-book-name' },
+												'li',
+												null,
 												React.createElement(
-													Link,
-													{ to: '/books/' + book.isbn },
-													book.title
+													'p',
+													{ className: 'list-book-name' },
+													React.createElement(
+														Link,
+														{ to: '/books/' + book.isbn },
+														book.title
+													)
+												),
+												React.createElement(
+													'ul',
+													{ className: 'browse-authors' },
+													book.authors.map(function (author) {
+														return React.createElement(
+															'li',
+															null,
+															React.createElement(
+																Link,
+																{ to: '/authors/' + author.id },
+																author.name
+															)
+														);
+													})
+												),
+												React.createElement(
+													'p',
+													{ className: 'review-descrip' },
+													book.synopsis
 												)
-											),
-											React.createElement(
-												'ul',
-												{ className: 'browse-authors' },
-												book.authors.map(function (author) {
-													return React.createElement(
-														'li',
-														null,
-														React.createElement(
-															Link,
-															{ to: '/authors/' + author.id },
-															author.name
-														)
-													);
-												})
-											),
-											React.createElement(
-												'p',
-												{ className: 'review-descrip' },
-												book.synopsis
 											)
-										)
-									);
-								})
+										);
+									})
+								)
 							)
 						)
 					)
@@ -84946,7 +85038,62 @@ var Genre = function (_React$Component) {
 
 module.exports = Genre;
 
-},{"../api.js":497,"../partials/paginator.js":511,"react":419,"react-router":284}],508:[function(require,module,exports){
+},{"../api.js":497,"../partials/paginator.js":512,"react":419,"react-router":284}],508:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var React = require('react');
+var SearchBar = require('../partials/searchbar.js');
+
+var Search = function (_React$Component) {
+	_inherits(Search, _React$Component);
+
+	function Search() {
+		_classCallCheck(this, Search);
+
+		return _possibleConstructorReturn(this, Object.getPrototypeOf(Search).apply(this, arguments));
+	}
+
+	_createClass(Search, [{
+		key: 'render',
+		value: function render() {
+			return React.createElement(
+				'div',
+				{ className: 'search-page' },
+				React.createElement(
+					'div',
+					{ className: 'container-fluid' },
+					React.createElement(
+						'div',
+						{ className: 'row' },
+						React.createElement(
+							'div',
+							{ className: 'col-xs-6' },
+							React.createElement(
+								'div',
+								{ className: 'search-area' },
+								React.createElement(SearchBar, null)
+							)
+						)
+					)
+				)
+			);
+		}
+	}]);
+
+	return Search;
+}(React.Component);
+
+module.exports = Search;
+
+},{"../partials/searchbar.js":513,"react":419}],509:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85028,12 +85175,12 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 user-profile' },
+								{ className: 'col-xs-12 col-md-6 user-profile' },
 								React.createElement(
 									'div',
 									{ className: 'student-page-name' },
 									React.createElement(
-										'h4',
+										'h6',
 										{ className: 'user-name' },
 										data.first_name,
 										' ',
@@ -85059,7 +85206,7 @@ var Student = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85095,9 +85242,9 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
-									'h3',
+									'h6',
 									null,
 									'Reviews'
 								),
@@ -85148,7 +85295,7 @@ var Student = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 student-past-reads' },
+								{ className: 'col-xs-12 col-md-6 student-past-reads' },
 								React.createElement(
 									'h6',
 									null,
@@ -85182,9 +85329,9 @@ var Student = function (_React$Component) {
 							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
-									'h3',
+									'h6',
 									null,
 									'Followers'
 								),
@@ -85238,7 +85385,7 @@ var Student = function (_React$Component) {
 
 module.exports = Student;
 
-},{"../api.js":497,"react":419,"react-router":284}],509:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],510:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85296,44 +85443,70 @@ var StudentResults = function (_React$Component) {
 					{ className: 'search-results' },
 					React.createElement(
 						'div',
-						{ className: data.students.length ? "container" : "none" },
-						React.createElement(
-							'h3',
-							null,
-							'Search Results for “',
-							this.props.params.searchTerm,
-							'”'
-						),
-						React.createElement('hr', null),
-						React.createElement(
-							'h4',
-							null,
-							'Students'
-						),
+						{ className: 'container' },
 						React.createElement(
 							'div',
-							{ className: 'panel-body list-group' },
-							data.students.slice(0, 20).map(function (student) {
-								return React.createElement(
-									Link,
-									{ to: '/students/' + student.id, className: 'list-group-item' },
-									student.first_name,
-									' ',
-									student.last_name
-								);
-							})
-						),
-						React.createElement('hr', null)
-					),
-					React.createElement(
-						'div',
-						{ className: data.students.length ? "none" : "container" },
-						React.createElement(
-							'h3',
-							null,
-							'No Results Found for “',
-							this.props.params.searchTerm,
-							'”'
+							{ className: 'row' },
+							React.createElement(
+								'div',
+								{ className: data.students.length ? "col-xs-6 search-results-area" : "none" },
+								React.createElement(
+									'h3',
+									null,
+									'Search Results for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'h6',
+									null,
+									'Students'
+								),
+								React.createElement(
+									'div',
+									{ className: 'panel-body list-group' },
+									data.students.slice(0, 20).map(function (student) {
+										return React.createElement(
+											'div',
+											null,
+											React.createElement(
+												Link,
+												{ to: '/students/' + student.id, className: 'list-group-item' },
+												React.createElement(
+													'span',
+													{ className: 'thumbnail-follower' },
+													React.createElement('img', { src: student.img })
+												),
+												student.first_name,
+												' ',
+												student.last_name
+											)
+										);
+									})
+								)
+							),
+							React.createElement(
+								'div',
+								{ className: data.students.length ? "none" : "col-xs-6 search-results-area" },
+								React.createElement(
+									'h3',
+									null,
+									'No Results Found for ',
+									React.createElement(
+										'span',
+										{ className: 'result-found' },
+										'“',
+										this.props.params.searchTerm,
+										'”'
+									)
+								)
+							)
 						)
 					)
 				);
@@ -85348,7 +85521,7 @@ var StudentResults = function (_React$Component) {
 
 module.exports = StudentResults;
 
-},{"../api.js":497,"react":419,"react-router":284}],510:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],511:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85430,9 +85603,9 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 user-profile' },
+								{ className: 'col-xs-12 col-md-6 user-profile' },
 								React.createElement(
-									'h4',
+									'h6',
 									{ className: 'user-name' },
 									data.first_name,
 									' ',
@@ -85469,7 +85642,7 @@ var User = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85537,9 +85710,9 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
-									'h3',
+									'h6',
 									null,
 									'Reviews'
 								),
@@ -85590,7 +85763,7 @@ var User = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 user-past' },
+								{ className: 'col-xs-12 col-md-6 user-past' },
 								React.createElement(
 									'h6',
 									null,
@@ -85647,9 +85820,9 @@ var User = function (_React$Component) {
 							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-12 col-md-6' },
 								React.createElement(
-									'h3',
+									'h6',
 									null,
 									'Followers'
 								),
@@ -85699,7 +85872,7 @@ var User = function (_React$Component) {
 
 module.exports = User;
 
-},{"../api.js":497,"react":419,"react-router":284}],511:[function(require,module,exports){
+},{"../api.js":497,"react":419,"react-router":284}],512:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85914,7 +86087,7 @@ Paginator.defaultProps = {
 
 module.exports = Paginator;
 
-},{"react":419,"react-router":284}],512:[function(require,module,exports){
+},{"react":419,"react-router":284}],513:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -85968,7 +86141,7 @@ var SearchBar = function (_React$Component) {
                 'div',
                 { className: 'row' },
                 React.createElement(
-                    'h4',
+                    'h6',
                     { className: 'search-bar' },
                     'Search for: ',
                     React.createElement(
@@ -85991,16 +86164,16 @@ var SearchBar = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: 'col-xs-4' },
+                    { className: 'col-xs-6 col-md-8' },
                     React.createElement(
                         'form',
-                        { className: 'searchForm' },
+                        { className: searchType ? "searchForm" : "none" },
                         React.createElement('input', { type: 'text', placeholder: 'Search', onKeyDown: this.handleKeyDown.bind(this), onChange: this.handleChange.bind(this), disabled: !searchType })
                     )
                 ),
                 React.createElement(
                     'div',
-                    { className: searchTerm ? "col-xs-8 searchButton" : "none" },
+                    { className: searchTerm ? "col-xs-12 col-md-3 searchButton" : "none" },
                     React.createElement(
                         Link,
                         { id: 'searchButton', to: '/search/' + this.state.searchType + '/' + this.state.searchTerm, className: 'searchButton' },

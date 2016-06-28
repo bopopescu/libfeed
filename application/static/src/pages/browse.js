@@ -20,12 +20,16 @@ class Browse extends React.Component {
 				<div id="genre-page">
 					<div className="container-fluid">
 						<div className="row">
-							<h4>Genres</h4>
-							<ul>
-								{data.map( genre => {
-									return (<li><Link to={'/browse/'+genre}>{genre}</Link></li>)
-								})}
-							</ul>
+							<div className="col-xs-6">
+								<div className="genre-list">
+									<h6>Genres</h6>
+									<ul>
+										{data.map( genre => {
+											return (<li><Link to={'/browse/'+genre}>{genre}</Link></li>)
+										})}
+									</ul>
+								</div>
+							</div>
 						</div>
 					</div>
 				</div>

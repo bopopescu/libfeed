@@ -1,13 +1,15 @@
 var React = require('react');
-var SearchBar = require('./partials/searchbar.js');
 
 class Home extends React.Component {
 	render() {
 		return (
 			<div className="home-page">
 				<div className="container-fluid">
-					<div className="search-area">
-						<SearchBar />
+					<div className="row">
+						<div className="quote-body col-xs-6">
+							<p className="book-quote">“Reading one book is like eating one potato chip.”</p>
+							<p className="quoted-by"> - Diane Duane, <span className="italic">So You Want to Be a Wizard</span></p>
+						</div>
 					</div>
 				</div>
 			</div>
