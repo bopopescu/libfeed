@@ -12,7 +12,7 @@ class User extends React.Component {
 	componentDidMount() {
 		api.getCurUserPage((err, data) => {
 			if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");
-			else this.setState({data: data.student, borrows: data.student.borrows, returns: data.student.returns});
+			else this.setState({data: data.student, borrows: data.student.borrows, returns: data.student.returns, reviews: data.student.reviews});
 		});
 	}
 
@@ -32,6 +32,36 @@ class User extends React.Component {
 	    });
 	}
 
+	deleteBorrow(borrow) {
+		api.deleteBorrow(borrow.isbn);
+		var borrows = this.state.borrows.filter(function(cur_borrow){
+		  return cur_borrow.isbn !== borrow.isbn;
+		});
+		this.setState({
+		  borrows: borrows
+		});
+	}
+
+	deleteReview(review) {
+		api.deleteReview(review.id);
+		var reviews = this.state.reviews.filter(function(cur_review){
+		  return cur_review.id !== review.id;
+		});
+		this.setState({
+		  reviews: reviews
+		});
+	}
+
+	deleteReturn(r) {
+		api.deleteReturn(r.isbn);
+		var returns = this.state.returns.filter(function(cur_r){
+		  return cur_r.isbn !== r.isbn;
+		});
+		this.setState({
+		  returns: returns
+		});
+	}
+
 	handleClickPhoto() {
 		this.setState({
 			photo: true
@@ -42,6 +72,7 @@ class User extends React.Component {
 		var data = this.state.data;
 		var borrows = this.state.borrows;
 		var returns = this.state.returns;
+		var reviews = this.state.reviews;
 		var photo = this.state.photo;
 		console.log(borrows);
 		if (data) {
@@ -49,7 +80,7 @@ class User extends React.Component {
 				<div id="user-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-12 col-md-6 user-profile">
+							<div className="col-xs-12 col-sm-12 col-md-6 user-profile">
 								<h6 className="user-name">{data.first_name} {data.last_name}</h6>
 								<p className="grade">{data.grade}th Grade</p>
 								<div className="student-img">
@@ -63,7 +94,7 @@ class User extends React.Component {
 									</form>
 								</div>
 							</div>
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Currently Reading</h6>
 								<p className={borrows.length > 0 ? "none": "grade"}>Go check out a book!</p>
 								<table className="table user-cur-reads">
@@ -73,7 +104,8 @@ class User extends React.Component {
 													<Link to={'/books/'+borrow.isbn} className="user-book-title">{borrow.title}</Link>
 													<span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{borrow.author}</span></td>
 													<td><span className="user-due-date">Due {borrow.due_date}</span></td>
-													<td><button type="button" className="btn btn-primary return-btn" onClick={this.handleClick.bind(this, borrow)}>Return</button></td></tr>])
+													<td><button type="button" className="btn btn-primary return-btn" onClick={this.handleClick.bind(this, borrow)}>Return</button></td>
+													<td><button type="button" className="btn btn-primary delete-btn" onClick={this.deleteBorrow.bind(this, borrow)}>Delete</button></td></tr>])
 										})}
 									</tbody>
 								</table>
@@ -82,17 +114,18 @@ class User extends React.Component {
 						<br />
 						<br />
 						<div className="row">
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Reviews</h6>
 								<ul>
-								<p className={data.reviews.length > 0 ? "none": "grade"}>Go review a book!</p>
-								{data.reviews.map( review => {
+								<p className={reviews.length > 0 ? "none": "grade"}>Go review a book!</p>
+								{reviews.map( review => {
 									return (<div>
 												<hr />
 												<li>
-													<p><Link to={'/books/'+review.isbn} className="user-book-title">{review.title}
-														</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{review.author}
+													<p><Link to={'/books/'+review.isbn} className="user-book-title">{review.title}</Link>
+														<span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{review.author}
 														&nbsp;&nbsp;&nbsp;&nbsp;{review.rating} stars&nbsp;&nbsp;&nbsp;&nbsp;{review.date}</span>
+														<span><button type="button" className="btn btn-primary delete-btn" onClick={this.deleteReview.bind(this, review)}>Delete</button></span>
 													</p>
 													<p className="review-descrip">{review.description}</p>
 												</li>
@@ -100,22 +133,24 @@ class User extends React.Component {
 								})}
 								</ul>
 							</div>
-							<div className="col-xs-12 col-md-6 user-past">
+							<div className="col-xs-12 col-sm-12 col-md-6 user-past">
 								<h6>Past Reads</h6>
 								<p className={returns.length > 0 ? "none": "grade"}>Books you return will appear here.</p>
 								<table className="table user-past-reads">
 									<tbody>
 										{returns.map( r => {
-											return ([<tr><td className="user-past-read">
-													<Link to={'/books/'+r.isbn} className="user-book-title">{r.title}</Link><span className="user-detail">&nbsp;&nbsp;&nbsp;&nbsp;{r.author}</span></td>
-													<td><span className="user-return-date">Returned {r.date_returned}</span></td></tr>])
+											return ([<tr>
+													<td className="user-past-read"><Link to={'/books/'+r.isbn} className="user-book-title">{r.title}</Link></td>
+													<td><span className="user-return-date">Returned {r.date_returned}</span></td>
+													<td><button type="button" className="btn btn-primary delete-btn" onClick={this.deleteReturn.bind(this, r)}>Delete</button></td>
+													</tr>])
 										})}
 									</tbody>
 								</table>
 							</div>
 						</div>
 						<div className="row follow-row">
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Followers</h6>
 								<p className={data.followers.length > 0 ? "none": "grade"}>Follow other students!</p>
 								<ul>

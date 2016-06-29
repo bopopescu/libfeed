@@ -185,3 +185,33 @@ def upload():
     current_user.img = 'https://s3-us-west-2.amazonaws.com/libfeed/{0}'.format(key_img)
     db.session.commit()
     return redirect('/user')
+
+@api.route('/delete_borrow', methods=["POST"])
+@login_required
+def delete_borrow():
+    data = request.get_json()
+    isbn = data['isbn']
+    borrow = Borrow.query_by_isbn_id(isbn, current_user.id)
+    db.session.delete(borrow)
+    db.session.commit()
+    return 'OK'
+
+@api.route('/delete_return', methods=["POST"])
+@login_required
+def delete_return():
+    data = request.get_json()
+    isbn = data['isbn']
+    r = Return.query_by_isbn_id(isbn, current_user.id)
+    db.session.delete(r)
+    db.session.commit()
+    return 'OK'
+
+@api.route('/delete_review', methods=["POST"])
+@login_required
+def delete_review():
+    data = request.get_json()
+    id = data['id']
+    review = Review.query_by_id(id)
+    db.session.delete(review)
+    db.session.commit()
+    return 'OK'

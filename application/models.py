@@ -139,7 +139,7 @@ class FolloweeFollower(db.Model):
 
     @staticmethod
     def query_by_id(followee_id, follower_id):
-        return FolloweeFollower.query.filter(FolloweeFollower.followee_id==followee_id, FolloweeFollower.follower_id==follower_id).first()
+        return FolloweeFollower.query.filter(and_(FolloweeFollower.followee_id==followee_id, FolloweeFollower.follower_id==follower_id)).first()
 
 class Borrow(db.Model):
     __tablename__ = 'borrow'
@@ -167,6 +167,9 @@ class Review(db.Model):
     isbn = db.Column(db.String, ForeignKey('book.isbn'), nullable=False)
     book = orm.relationship('Book', backref='reviews')
 
+    @staticmethod
+    def query_by_id(id):
+        return Review.query.filter(Review.id==id).first()
 
 class Return(db.Model):
     __tablename__ = 'return'

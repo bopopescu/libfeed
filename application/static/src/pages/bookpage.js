@@ -75,20 +75,20 @@ class Book extends React.Component {
 				<div id="book-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6 book-header">
+							<div className="col-xs-6 col-sm-6 col-md-6 book-header">
 								<div className="book-info">
 									<h3 className="book-title-main">{data.title}</h3>
 								</div>
 							</div>
-							<div className="col-xs-6 book-status">
+							<div className="col-xs-6 col-sm-6 col-md-6 book-status">
 								<button type="button" className="btn btn-primary checkout-btn" onClick={!checked_out > 0 ? this.checkOut.bind(this, data.isbn) : ''} disabled={checked_out}>{!checked_out ? "Check Out" : 'Checked Out'}</button>
 							</div>
 						</div>
 						<div className="row">
-							<div className="col-xs-3 book-header">
+							<div className="col-xs-12 col-sm-3 col-md-3 book-header">
 								<img src={data.img} className="book-img"/>
 							</div>
-							<div className="col-xs-3">
+							<div className="col-xs-12 col-sm-3 col-md-3">
 								<p className="user-detail">Authors</p>
 								<ul className="authors">
 									{data.authors.map( author => {
@@ -102,13 +102,13 @@ class Book extends React.Component {
 									})}
 								</ul>
 							</div>
-							<div className="col-xs-6">
+							<div className="col-xs-12 col-sm-6 col-md-6">
 								<p className="synopsis">{data.synopsis}</p>
 							</div>
 						</div>
 						<br />
 						<div className="row">
-							<div className="col-xs-12">
+							<div className="col-xs-12 col-sm-6 col-md-6">
 								<h3>Reviews</h3>
 								<p className={avg_rating == 0 ? "none": "grade"}>Average Rating: {avg_rating}</p>
 								<ul>
@@ -126,16 +126,24 @@ class Book extends React.Component {
 									})}
 								</ul>
 								<hr />
-								<form className="reviewForm">
-									<input placeholder="Write Review" ref="reviewinput" type="text" onChange={this.handleReview.bind(this)} />
-									<span className="rating-selector">Rating: <button type="button" className={rating==1 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 1)}>1</button>&nbsp;
-									<button type="button" className={rating==2 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 2)}>2</button>&nbsp;
-									<button type="button" className={rating==3 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 3)}>3</button>&nbsp;
-									<button type="button" className={rating==4 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 4)}>4</button>&nbsp;
-									<button type="button" className={rating==5 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 5)}>5</button></span>
-									<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating)} disabled={!(rating && this.state.description)}>Post Review</button>
-								</form>
 							</div>
+						</div>
+						<div className="row">
+							<form className="reviewForm">
+								<div className="col-xs-12 col-sm-4 col-md-4">
+								<textarea placeholder="Write Review" ref="reviewinput" type="text" onChange={this.handleReview.bind(this)} />
+								</div>
+								<div className="col-xs-12 col-sm-4 col-md-4 rating-select">
+								<span className="rating-selector">Rating: <button type="button" className={rating==1 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 1)}>1</button>&nbsp;
+								<button type="button" className={rating==2 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 2)}>2</button>&nbsp;
+								<button type="button" className={rating==3 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 3)}>3</button>&nbsp;
+								<button type="button" className={rating==4 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 4)}>4</button>&nbsp;
+								<button type="button" className={rating==5 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn"} onClick={this.changeRating.bind(this, 5)}>5</button></span>
+								</div>
+								<div className="col-xs-12 col-sm-4 col-md-4">
+								<button type="button" className="btn btn-primary review-btn" onClick={this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating)} disabled={!(rating && this.state.description)}>Post Review</button>
+								</div>
+							</form>
 						</div>
 					</div>
 				</div>

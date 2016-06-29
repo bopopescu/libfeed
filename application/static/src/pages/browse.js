@@ -20,7 +20,7 @@ class Browse extends React.Component {
 				<div id="genre-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<div className="genre-list">
 									<h6>Genres</h6>
 									<ul>

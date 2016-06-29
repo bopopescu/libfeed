@@ -47,6 +47,17 @@
     <div id="app">
     </div>
     <script src="{{ url_for('static', filename='dist/app.js') }}"></script>
+  {% else %}
+  <div class="home-page">
+      <div class="container">
+          <div class="row">
+              <div class="quote-body col-xs-12 col-sm-12 col-md-6">
+                  <p class="book-quote">“Reading one book is like eating one potato chip.”</p>
+                  <p class="quoted-by"> - Diane Duane, <span class="italic">So You Want to Be a Wizard</span></p>
+              </div>
+          </div>
+      </div>
+  </div>
   {% endif %}
 </body>
 

@@ -51,7 +51,7 @@ class Student extends React.Component {
 				<div id="student-page">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-12 col-md-6 user-profile">
+							<div className="col-xs-12 col-sm-12 col-md-6 user-profile">
 								<div className="student-page-name">
 									<h6 className="user-name">{data.first_name} {data.last_name}</h6>
 									<button type="button" className="btn btn-primary follow-btn" onClick={follow_status ? this.unfollow.bind(this, data.id) : this.follow.bind(this, data.id) }>{follow_status ? 'Unfollow' : 'Follow'}</button>
@@ -61,7 +61,7 @@ class Student extends React.Component {
 									<img src={data.img} />
 								</div>
 							</div>
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Currently Reading</h6>
 								<hr />
 								<p className={data.borrows.length > 0 ? "none": "grade"}>No books currently checked out.</p>
@@ -75,7 +75,7 @@ class Student extends React.Component {
 						<br />
 						<br />
 						<div className="row">
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Reviews</h6>
 								<p className={data.reviews.length > 0 ? "none": "grade"}>No reviews yet.</p>
 								<ul>
@@ -92,7 +92,7 @@ class Student extends React.Component {
 								})}
 								</ul>
 							</div>
-							<div className="col-xs-12 col-md-6 student-past-reads">
+							<div className="col-xs-12 col-sm-12 col-md-6 student-past-reads">
 								<h6>Past Reads</h6>
 								<hr />
 								<p className={data.borrows.length > 0 ? "none": "grade"}>No books have been returned yet.</p>
@@ -104,7 +104,7 @@ class Student extends React.Component {
 							</div>
 						</div>
 						<div className="row follow-row">
-							<div className="col-xs-12 col-md-6">
+							<div className="col-xs-12 col-sm-12 col-md-6">
 								<h6>Followers</h6>
 								<p className={this.state.followers.length > 0 ? "none": "grade"}>No followers yet.</p>
 								<ul>

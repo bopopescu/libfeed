@@ -33,7 +33,7 @@ class StudentResults extends React.Component {
 				<div className="search-results">
 					<div className="container">
 						<div className="row">
-							<div className={data.students.length ? "col-xs-6 search-results-area" : "none"}>
+							<div className={data.students.length ? "col-xs-12 col-sm-12 col-md-6 search-results-area" : "none"}>
 								<h3>Search Results for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
 								<hr />
 								<h6>Students</h6>
@@ -47,7 +47,7 @@ class StudentResults extends React.Component {
 									})}
 								</div>
 							</div>
-							<div className={data.students.length ? "none" : "col-xs-6 search-results-area"}>
+							<div className={data.students.length ? "none" : "col-xs-12 col-sm-12 col-md-6 search-results-area"}>
 								<h3>No Results Found for <span className="result-found">“{this.props.params.searchTerm}”</span></h3>
 							</div>
 						</div>

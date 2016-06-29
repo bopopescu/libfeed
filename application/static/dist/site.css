@@ -149,7 +149,24 @@ hr {
     height: 200px;
     overflow: hidden;
     border-radius: 100px;
-    margin-left: 130px;
+}
+
+@media screen and (max-width: 770px) {
+    .student-img {
+        margin-left: 260px;
+    }
+}
+
+@media screen and (max-width: 380px) {
+    .student-img {
+        margin-left: 80px;
+    }
+}
+
+@media screen and (min-width: 770px) {
+    .student-img {
+        margin-left: 130px;
+    }
 }
 
 .student-img img {
@@ -317,7 +334,7 @@ hr {
 }
 
 .news-list-item {
-    height: 50px;
+    height: 70px;
 }
 
 .news-text {
@@ -348,7 +365,6 @@ hr {
 }
 
 .review-btn {
-    margin-left: 20px;
     width: 100px;
     background-color: #3299CC;
     border-color: white;
@@ -399,7 +415,14 @@ hr {
     font-weight: 300;
     line-height: 1.9em;
     -webkit-font-smoothing: antialiased;
-    padding-left: 20px;
+}
+
+.reviewForm input {
+    padding-bottom: 20px;
+}
+
+.rating-select {
+    padding-bottom: 20px;
 }
 
 /************* USER PAGE *************/
@@ -423,16 +446,31 @@ hr {
     border-color: white;
 }
 
+.delete-btn {
+    width: 65px;
+    margin-left: 10px;
+    padding: 2px;
+    background-color: #DCDCDC;
+    border-color: white;
+}
+
+.delete-btn:hover {
+    opacity: .5;
+    background-color: #DCDCDC;
+    border-color: white;
+}
+
+.delete-btn:active {
+    background-color: #DCDCDC;
+    border-color: white;
+}
+
 .user-cur-reads td .btn{
     font-size: 13px;
 }
 
 .user-past-reads td {
     font-size: 13px;
-}
-
-.user-past {
-    margin-top: 14px;
 }
 
 .user-profile {
@@ -532,10 +570,18 @@ input[type=file] {
     padding-top: 20px;
 }
 /************* SEARCH *************/
-.search-page {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (min-width: 770px) {
+    .search-page {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    .search-page {
+        text-align: center;
+    }
 }
 
 .search-area {
@@ -607,8 +653,18 @@ button, input, select, textarea {
 
 /************* LOGIN PAGE *************/
 
+@media screen and (min-width: 770px) {
+    .login-container {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+        background-repeat: no-repeat;
+    }
+}
+
 .login-form {
     text-align: center;
+    margin-top: 100px;
 }
 
 .btn-success {
@@ -639,6 +695,7 @@ button, input, select, textarea {
 
 .register-form {
     text-align: center;
+    margin-top: 100px;
 }
 
 .btn-success {
@@ -691,15 +748,16 @@ button, input, select, textarea {
     margin-top: 50px;
 }
 
-.newsfeed {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (min-width: 770px) {
+    .newsfeed {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
 }
 
 .newsfeed li {
     font-size: 14px;
-    padding-top: 1px;
 }
 
 .news-info {
@@ -711,10 +769,18 @@ button, input, select, textarea {
 }
 
 /************* BROWSE *************/
-#genre-page {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (min-width: 770px) {
+    #genre-page {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
+}
+
+@media screen and (max-width: 770px) {
+    #genre-page {
+        text-align: center;
+    }
 }
 
 .genre-list {
@@ -759,6 +825,7 @@ button, input, select, textarea {
 .author-title {
     color: #3299CC;
     font-size: 20px;
+    margin-top: 50px;
 }
 
 .author-book-title {
@@ -766,11 +833,18 @@ button, input, select, textarea {
 }
 
 /************* HOME PAGE *************/
+@media screen and (min-width: 770px) {
+    .home-page {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
+}
 
-.home-page {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (max-width: 770px) {
+    .home-page {
+        text-align: center;
+    }
 }
 
 .quote-body {
@@ -794,11 +868,18 @@ button, input, select, textarea {
 }
 
 /************* ABOUT PAGE *************/
+@media screen and (min-width: 770px) {
+    .about-page {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
+}
 
-.about-page {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (max-width: 770px) {
+    .about-page {
+        padding: 20px;
+    }
 }
 
 .about-title {
@@ -821,12 +902,14 @@ button, input, select, textarea {
 }
 
 /************* SEARCH RESULTS *************/
-
-.search-results {
-    background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
-    background-size: 100vw;
-    height: 100vh;
+@media screen and (min-width: 770px) {
+    .search-results {
+        background-image: url(https://static.pexels.com/photos/48126/books-education-school-literature-48126.jpeg);
+        background-size: 100vw;
+        height: 100vh;
+    }
 }
+
 
 .result-found {
     font-size: 18px;

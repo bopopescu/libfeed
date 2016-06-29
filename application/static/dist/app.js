@@ -83769,6 +83769,45 @@ function returnBook(isbn) {
 	});
 }
 
+function deleteBorrow(isbn) {
+	var options = {
+		url: API + 'delete_borrow',
+		method: 'POST',
+		json: {
+			"isbn": isbn
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
+function deleteReview(id) {
+	var options = {
+		url: API + 'delete_review',
+		method: 'POST',
+		json: {
+			"id": id
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
+function deleteReturn(isbn) {
+	var options = {
+		url: API + 'delete_return',
+		method: 'POST',
+		json: {
+			"isbn": isbn
+		}
+	};
+	request(options, function (error, response, body) {
+		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+	});
+}
+
 function isJson(str) {
 	try {
 		JSON.parse(str);
@@ -83794,7 +83833,10 @@ module.exports = {
 	unfollow: unfollow,
 	checkOut: checkOut,
 	writeReview: writeReview,
-	getGenres: getGenres
+	getGenres: getGenres,
+	deleteBorrow: deleteBorrow,
+	deleteReturn: deleteReturn,
+	deleteReview: deleteReview
 };
 
 },{"request":430}],498:[function(require,module,exports){
@@ -83907,7 +83949,7 @@ var Home = function (_React$Component) {
 						{ className: "row" },
 						React.createElement(
 							"div",
-							{ className: "quote-body col-xs-6" },
+							{ className: "quote-body col-xs-12 col-sm-12 col-md-6" },
 							React.createElement(
 								"p",
 								{ className: "book-quote" },
@@ -83971,7 +84013,7 @@ var About = function (_React$Component) {
 						{ className: "row" },
 						React.createElement(
 							"div",
-							{ className: "col-xs-6 about-section" },
+							{ className: "col-xs-12 col-sm-12 col-md-6 about-section" },
 							React.createElement(
 								"h5",
 								{ className: "about-title" },
@@ -84056,30 +84098,34 @@ var Author = function (_React$Component) {
 					{ id: 'author-page' },
 					React.createElement(
 						'div',
-						{ className: 'container-fluid' },
+						{ className: 'container' },
 						React.createElement(
 							'div',
 							{ className: 'row' },
 							React.createElement(
-								'p',
-								{ className: 'author-title' },
-								data.name
-							),
-							React.createElement('hr', null),
-							React.createElement(
-								'ul',
-								null,
-								data.books.map(function (book) {
-									return React.createElement(
-										'li',
-										{ className: 'author-book-title' },
-										React.createElement(
-											Link,
-											{ to: '/books/' + book.isbn },
-											book.title
-										)
-									);
-								})
+								'div',
+								{ className: 'col-xs-12' },
+								React.createElement(
+									'p',
+									{ className: 'author-title' },
+									data.name
+								),
+								React.createElement('hr', null),
+								React.createElement(
+									'ul',
+									null,
+									data.books.map(function (book) {
+										return React.createElement(
+											'li',
+											{ className: 'author-book-title' },
+											React.createElement(
+												Link,
+												{ to: '/books/' + book.isbn },
+												book.title
+											)
+										);
+									})
+								)
 							)
 						)
 					)
@@ -84159,7 +84205,7 @@ var AuthorResults = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: data.authors.length ? "col-xs-6 search-results-area" : "none" },
+								{ className: data.authors.length ? "col-xs-12 col-sm-12 col-md-6 search-results-area" : "none" },
 								React.createElement(
 									'h3',
 									null,
@@ -84192,7 +84238,7 @@ var AuthorResults = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: data.authors.length ? "none" : "col-xs-6 search-results-area" },
+								{ className: data.authors.length ? "none" : "col-xs-12 col-sm-12 col-md-6 search-results-area" },
 								React.createElement(
 									'h3',
 									null,
@@ -84328,7 +84374,7 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 book-header' },
+								{ className: 'col-xs-6 col-sm-6 col-md-6 book-header' },
 								React.createElement(
 									'div',
 									{ className: 'book-info' },
@@ -84341,7 +84387,7 @@ var Book = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 book-status' },
+								{ className: 'col-xs-6 col-sm-6 col-md-6 book-status' },
 								React.createElement(
 									'button',
 									{ type: 'button', className: 'btn btn-primary checkout-btn', onClick: !checked_out > 0 ? this.checkOut.bind(this, data.isbn) : '', disabled: checked_out },
@@ -84354,12 +84400,12 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-3 book-header' },
+								{ className: 'col-xs-12 col-sm-3 col-md-3 book-header' },
 								React.createElement('img', { src: data.img, className: 'book-img' })
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-3' },
+								{ className: 'col-xs-12 col-sm-3 col-md-3' },
 								React.createElement(
 									'p',
 									{ className: 'user-detail' },
@@ -84403,7 +84449,7 @@ var Book = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-sm-6 col-md-6' },
 								React.createElement(
 									'p',
 									{ className: 'synopsis' },
@@ -84417,7 +84463,7 @@ var Book = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12' },
+								{ className: 'col-xs-12 col-sm-6 col-md-6' },
 								React.createElement(
 									'h3',
 									null,
@@ -84472,11 +84518,23 @@ var Book = function (_React$Component) {
 										);
 									})
 								),
-								React.createElement('hr', null),
+								React.createElement('hr', null)
+							)
+						),
+						React.createElement(
+							'div',
+							{ className: 'row' },
+							React.createElement(
+								'form',
+								{ className: 'reviewForm' },
 								React.createElement(
-									'form',
-									{ className: 'reviewForm' },
-									React.createElement('input', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleReview.bind(this) }),
+									'div',
+									{ className: 'col-xs-12 col-sm-4 col-md-4' },
+									React.createElement('textarea', { placeholder: 'Write Review', ref: 'reviewinput', type: 'text', onChange: this.handleReview.bind(this) })
+								),
+								React.createElement(
+									'div',
+									{ className: 'col-xs-12 col-sm-4 col-md-4 rating-select' },
 									React.createElement(
 										'span',
 										{ className: 'rating-selector' },
@@ -84510,7 +84568,11 @@ var Book = function (_React$Component) {
 											{ type: 'button', className: rating == 5 ? "btn btn-primary rating-btn-selected" : "btn btn-primary rating-btn", onClick: this.changeRating.bind(this, 5) },
 											'5'
 										)
-									),
+									)
+								),
+								React.createElement(
+									'div',
+									{ className: 'col-xs-12 col-sm-4 col-md-4' },
 									React.createElement(
 										'button',
 										{ type: 'button', className: 'btn btn-primary review-btn', onClick: this.writeReview.bind(this, data.isbn, this.state.description, this.state.rating), disabled: !(rating && this.state.description) },
@@ -84596,7 +84658,7 @@ var BookResults = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: data.books.length ? "col-xs-6 search-results-area" : "none" },
+								{ className: data.books.length ? "col-xs-12 col-sm-12 col-md-6 search-results-area" : "none" },
 								React.createElement(
 									'h3',
 									null,
@@ -84629,7 +84691,7 @@ var BookResults = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: data.books.length ? "none" : "col-xs-6 search-results-area" },
+								{ className: data.books.length ? "none" : "col-xs-12 col-sm-12 col-md-6 search-results-area" },
 								React.createElement(
 									'h3',
 									null,
@@ -84705,7 +84767,7 @@ var Browse = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'div',
 									{ className: 'genre-list' },
@@ -84797,7 +84859,7 @@ var Feed = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-6 feed-items' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6 feed-items' },
 								React.createElement(
 									'ul',
 									null,
@@ -85175,7 +85237,7 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6 user-profile' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6 user-profile' },
 								React.createElement(
 									'div',
 									{ className: 'student-page-name' },
@@ -85206,7 +85268,7 @@ var Student = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85242,7 +85304,7 @@ var Student = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85295,7 +85357,7 @@ var Student = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6 student-past-reads' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6 student-past-reads' },
 								React.createElement(
 									'h6',
 									null,
@@ -85329,7 +85391,7 @@ var Student = function (_React$Component) {
 							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85449,7 +85511,7 @@ var StudentResults = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: data.students.length ? "col-xs-6 search-results-area" : "none" },
+								{ className: data.students.length ? "col-xs-12 col-sm-12 col-md-6 search-results-area" : "none" },
 								React.createElement(
 									'h3',
 									null,
@@ -85493,7 +85555,7 @@ var StudentResults = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: data.students.length ? "none" : "col-xs-6 search-results-area" },
+								{ className: data.students.length ? "none" : "col-xs-12 col-sm-12 col-md-6 search-results-area" },
 								React.createElement(
 									'h3',
 									null,
@@ -85554,7 +85616,7 @@ var User = function (_React$Component) {
 			var _this2 = this;
 
 			api.getCurUserPage(function (err, data) {
-				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, borrows: data.student.borrows, returns: data.student.returns });
+				if (err) console.err("[NewsFeed:componentDidMount] There's been an error retrieving data!");else _this2.setState({ data: data.student, borrows: data.student.borrows, returns: data.student.returns, reviews: data.student.reviews });
 			});
 		}
 	}, {
@@ -85575,6 +85637,39 @@ var User = function (_React$Component) {
 			});
 		}
 	}, {
+		key: 'deleteBorrow',
+		value: function deleteBorrow(borrow) {
+			api.deleteBorrow(borrow.isbn);
+			var borrows = this.state.borrows.filter(function (cur_borrow) {
+				return cur_borrow.isbn !== borrow.isbn;
+			});
+			this.setState({
+				borrows: borrows
+			});
+		}
+	}, {
+		key: 'deleteReview',
+		value: function deleteReview(review) {
+			api.deleteReview(review.id);
+			var reviews = this.state.reviews.filter(function (cur_review) {
+				return cur_review.id !== review.id;
+			});
+			this.setState({
+				reviews: reviews
+			});
+		}
+	}, {
+		key: 'deleteReturn',
+		value: function deleteReturn(r) {
+			api.deleteReturn(r.isbn);
+			var returns = this.state.returns.filter(function (cur_r) {
+				return cur_r.isbn !== r.isbn;
+			});
+			this.setState({
+				returns: returns
+			});
+		}
+	}, {
 		key: 'handleClickPhoto',
 		value: function handleClickPhoto() {
 			this.setState({
@@ -85589,6 +85684,7 @@ var User = function (_React$Component) {
 			var data = this.state.data;
 			var borrows = this.state.borrows;
 			var returns = this.state.returns;
+			var reviews = this.state.reviews;
 			var photo = this.state.photo;
 			console.log(borrows);
 			if (data) {
@@ -85603,7 +85699,7 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6 user-profile' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6 user-profile' },
 								React.createElement(
 									'h6',
 									{ className: 'user-name' },
@@ -85642,7 +85738,7 @@ var User = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85696,6 +85792,15 @@ var User = function (_React$Component) {
 														{ type: 'button', className: 'btn btn-primary return-btn', onClick: _this3.handleClick.bind(_this3, borrow) },
 														'Return'
 													)
+												),
+												React.createElement(
+													'td',
+													null,
+													React.createElement(
+														'button',
+														{ type: 'button', className: 'btn btn-primary delete-btn', onClick: _this3.deleteBorrow.bind(_this3, borrow) },
+														'Delete'
+													)
 												)
 											)];
 										})
@@ -85710,7 +85815,7 @@ var User = function (_React$Component) {
 							{ className: 'row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -85721,10 +85826,10 @@ var User = function (_React$Component) {
 									null,
 									React.createElement(
 										'p',
-										{ className: data.reviews.length > 0 ? "none" : "grade" },
+										{ className: reviews.length > 0 ? "none" : "grade" },
 										'Go review a book!'
 									),
-									data.reviews.map(function (review) {
+									reviews.map(function (review) {
 										return React.createElement(
 											'div',
 											null,
@@ -85749,6 +85854,15 @@ var User = function (_React$Component) {
 														review.rating,
 														' stars    ',
 														review.date
+													),
+													React.createElement(
+														'span',
+														null,
+														React.createElement(
+															'button',
+															{ type: 'button', className: 'btn btn-primary delete-btn', onClick: _this3.deleteReview.bind(_this3, review) },
+															'Delete'
+														)
 													)
 												),
 												React.createElement(
@@ -85763,7 +85877,7 @@ var User = function (_React$Component) {
 							),
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6 user-past' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6 user-past' },
 								React.createElement(
 									'h6',
 									null,
@@ -85791,12 +85905,6 @@ var User = function (_React$Component) {
 														Link,
 														{ to: '/books/' + r.isbn, className: 'user-book-title' },
 														r.title
-													),
-													React.createElement(
-														'span',
-														{ className: 'user-detail' },
-														'    ',
-														r.author
 													)
 												),
 												React.createElement(
@@ -85807,6 +85915,15 @@ var User = function (_React$Component) {
 														{ className: 'user-return-date' },
 														'Returned ',
 														r.date_returned
+													)
+												),
+												React.createElement(
+													'td',
+													null,
+													React.createElement(
+														'button',
+														{ type: 'button', className: 'btn btn-primary delete-btn', onClick: _this3.deleteReturn.bind(_this3, r) },
+														'Delete'
 													)
 												)
 											)];
@@ -85820,7 +85937,7 @@ var User = function (_React$Component) {
 							{ className: 'row follow-row' },
 							React.createElement(
 								'div',
-								{ className: 'col-xs-12 col-md-6' },
+								{ className: 'col-xs-12 col-sm-12 col-md-6' },
 								React.createElement(
 									'h6',
 									null,
@@ -86164,7 +86281,7 @@ var SearchBar = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: 'col-xs-6 col-md-8' },
+                    { className: 'col-xs-6 col-sm-9 col-md-8' },
                     React.createElement(
                         'form',
                         { className: searchType ? "searchForm" : "none" },
@@ -86173,7 +86290,7 @@ var SearchBar = function (_React$Component) {
                 ),
                 React.createElement(
                     'div',
-                    { className: searchTerm ? "col-xs-12 col-md-3 searchButton" : "none" },
+                    { className: searchTerm ? "col-xs-12 col-sm-3 col-md-3 searchButton" : "none" },
                     React.createElement(
                         Link,
                         { id: 'searchButton', to: '/search/' + this.state.searchType + '/' + this.state.searchTerm, className: 'searchButton' },

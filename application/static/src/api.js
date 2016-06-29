@@ -153,6 +153,45 @@ function returnBook(isbn){
 	})
  }
 
+ function deleteBorrow(isbn){
+ 	var options = {
+ 		url: API+'delete_borrow',
+ 		method: 'POST',
+ 		json: {
+ 			"isbn": isbn
+ 		}
+ 	};
+ 	request(options, (error, response, body) => {
+ 		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+ 	})
+  }
+
+  function deleteReview(id){
+  	var options = {
+  		url: API+'delete_review',
+  		method: 'POST',
+  		json: {
+  			"id": id
+  		}
+  	};
+  	request(options, (error, response, body) => {
+  		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+  	})
+   }
+
+   function deleteReturn(isbn){
+   	var options = {
+   		url: API+'delete_return',
+   		method: 'POST',
+   		json: {
+   			"isbn": isbn
+   		}
+   	};
+   	request(options, (error, response, body) => {
+   		error = error || (isJson(body) ? null : 'API response is not valid JSON (perhaps HTML)');
+   	})
+    }
+
 function isJson(str) {
     try {
         JSON.parse(str);
@@ -178,5 +217,8 @@ module.exports = {
 	unfollow: unfollow,
 	checkOut: checkOut,
 	writeReview: writeReview,
-	getGenres: getGenres
+	getGenres: getGenres,
+	deleteBorrow: deleteBorrow,
+	deleteReturn: deleteReturn,
+	deleteReview: deleteReview
 }

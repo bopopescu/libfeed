@@ -6,7 +6,7 @@ class About extends React.Component {
 			<div className="about-page">
 				<div className="container-fluid">
 					<div className="row">
-						<div className="col-xs-6 about-section">
+						<div className="col-xs-12 col-sm-12 col-md-6 about-section">
 							<h5 className="about-title">About LibFeed</h5>
 							<div className="about-description">
 								<p>LibFeed helps students at Ann Richards to find books to read.

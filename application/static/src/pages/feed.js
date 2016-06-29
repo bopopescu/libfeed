@@ -23,7 +23,7 @@ class Feed extends React.Component {
 				<div className="newsfeed">
 					<div className="container-fluid">
 						<div className="row">
-							<div className="col-xs-6 feed-items">
+							<div className="col-xs-12 col-sm-12 col-md-6 feed-items">
 								<ul>
 								{data.borrows.map( book => {
 									return (<div className="news-list-item">
